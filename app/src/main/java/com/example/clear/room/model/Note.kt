@@ -3,11 +3,6 @@ package com.example.clear.room.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.clear.ui.theme.BabyBlue
-import com.example.clear.ui.theme.LightGreen
-import com.example.clear.ui.theme.RedOrange
-import com.example.clear.ui.theme.RedPink
-import com.example.clear.ui.theme.Violet
 import java.util.UUID
 
 
@@ -27,6 +22,6 @@ data class Note(
 
 ){
     companion object{
-        val noteColors = listOf(RedOrange , LightGreen , Violet , BabyBlue , RedPink)
+  //      val noteColors = listOf(RedOrange , LightGreen , Violet , BabyBlue , RedPink)
     }
 }
