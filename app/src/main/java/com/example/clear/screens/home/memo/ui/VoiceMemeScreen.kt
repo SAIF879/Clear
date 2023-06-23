@@ -1,4 +1,4 @@
-package com.example.clear.screens.home.todo.ui
+package com.example.clear.screens.home.memo.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.sp
 import com.example.clear.ui.theme.DeepBlue
 
 @Composable
-fun TodoScreen(){
+fun VoiceMemoScreen(){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(DeepBlue)){
         Column(verticalArrangement = Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally , modifier = Modifier.fillMaxSize()) {
-            Text(text = "Todo screen  " , color = Color.White , fontSize = 30.sp)
+            Text(text = "voice memos" , color = Color.White , fontSize = 30.sp)
 
         }
     }
