@@ -1,5 +1,6 @@
 package com.example.clear.screens.introduction
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,13 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.clear.navigation.IntroScreens
+import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.utils.commonComponents.GenerateButton
 
 @Composable
 fun IntroNotesScreen(navController: NavController){
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = Modifier.fillMaxSize().background(DeepBlue)){
         Column(verticalArrangement =  Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally , modifier = Modifier.fillMaxSize()) {
-            Text(text = "here comes the first intro" , color = Color.Black , fontSize = 30.sp)
+            Text(text = "here comes the first intro" , color = Color.White, fontSize = 30.sp)
             GenerateButton{
                 navController.navigate(IntroScreens.IntroTodoScreen.route)
             }
