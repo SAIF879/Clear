@@ -10,12 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.clear.navigation.IntroScreens
+import com.example.clear.utils.commonComponents.GenerateButton
 
 @Composable
-fun IntroNotesScreen(){
+fun IntroNotesScreen(navController: NavController){
     Box(modifier = Modifier.fillMaxSize()){
         Column(verticalArrangement =  Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally , modifier = Modifier.fillMaxSize()) {
             Text(text = "here comes the first intro" , color = Color.Black , fontSize = 30.sp)
+            GenerateButton{
+                navController.navigate(IntroScreens.IntroTodoScreen.route)
+            }
         }
     }
 }

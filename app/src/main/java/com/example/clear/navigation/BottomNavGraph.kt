@@ -19,7 +19,7 @@ fun BottomNavGraph(
 
         composable(route = BottomBarScreen.Notes.route){ NoteScreen()}
         composable(route = BottomBarScreen.Todos.route){ TodoScreen()}
-        composable(route = BottomBarScreen.Memos.route){ VoiceMemoScreen()}
+        composable(route = BottomBarScreen.Memos.route){ VoiceMemoScreen() }
 
     }
 
