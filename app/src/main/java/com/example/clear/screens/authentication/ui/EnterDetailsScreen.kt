@@ -10,12 +10,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph
+import com.example.clear.navigation.NavGraphs
+import com.example.clear.utils.commonComponents.GenerateButton
 
 @Composable
-fun EnterDetailsScreen(){
+fun EnterDetailsScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()){
         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally , modifier = Modifier.fillMaxSize()){
             Text(text = "Enter Details Screen" , color = Color.Black , fontSize = 30.sp)
+            GenerateButton(){
+                navController.popBackStack()
+                navController.navigate(NavGraphs.Bottom)
+            }
         }
     }
 }

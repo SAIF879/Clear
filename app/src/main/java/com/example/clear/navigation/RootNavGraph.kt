@@ -5,11 +5,18 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.clear.screens.bottomBar.HomeScreen
 
 @Composable
 fun RootNavGraph(navController: NavHostController){
-    NavHost(navController = navController, route = NavGraphs.Root , startDestination = NavGraphs.Introduction ){
+    NavHost(navController = navController, route = NavGraphs.Root , startDestination = NavGraphs.Splash ){
+        splashNavGraph(navController)
         introductionNavGraph(navController)
+        authenticationNavGraph(navController)
+        composable(route =NavGraphs.Bottom){
+            HomeScreen()
+        }
     }
 }
 
