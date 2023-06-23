@@ -17,11 +17,17 @@ import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.utils.commonComponents.GenerateButton
 
 @Composable
-fun IntroNotesScreen(navController: NavController){
-    Box(modifier = Modifier.fillMaxSize().background(DeepBlue)){
-        Column(verticalArrangement =  Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally , modifier = Modifier.fillMaxSize()) {
-            Text(text = "here comes the first intro" , color = Color.White, fontSize = 30.sp)
-            GenerateButton{
+fun IntroNotesScreen(navController: NavController) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(DeepBlue)) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(text = "here comes the first intro", color = Color.White, fontSize = 30.sp)
+            GenerateButton {
                 navController.navigate(IntroScreens.IntroTodoScreen.route)
             }
         }

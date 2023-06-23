@@ -19,13 +19,19 @@ import com.example.clear.utils.commonComponents.GenerateButton
 
 @Composable
 fun IntroTodoScreen(navController: NavController) {
-    Box(modifier = Modifier.fillMaxSize().background(DeepBlue)){
-        Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally , modifier = Modifier.fillMaxSize()){
-            Text(text = "here comes the 2nd intro" , color = Color.White , fontSize = 30.sp)
-            GenerateButton{
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(DeepBlue)) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(text = "here comes the 2nd intro", color = Color.White, fontSize = 30.sp)
+            GenerateButton {
                 navController.popBackStack()
                 navController.navigate(NavGraphs.Authentication)
             }
-    }
+        }
     }
 }
