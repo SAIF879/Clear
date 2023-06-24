@@ -10,6 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -27,7 +29,6 @@ import com.example.clear.ui.theme.TextWhite
 @Composable
 fun HomeScreen(){
     val navController = rememberNavController()
-
     Scaffold(bottomBar = { BottomBar(navController = navController)}) {
         BottomNavGraph(navController = navController)
     }
