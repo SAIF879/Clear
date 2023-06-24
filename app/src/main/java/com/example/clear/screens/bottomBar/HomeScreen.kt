@@ -32,6 +32,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.clear.navigation.BottomNavGraph
+import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.fonts.FontFamilyClear
 
@@ -93,7 +94,7 @@ fun BottomBarScreenContent(
     screens: List<BottomBarScreen>
 ) {
     CompositionLocalProvider() {
-        NavigationBar() {
+        NavigationBar(containerColor = LightRed) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
 

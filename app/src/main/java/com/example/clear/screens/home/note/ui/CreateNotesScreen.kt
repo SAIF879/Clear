@@ -49,7 +49,7 @@ fun CreateNotesScreen(navController: NavController) {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(DeepBlue)){
-        Column( horizontalAlignment = Alignment.CenterHorizontally) {
+        Column( horizontalAlignment = Alignment.CenterHorizontally , modifier = Modifier.fillMaxSize()) {
             GenerateNoteInputField(text = inputTitle, placeholder ="Enter Note Title" , height = 80 )
             GenerateNoteInputField(text = inputNote , "Enter your note here" , 500)
             ButtonRow {
