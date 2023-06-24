@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -17,6 +18,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.clear.navigation.BottomNavGraph
+import com.example.clear.ui.theme.DeepBlue
+import com.example.clear.ui.theme.LightRed
+import com.example.clear.ui.theme.TextWhite
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,7 +43,7 @@ val screens = listOf(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationBar() {
+    NavigationBar(containerColor = TextWhite) {
         screens.forEach{screen->
         AddItem(screen = screen, currentDestination = currentDestination , navController =navController )
         }

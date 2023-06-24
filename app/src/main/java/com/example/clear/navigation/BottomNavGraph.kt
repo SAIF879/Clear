@@ -1,7 +1,6 @@
 package com.example.clear.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,9 +16,10 @@ fun BottomNavGraph(
 ){
     NavHost(navController = navController, startDestination = BottomBarScreen.Notes.route ){
 
-        composable(route = BottomBarScreen.Notes.route){ NoteScreen()}
+        composable(route = BottomBarScreen.Notes.route){ NoteScreen(navController = navController)}
         composable(route = BottomBarScreen.Todos.route){ TodoScreen()}
         composable(route = BottomBarScreen.Memos.route){ VoiceMemoScreen() }
+        noteNavGraph(navController = navController)
 
     }
 
