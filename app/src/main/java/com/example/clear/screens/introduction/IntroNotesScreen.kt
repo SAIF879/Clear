@@ -20,16 +20,17 @@ import com.example.clear.utils.commonComponents.GenerateButton
 fun IntroNotesScreen(navController: NavController) {
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(DeepBlue)) {
+        .background(Color.Red)) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            Text(text = "here comes the first intro", color = Color.White, fontSize = 30.sp)
-            GenerateButton {
-                navController.navigate(IntroScreens.IntroTodoScreen.route)
-            }
+//            Text(text = "here comes the first intro", color = Color.White, fontSize = 30.sp)
+//            GenerateButton {
+//                navController.navigate(IntroScreens.IntroTodoScreen.route)
+//            }
+
         }
     }
 }
