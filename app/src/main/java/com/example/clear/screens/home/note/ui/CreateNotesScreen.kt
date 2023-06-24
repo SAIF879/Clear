@@ -49,11 +49,12 @@ fun CreateNotesScreen(navController: NavController) {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(DeepBlue)){
-        Column(verticalArrangement = Arrangement.SpaceBetween , horizontalAlignment = Alignment.CenterHorizontally) {
+        Column( horizontalAlignment = Alignment.CenterHorizontally) {
+            GenerateNoteInputField(text = inputTitle, placeholder ="Enter Note Title" , height = 80 )
             GenerateNoteInputField(text = inputNote , "Enter your note here" , 500)
             ButtonRow {
-                GenerateSmallButtons("cancel",color = Color.Red)
-                GenerateSmallButtons("Save",color = Color.Green)
+                GenerateSmallButtons("cancel",color = Color.Red){}
+                GenerateSmallButtons("Save",color = Color.Green){}
             }
         }
         }
@@ -95,14 +96,14 @@ fun GenerateSmallButtons(text: String , enabled: Boolean = true,color : Color , 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GenerateNoteInputField(text: MutableState<String>, placeholder: String , size : Int) {
-    Box(modifier = Modifier.size(500.dp)) {
+fun GenerateNoteInputField(text: MutableState<String>, placeholder: String , height : Int) {
+    Box(modifier = Modifier.height(height.dp).fillMaxWidth()) {
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
-                .size(size.dp)
-                .padding(0.dp)
+                .height(height.dp).fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 5.dp)
         ) {
             TextField(
                 value = text.value,
