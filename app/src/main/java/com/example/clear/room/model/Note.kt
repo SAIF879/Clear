@@ -20,6 +20,9 @@ data class Note(
     @ColumnInfo(name = "note_color")
     val color : Int ,
 
+    @ColumnInfo(name = "note_favourite")
+    val isFavourite : Boolean
+
 ){
     companion object{
   //      val noteColors = listOf(RedOrange , LightGreen , Violet , BabyBlue , RedPink)
