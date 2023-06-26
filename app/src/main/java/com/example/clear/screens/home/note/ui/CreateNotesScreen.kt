@@ -46,6 +46,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -56,7 +57,7 @@ import com.example.clear.screens.bottomBar.BottomBarScreen
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.utils.fonts.FontFamilyClear
 @Composable
-fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewModel = viewModel()  ) {
+fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewModel = hiltViewModel()  ) {
 
     val inputTitle = remember {
         mutableStateOf("")
@@ -91,11 +92,6 @@ fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewMod
                         inputTitle.value = ""
                         inputNote.value = ""
                         Toast.makeText(context, "note saved ", Toast.LENGTH_SHORT).show()
-                        navController.navigate(NavGraphs.Bottom){
-//                            popUpTo(BottomBarScreen.Notes.route){
-//                                inclusive = true
-//                            }
-                        }
 
                     }
                 }

@@ -22,20 +22,17 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.clear.navigation.NavGraphs
-import com.example.clear.room.model.Note
-import com.example.clear.room.model.NoteData
 import com.example.clear.screens.home.note.components.NoteCard
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.DeepBlue
@@ -47,9 +44,9 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = viewModel()) {
+fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = hiltViewModel()) {
 
-    val noteList = noteViewModel.getAllNotes()
+    val noteList = noteViewModel.noteList.collectAsState().value
 
     Box(
         modifier = Modifier
@@ -83,15 +80,21 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = vi
                 ), modifier = Modifier.padding(5.dp)
             )
 
-            LazyColumn(verticalArrangement = Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally , modifier = Modifier.fillMaxWidth()) {
+            LazyColumn(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 item {
-                    Spacer(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(0.dp))
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(0.dp)
+                    )
                 }
                 items(noteList){
-                  NoteCard(note = it){
-                   //navigate to the screen with notes of  the perticular route with details
+                  NoteCard(note = it    ){
+
                   }
                     Spacer(modifier = Modifier.size(5.dp))
                 }
@@ -121,9 +124,8 @@ fun LocalGreetingWithName(name: String) {
  fun localGreeting() : String{
     val currentTime = Date()
     val timeFormat = SimpleDateFormat("HH", Locale.getDefault())
-    val hour = timeFormat.format(currentTime).toInt()
 
-    return when(hour){
+     return when(timeFormat.format(currentTime).toInt()){
         in 0..11 -> "Good Morning"
         in 12..16 -> "Good AfterNoon"
         in 17..20 -> "Good Evening"

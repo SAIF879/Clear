@@ -16,12 +16,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,58 +36,96 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.clear.room.model.Note
+import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.utils.fonts.FontFamilyClear
+import dagger.hilt.android.lifecycle.HiltViewModel
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
+
 @Composable
-fun NoteCard(note : Note , onclick : () -> Unit = {}){
+fun NoteCard(note : Note , viewModel: NoteViewModel= hiltViewModel() ,onclick : () -> Unit = {}){
     val isFavourite = remember {
         mutableStateOf(false)
     }
-    Card(modifier = Modifier
-        .clickable { onclick.invoke() }
-        .height(200.dp)
-        .fillMaxWidth().padding(20.dp)) {
-        Column(modifier = Modifier
-            .padding(5.dp)
-            .fillMaxSize() , verticalArrangement = Arrangement.SpaceBetween) {
-            Column() {
-               Row(horizontalArrangement = Arrangement.Center , verticalAlignment = Alignment.CenterVertically , modifier = Modifier
-                   .padding(3.dp)
-                   .fillMaxWidth()) {
-                DecorationBar()
-               }
+    val noteList = viewModel.noteList.collectAsState().value
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-            ) {
+    val update = SwipeAction(
+        onSwipe = {},
+        icon = {Icon(
+            imageVector = Icons.Filled.Update,
+            contentDescription = "icon",
+            tint = Color.White,
+            modifier = Modifier.padding(16.dp)
+        )},
+        background = Color.Green
 
-                ShowEllipseTitle(title = note.title)
+    )
+    val delete = SwipeAction(
+        onSwipe = {
+                viewModel.removeNote(note)
+        },
+        icon = {Icon(
+            imageVector = Icons.Filled.Delete,
+            contentDescription = "icon",
+            tint = Color.White,
+            modifier = Modifier.padding(16.dp)
+        )},
+        background = Color.Red
 
-                Icon(
-                    imageVector = if (isFavourite.value) {
-                        Icons.Filled.Favorite
-                    } else {
-                        Icons.Outlined.Favorite
-                    }, contentDescription = "fav_note",
-                    tint = if (isFavourite.value) LightRed else Color.Gray
-                )
+    )
+    
+    SwipeableActionsBox(startActions = listOf(update) , endActions = listOf(delete)) {
+        Card(modifier = Modifier
+            .clickable { onclick.invoke() }
+            .height(200.dp)
+            .fillMaxWidth()
+            .padding(20.dp)) {
+            Column(modifier = Modifier
+                .padding(5.dp)
+                .fillMaxSize() , verticalArrangement = Arrangement.SpaceBetween) {
+                Column() {
+                    Row(horizontalArrangement = Arrangement.Center , verticalAlignment = Alignment.CenterVertically , modifier = Modifier
+                        .padding(3.dp)
+                        .fillMaxWidth()) {
+                        DecorationBar()
+                    }
 
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp)
+                    ) {
+
+                        ShowEllipseTitle(title = note.title)
+
+                        Icon(
+                            imageVector = if (isFavourite.value) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Outlined.Favorite
+                            }, contentDescription = "fav_note",
+                            tint = if (isFavourite.value) LightRed else Color.Gray
+                        )
+
+                    }
+                    ShowEllipseContent(content = note.content)
+                }
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) { ShowWordsCount(content = note.content)}
             }
-            ShowEllipseContent(content = note.content)
-        }
-            Row(
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) { ShowWordsCount(content = note.content)}
-        }
 
+        }
+        
     }
+
 }
 
 
