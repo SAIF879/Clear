@@ -8,7 +8,7 @@ import com.example.clear.screens.home.note.ui.CreateNotesScreen
 
 fun NavGraphBuilder.noteNavGraph(navController: NavController){
     navigation(route = NavGraphs.Note , startDestination = NoteScreens.CreateNotesScreen.route){
-        composable(route = NoteScreens.CreateNotesScreen.route){ CreateNotesScreen()}
+        composable(route = NoteScreens.CreateNotesScreen.route){ CreateNotesScreen( {},{})}
     }
 }
 sealed class NoteScreens(val route : String){

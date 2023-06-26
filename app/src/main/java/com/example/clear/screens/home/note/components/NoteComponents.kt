@@ -33,18 +33,18 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.clear.room.model.Note
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.utils.fonts.FontFamilyClear
-@Preview
 @Composable
-fun NoteCard(title : String = "sadsadsadsa" , content : String ="an apple a day keeps a doctor away an apple a day keeps a doctor away an apple a day keeps a doctor away fgfgf fgfg fgfg" , onclick : () -> Unit = {}){
+fun NoteCard(note : Note , onclick : () -> Unit = {}){
     val isFavourite = remember {
         mutableStateOf(false)
     }
     Card(modifier = Modifier
         .clickable { onclick.invoke() }
-        .height(150.dp)
-        .width(300.dp)) {
+        .height(200.dp)
+        .fillMaxWidth().padding(20.dp)) {
         Column(modifier = Modifier
             .padding(5.dp)
             .fillMaxSize() , verticalArrangement = Arrangement.SpaceBetween) {
@@ -63,7 +63,7 @@ fun NoteCard(title : String = "sadsadsadsa" , content : String ="an apple a day 
                     .padding(5.dp)
             ) {
 
-                ShowEllipseTitle(title = title)
+                ShowEllipseTitle(title = note.title)
 
                 Icon(
                     imageVector = if (isFavourite.value) {
@@ -75,13 +75,13 @@ fun NoteCard(title : String = "sadsadsadsa" , content : String ="an apple a day 
                 )
 
             }
-            ShowEllipseContent(content = content)
+            ShowEllipseContent(content = note.content)
         }
             Row(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
-            ) { ShowWordsCount(content = content)}
+            ) { ShowWordsCount(content = note.content)}
         }
 
     }

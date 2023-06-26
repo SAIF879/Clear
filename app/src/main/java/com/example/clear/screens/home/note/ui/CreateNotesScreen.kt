@@ -44,22 +44,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.clear.room.model.Note
 import com.example.clear.utils.fonts.FontFamilyClear
-@Preview
 @Composable
-fun CreateNotesScreen() {
+fun CreateNotesScreen( onAddNote : (Note) -> Unit  , onDeleteNote : (Note) -> Unit ) {
 
     val inputTitle = remember {
-        mutableStateOf("hello world")
+        mutableStateOf("")
     }
 
     val inputNote = remember {
         mutableStateOf(
-            "Faria says he was told by his spirit guides that he must expand his work to reach more people and spiritist medium Chico Xavier told him he should go to the small Goiás town of Abadiânia to fulfill his healing mission. Around 1978, when João first " +
-                    "performed healings there, he just sat outdoors in a chair near the main road where people began to arrive seeking cures for their illnesses and conditions. Gradually the numbers increased to thousands per day and he developed his centre, Casa de Dom I" +
-                    "nácio de Loyola.[13] The Casa de Dom Inácio de Loyola has since been visited by millions of people seeking healing. He also owns a nearby cattle ranch, which covers about 1,000 acres and is valued at over 2 million reais.[14][15]\n Much of his income comes" +
-                    " from selling passionflower preparations, the single herb prescribed by Faria to cure a variety of ailments. The company which bears João Teixeira Faria's initials, JTF Ltda., markets the drug and is registered in the name of his wife, Ana Keyla Teixeira, and his " +
-                    "driver and employee Abadio da Cruz"
+            ""
         )
     }
 
@@ -77,7 +73,13 @@ fun CreateNotesScreen() {
                 .padding(5.dp)
                 .fillMaxWidth()) {
                 ShowContentCount(content = inputNote.value)
-                CircularButton(icon = Icons.Filled.Add)
+                CircularButton(icon = Icons.Filled.Add){
+                    //onlcik pr save data
+                    if (inputTitle.value.isNotEmpty() && inputNote.value.isNotEmpty() ){
+                        inputTitle.value = ""
+                        inputNote.value = ""
+                    }
+                }
 //                Spacer(modifier = Modifier.width(20.dp))
 
             }

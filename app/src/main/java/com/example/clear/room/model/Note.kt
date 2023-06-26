@@ -15,13 +15,15 @@ data class Note(
     val title : String ,
     @ColumnInfo(name = "note_content")
     val content : String ,
-    @ColumnInfo(name = "note_time_stamp")
-    val timeStamp : Long, // tells when we created that note  --> may change  to  Date if needed
-    @ColumnInfo(name = "note_color")
-    val color : Int ,
 
-    @ColumnInfo(name = "note_favourite")
-    val isFavourite : Boolean
+//    @ColumnInfo(name = "note_time_stamp")
+//    val timeStamp : Long, // tells when we created that note  --> may change  to  Date if needed
+
+//    @ColumnInfo(name = "note_color")
+//    val color : Int ,
+
+//    @ColumnInfo(name = "note_favourite")
+//    val isFavourite : Boolean
 
 ){
     companion object{
