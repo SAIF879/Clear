@@ -1,5 +1,6 @@
 package com.example.clear.screens.home.note.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -44,10 +46,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.clear.navigation.NavGraphs
+import com.example.clear.navigation.NoteScreens
 import com.example.clear.room.model.Note
+import com.example.clear.screens.bottomBar.BottomBarScreen
+import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.utils.fonts.FontFamilyClear
 @Composable
-fun CreateNotesScreen( onAddNote : (Note) -> Unit  , onDeleteNote : (Note) -> Unit ) {
+fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewModel = viewModel()  ) {
 
     val inputTitle = remember {
         mutableStateOf("")
@@ -59,6 +68,7 @@ fun CreateNotesScreen( onAddNote : (Note) -> Unit  , onDeleteNote : (Note) -> Un
         )
     }
 
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     Box(modifier = Modifier
         .fillMaxSize()
@@ -76,8 +86,17 @@ fun CreateNotesScreen( onAddNote : (Note) -> Unit  , onDeleteNote : (Note) -> Un
                 CircularButton(icon = Icons.Filled.Add){
                     //onlcik pr save data
                     if (inputTitle.value.isNotEmpty() && inputNote.value.isNotEmpty() ){
+                        // add note to view model
+                        noteViewModel.addNote(Note(title = inputTitle.value , content = inputNote.value))
                         inputTitle.value = ""
                         inputNote.value = ""
+                        Toast.makeText(context, "note saved ", Toast.LENGTH_SHORT).show()
+                        navController.navigate(NavGraphs.Bottom){
+//                            popUpTo(BottomBarScreen.Notes.route){
+//                                inclusive = true
+//                            }
+                        }
+
                     }
                 }
 //                Spacer(modifier = Modifier.width(20.dp))

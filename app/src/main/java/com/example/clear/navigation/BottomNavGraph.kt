@@ -17,7 +17,7 @@ fun BottomNavGraph(
 ){
     NavHost(navController = navController, startDestination = BottomBarScreen.Notes.route ){
 
-        composable(route = BottomBarScreen.Notes.route){ NoteScreen(NoteData().loadNotes())}
+        composable(route = BottomBarScreen.Notes.route){ NoteScreen( navController = navController)}
         composable(route = BottomBarScreen.Todos.route){ TodoScreen()}
         composable(route = BottomBarScreen.Memos.route){ VoiceMemoScreen() }
         noteNavGraph(navController = navController)

@@ -30,11 +30,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.clear.navigation.NavGraphs
 import com.example.clear.room.model.Note
 import com.example.clear.room.model.NoteData
 import com.example.clear.screens.home.note.components.NoteCard
+import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.TextWhite
@@ -44,7 +47,10 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun NoteScreen(notes : List<Note> ) {
+fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = viewModel()) {
+
+    val noteList = noteViewModel.getAllNotes()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +70,7 @@ fun NoteScreen(notes : List<Note> ) {
             ) {
                 LocalGreetingWithName(name = "Sam")
                 CircularButton(Icons.Filled.Add) {
-                    //navController.navigate(NavGraphs.Note)
+                    navController.navigate(NavGraphs.Note)
                }
             }
             //local heading
@@ -78,13 +84,21 @@ fun NoteScreen(notes : List<Note> ) {
             )
 
             LazyColumn(verticalArrangement = Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally , modifier = Modifier.fillMaxWidth()) {
-                item { 
-                    Spacer(modifier = Modifier.fillMaxWidth().height(100.dp))
+                item {
+                    Spacer(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(0.dp))
                 }
-                items(notes){
-                  NoteCard(note = it)
+                items(noteList){
+                  NoteCard(note = it){
+                   //navigate to the screen with notes of  the perticular route with details
+                  }
                     Spacer(modifier = Modifier.size(5.dp))
                 }
+                item{
+                    Spacer(modifier = Modifier.size(80.dp))
+                }
+
             }
 
 
