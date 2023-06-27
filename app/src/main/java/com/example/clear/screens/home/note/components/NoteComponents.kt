@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,7 +47,7 @@ import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
 @Composable
-fun NoteCard(note : Note , viewModel: NoteViewModel= hiltViewModel() ,onclick : () -> Unit = {}){
+fun NoteCard(note : Note   , viewModel: NoteViewModel= hiltViewModel() ,onclick : () -> Unit = {}){
     val isFavourite = remember {
         mutableStateOf(false)
     }
@@ -82,7 +83,7 @@ fun NoteCard(note : Note , viewModel: NoteViewModel= hiltViewModel() ,onclick : 
             .clickable { onclick.invoke() }
             .height(200.dp)
             .fillMaxWidth()
-            .padding(20.dp)) {
+            .padding(20.dp) , shape = RectangleShape) {
             Column(modifier = Modifier
                 .padding(5.dp)
                 .fillMaxSize() , verticalArrangement = Arrangement.SpaceBetween) {

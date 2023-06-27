@@ -38,6 +38,7 @@ import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.TextWhite
+import com.example.clear.utils.commonComponents.CircularButton
 import com.example.clear.utils.fonts.FontFamilyClear
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -66,7 +67,7 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = hi
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 LocalGreetingWithName(name = "Sam")
-                CircularButton(Icons.Filled.Add) {
+                CircularButton(icon =Icons.Filled.Add) {
                     navController.navigate(NavGraphs.Note)
                }
             }
@@ -93,7 +94,7 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = hi
                     )
                 }
                 items(noteList){
-                  NoteCard(note = it    ){
+                  NoteCard(note = it ){
 
                   }
                     Spacer(modifier = Modifier.size(5.dp))
@@ -134,24 +135,6 @@ fun LocalGreetingWithName(name: String) {
 }
 
 
-@Composable
-fun CircularButton(icon : ImageVector,onClick: () -> Unit = {}) {
-    Box(
-        modifier = Modifier
-            .size(50.dp)
-            .background(LightRed, shape = CircleShape)
-            .aspectRatio(1f)
-            .clickable { onClick.invoke() },
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = " icon",
-            tint = Color.White,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
 
 
 
