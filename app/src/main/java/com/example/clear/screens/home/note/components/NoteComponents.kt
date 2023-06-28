@@ -51,7 +51,6 @@ fun NoteCard(note : Note   , viewModel: NoteViewModel= hiltViewModel() ,onclick 
     val isFavourite = remember {
         mutableStateOf(false)
     }
-    val noteList = viewModel.noteList.collectAsState().value
 
     val update = SwipeAction(
         onSwipe = {},
