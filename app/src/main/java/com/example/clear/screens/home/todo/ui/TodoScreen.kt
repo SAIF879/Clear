@@ -1,9 +1,11 @@
 package com.example.clear.screens.home.todo.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -41,7 +46,7 @@ fun TodoScreen(){
         .fillMaxSize()
         .background(DeepBlue)){
         Column(modifier = Modifier.padding(10.dp)) {
-            CurrentDay()
+            TodoHeader {}
             Spacer(modifier = Modifier.size(20.dp))
             CreateTodo(content = content) {}
             Spacer(modifier = Modifier.size(20.dp))
@@ -72,6 +77,21 @@ fun CurrentDay(){
         fontFamily = FontFamilyClear.fontMedium
     )
     )
+}
+
+@Composable
+fun TodoHeader(onClick : () -> Unit){
+    Row(Modifier.fillMaxWidth() , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween) {
+        CurrentDay()
+        Icon(
+            imageVector = Icons.Filled.List,
+            contentDescription = "options_icon",
+            tint = Color.White,
+            modifier = Modifier
+                .size(40.dp)
+                .clickable { onClick.invoke() }
+        )
+    }
 }
 
 @Composable
