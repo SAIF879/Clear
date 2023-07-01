@@ -2,4 +2,5 @@
     <string name="app_name">Clear</string>
     <string name="splash_heading">Clear..</string>
     <string name="welcome">Welcome To \n Clear</string>
+    <string name="caution">Please Be Mindful Of \nOther People\'s Privacy \nWhen Recording. </string>
 </resources>
