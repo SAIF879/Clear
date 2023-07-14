@@ -36,18 +36,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.clear.room.model.Todo
 import com.example.clear.room.model.TodoData
+import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.Beige1
 import com.example.clear.ui.theme.RedOrange
 import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.commonComponents.CircularButton
 import com.example.clear.utils.fonts.FontFamilyClear
+import dagger.hilt.android.lifecycle.HiltViewModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
 @Composable
-fun TodoCard(task : Todo) {
+fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel()) {
 
     val completedTask =SwipeAction(
         onSwipe = {},
@@ -63,7 +66,7 @@ fun TodoCard(task : Todo) {
 
     )
     val deleteTask = SwipeAction(
-        onSwipe = {},
+        onSwipe = {viewModel.removeTodo(task)},
         icon = {Icon(
             imageVector = Icons.Filled.Delete,
             contentDescription = "icon",
@@ -137,7 +140,9 @@ fun CreateTodo(content: MutableState<String> , onClick : ()-> Unit) {
                         fontFamily = FontFamilyClear.fontRegular,
                         fontSize = 18.sp,
                         color = Color.Gray
-                    ), modifier = Modifier.weight(2f).wrapContentHeight(),
+                    ), modifier = Modifier
+                        .weight(2f)
+                        .wrapContentHeight(),
                     placeholder = {
                         Text(
                             text = "Add a Task", style = TextStyle(

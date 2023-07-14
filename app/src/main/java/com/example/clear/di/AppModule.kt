@@ -3,7 +3,9 @@ package com.example.clear.di
 import android.content.Context
 import androidx.room.Room
 import com.example.clear.room.dao.NoteDataBaseDao
-import com.example.clear.room.database.NoteDataBase
+import com.example.clear.room.dao.TodoDataBaseDao
+import com.example.clear.room.database.ClearDataBase
+import com.example.clear.room.model.TodoData
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,11 +19,15 @@ import javax.inject.Singleton
 object AppModule {
     @Singleton
     @Provides
-    fun provideNotesDao(noteDataBase: NoteDataBase): NoteDataBaseDao = noteDataBase.noteDao()
+    fun provideNotesDao(noteDataBase: ClearDataBase): NoteDataBaseDao = noteDataBase.noteDao()
 
     @Singleton
     @Provides
-    fun provideAppDataBase(@ApplicationContext context: Context): NoteDataBase =
-        Room.databaseBuilder(context, NoteDataBase::class.java, "notes_db")
+    fun providesTodoDao(todoDataBase : ClearDataBase) : TodoDataBaseDao = todoDataBase.todoDao()
+
+    @Singleton
+    @Provides
+    fun provideAppDataBase(@ApplicationContext context: Context): ClearDataBase =
+        Room.databaseBuilder(context, ClearDataBase::class.java, "notes_db")
             .fallbackToDestructiveMigration().build()
 }
