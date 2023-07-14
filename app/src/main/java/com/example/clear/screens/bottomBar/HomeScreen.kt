@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -32,7 +29,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.clear.navigation.BottomNavGraph
 import com.example.clear.ui.theme.LightRed
-import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -48,7 +44,7 @@ fun HomeScreen(){
     when(navBackStackEntry?.destination?.route){
         "notes" -> showBottomBar.value = true
         "todos" ->showBottomBar.value = true
-        "memos" -> showBottomBar.value = true
+        "dictionary" -> showBottomBar.value = true
         else -> showBottomBar.value = false
     }
 
@@ -64,7 +60,7 @@ fun BottomBar(navController: NavHostController, bottomBarState: MutableState<Boo
 val screens = listOf(
     BottomBarScreen.Notes,
     BottomBarScreen.Todos,
-    BottomBarScreen.Memos
+    BottomBarScreen.Dictionary
 )
 
 

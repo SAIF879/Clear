@@ -1,5 +1,6 @@
 package com.example.clear.screens.home.todo.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,7 +47,8 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel()){
     var content = remember{
         mutableStateOf("")
     }
-   val list = todoViewModel.todoList.collectAsState().value
+    val context = LocalContext.current
+    val list = todoViewModel.todoList.collectAsState().value
     Box(modifier = Modifier
         .fillMaxSize()
         .background(DeepBlue)){
@@ -53,7 +56,13 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel()){
             TodoHeader {}
             Spacer(modifier = Modifier.size(20.dp))
             CreateTodo(content = content) {
-                todoViewModel.addTodo(Todo(content = content.value))
+                if (content.value.isNotEmpty()) {
+                    todoViewModel.addTodo(Todo(content = content.value))
+                    content.value = ""
+                }
+                else {
+                      Toast.makeText(context, "empty " , Toast.LENGTH_SHORT).show()
+                }
             }
             Spacer(modifier = Modifier.size(20.dp))
             LazyColumn(

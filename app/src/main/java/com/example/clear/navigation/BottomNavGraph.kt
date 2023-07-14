@@ -4,9 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.clear.room.model.NoteData
 import com.example.clear.screens.bottomBar.BottomBarScreen
-import com.example.clear.screens.home.memo.ui.VoiceMemoScreen
+import com.example.clear.screens.home.dictionary.ui.DictionaryScreen
 import com.example.clear.screens.home.note.ui.NoteScreen
 import com.example.clear.screens.home.todo.ui.TodoScreen
 
@@ -19,7 +18,7 @@ fun BottomNavGraph(
 
         composable(route = BottomBarScreen.Notes.route){ NoteScreen( navController = navController)}
         composable(route = BottomBarScreen.Todos.route){ TodoScreen()}
-        composable(route = BottomBarScreen.Memos.route){ VoiceMemoScreen() }
+        composable(route = BottomBarScreen.Dictionary.route){ DictionaryScreen() }
         noteNavGraph(navController = navController)
 
     }

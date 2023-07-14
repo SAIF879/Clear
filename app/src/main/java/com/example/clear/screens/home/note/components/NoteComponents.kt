@@ -82,13 +82,13 @@ fun NoteCard(note : Note   , viewModel: NoteViewModel= hiltViewModel() ,onclick 
             .clickable { onclick.invoke() }
             .height(200.dp)
             .fillMaxWidth()
-            .padding(20.dp) , shape = RectangleShape) {
+            .padding(1.dp) , shape = RectangleShape) {
             Column(modifier = Modifier
                 .padding(5.dp)
                 .fillMaxSize() , verticalArrangement = Arrangement.SpaceBetween) {
                 Column() {
                     Row(horizontalArrangement = Arrangement.Center , verticalAlignment = Alignment.CenterVertically , modifier = Modifier
-                        .padding(3.dp)
+                        .padding(5.dp)
                         .fillMaxWidth()) {
                         DecorationBar()
                     }
@@ -98,7 +98,7 @@ fun NoteCard(note : Note   , viewModel: NoteViewModel= hiltViewModel() ,onclick 
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(5.dp)
+                            .padding(1.dp)
                     ) {
 
                         ShowEllipseTitle(title = note.title)
