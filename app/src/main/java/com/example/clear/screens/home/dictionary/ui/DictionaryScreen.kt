@@ -5,10 +5,12 @@ import android.widget.SearchView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
@@ -33,69 +35,101 @@ import com.example.clear.utils.fonts.FontFamilyClear
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun DictionaryScreen(){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(DeepBlue)){
+fun DictionaryScreen() {
 
-        var text = remember{
-            mutableStateOf("")
-        }
 
-        var active = remember{
-            mutableStateOf(false)
-        }
+    var text = remember {
+        mutableStateOf("")
+    }
 
-        var items = remember {
-            mutableStateListOf(
-                "saif",
+    var active = remember {
+        mutableStateOf(false)
+    }
+
+    var items = remember {
+        mutableStateListOf(
+            "saif",
             "saif", "saif"
-            )
-        }
+        )
+    }
 
-        Scaffold {
-            SearchBar(
-                query = text.value,
-                onQueryChange = { text.value = it },
-                onSearch = {
-                    items.add(text.value)
-                   // active.value = false
-                           text.value = ""},
-                active = active.value,
-                onActiveChange = { active.value = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(
-                        text = "Search..",
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontFamily = FontFamilyClear.fontRegular,
-                            color = Color.Gray
-                        )
-                    )
-                },
-                leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription ="search_icon" )},
-                trailingIcon = {
-                    if (active.value)
-                        Icon(imageVector =Icons.Default.Close , contentDescription ="close_icon" , modifier = Modifier.clickable {
-                            if (text.value.isNotEmpty()) text.value =""
-                                else active.value = false
-                        } )
-                }
-            ) {
 
-                items.forEach{
-                    Row(modifier = Modifier.padding(end=14.dp)) {
-                        Icon(imageVector = Icons.Default.History, contentDescription ="history_icon" )
-                        Text(text = it, style = TextStyle(fontSize = 18.sp , fontFamily = FontFamilyClear.fontRegular , color =  Color.Gray))
+            Scaffold {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(DeepBlue)
+                ) {
+                    SearchBar(
+                        query = text.value,
+                        onQueryChange = { text.value = it },
+                        onSearch = {
+                            items.add(text.value)
+                            // active.value = false
+                            text.value = ""
+                        },
+                        active = active.value,
+                        onActiveChange = { active.value = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        placeholder = {
+                            Text(
+                                text = "Search..",
+                                style = TextStyle(
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamilyClear.fontRegular,
+                                    color = Color.Gray
+                                )
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "search_icon"
+                            )
+                        },
+                        trailingIcon = {
+                            if (active.value)
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "close_icon",
+                                    modifier = Modifier.clickable {
+                                        if (text.value.isNotEmpty()) text.value = ""
+                                        else active.value = false
+                                    })
+                        }
+                    ) {
+
+                        items.forEach {
+                            Row(modifier = Modifier.padding(end = 14.dp)) {
+                                Icon(
+                                    imageVector = Icons.Default.History,
+                                    contentDescription = "history_icon"
+                                )
+                                Text(
+                                    text = it,
+                                    style = TextStyle(
+                                        fontSize = 18.sp,
+                                        fontFamily = FontFamilyClear.fontRegular,
+                                        color = Color.Gray
+                                    )
+                                )
+
+                            }
+                        }
 
                     }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(DeepBlue)
+                ) {
+                  
+                    //pass the ui here
                 }
-
             }
+            }
+
         }
 
 
 
-    }
-}
