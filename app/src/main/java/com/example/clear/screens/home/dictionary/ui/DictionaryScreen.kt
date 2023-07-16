@@ -34,7 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph
 import com.example.clear.data.DataOrException
+import com.example.clear.navigation.NavGraphs
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DeepBlue
@@ -44,7 +47,7 @@ import java.lang.Exception
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun DictionaryScreen(viewModel : DictionaryViewModel = hiltViewModel()) {
+fun DictionaryScreen(navController: NavController,viewModel : DictionaryViewModel = hiltViewModel()) {
 
 
     var text = remember {
@@ -109,7 +112,9 @@ fun DictionaryScreen(viewModel : DictionaryViewModel = hiltViewModel()) {
                     ) {
 
                         items.forEach {
-                            Row(modifier = Modifier.padding(end = 14.dp)) {
+                            Row(modifier = Modifier.padding(end = 14.dp).clickable {
+                                navController.navigate(NavGraphs.Dictionary)
+                            }) {
                                 Icon(
                                     imageVector = Icons.Default.History,
                                     contentDescription = "history_icon"

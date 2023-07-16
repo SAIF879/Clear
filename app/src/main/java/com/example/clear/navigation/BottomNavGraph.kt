@@ -18,8 +18,9 @@ fun BottomNavGraph(
 
         composable(route = BottomBarScreen.Notes.route){ NoteScreen( navController = navController)}
         composable(route = BottomBarScreen.Todos.route){ TodoScreen()}
-        composable(route = BottomBarScreen.Dictionary.route){ DictionaryScreen() }
+        composable(route = BottomBarScreen.Dictionary.route){ DictionaryScreen(navController = navController) }
         noteNavGraph(navController = navController)
+        dictionaryNavGraph(navController = navController)
 
     }
 

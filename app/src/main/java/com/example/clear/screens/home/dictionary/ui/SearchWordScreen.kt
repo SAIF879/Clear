@@ -1,6 +1,5 @@
 package com.example.clear.screens.home.dictionary.ui
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,13 +24,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @Preview
 @Composable
-fun SearchWordScreen(){
+fun SearchWordScreen(navController: NavController) {
 Box(modifier = Modifier
     .fillMaxSize()
     .background(DeepBlue)){
