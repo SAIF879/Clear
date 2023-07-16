@@ -4,15 +4,18 @@ import android.annotation.SuppressLint
 import android.widget.SearchView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
@@ -27,6 +30,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -41,6 +45,7 @@ import com.example.clear.navigation.NavGraphs
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DeepBlue
+import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.fonts.FontFamilyClear
 import java.lang.Exception
 
@@ -66,11 +71,12 @@ fun DictionaryScreen(navController: NavController,viewModel : DictionaryViewMode
     }
 
 
-            Scaffold {
+            Scaffold(modifier = Modifier) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(DeepBlue)
+                        .padding(10.dp)
                 ) {
                     SearchBar(
                         query = text.value,
@@ -79,6 +85,7 @@ fun DictionaryScreen(navController: NavController,viewModel : DictionaryViewMode
                             items.add(text.value)
                             // active.value = false
                             text.value = ""
+                            navController.navigate(NavGraphs.Dictionary)
                         },
                         active = active.value,
                         onActiveChange = { active.value = it },
@@ -112,9 +119,11 @@ fun DictionaryScreen(navController: NavController,viewModel : DictionaryViewMode
                     ) {
 
                         items.forEach {
-                            Row(modifier = Modifier.padding(end = 14.dp).clickable {
-                                navController.navigate(NavGraphs.Dictionary)
-                            }) {
+                            Row(modifier = Modifier
+                                .padding(end = 14.dp)
+                                .clickable {
+                                    navController.navigate(NavGraphs.Dictionary)
+                                }) {
                                 Icon(
                                     imageVector = Icons.Default.History,
                                     contentDescription = "history_icon"
@@ -132,13 +141,36 @@ fun DictionaryScreen(navController: NavController,viewModel : DictionaryViewMode
                         }
 
                     }
+                    Spacer(modifier = Modifier.size(20.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(DeepBlue)
                 ) {
                    LazyColumn(modifier = Modifier.fillMaxSize()){
-                     item {   showdata(viewModel = viewModel) }
+//                     item {   showdata(viewModel = viewModel) }
+                       item {
+                           Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                               Text(
+                                   text = "BookMarks",
+                                   style = TextStyle(
+                                       fontFamily = FontFamilyClear.fontMedium,
+                                       fontSize = 20.sp,
+                                       color = TextWhite
+                                   )
+                               )
+                               Spacer(modifier = Modifier.size(10.dp))
+                               Icon(
+                                   imageVector = Icons.Filled.Bookmark,
+                                   contentDescription = "bookmark_icon",
+                                   tint = Color.White
+                               )
+                           }
+
+                       }
+
+
+
                    }
                 }
             }
