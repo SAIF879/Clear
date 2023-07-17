@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.widget.SearchView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
@@ -30,7 +28,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -82,10 +79,14 @@ fun DictionaryScreen(navController: NavController,viewModel : DictionaryViewMode
                         query = text.value,
                         onQueryChange = { text.value = it },
                         onSearch = {
-                            items.add(text.value)
-                            // active.value = false
-                            text.value = ""
-                            navController.navigate(NavGraphs.Dictionary)
+                            if (text.value.trim().isNotEmpty()) {
+                                items.add(text.value)
+                                // active.value = false
+                                text.value = ""
+                                viewModel.setSearchWord(text.value.trim())
+                                navController.navigate(NavGraphs.Dictionary)
+                            }
+                            else return@SearchBar
                         },
                         active = active.value,
                         onActiveChange = { active.value = it },
@@ -150,26 +151,20 @@ fun DictionaryScreen(navController: NavController,viewModel : DictionaryViewMode
                    LazyColumn(modifier = Modifier.fillMaxSize()){
 //                     item {   showdata(viewModel = viewModel) }
                        item {
-                           Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                               Text(
-                                   text = "BookMarks",
-                                   style = TextStyle(
-                                       fontFamily = FontFamilyClear.fontMedium,
-                                       fontSize = 20.sp,
-                                       color = TextWhite
-                                   )
-                               )
-                               Spacer(modifier = Modifier.size(10.dp))
-                               Icon(
-                                   imageVector = Icons.Filled.Bookmark,
-                                   contentDescription = "bookmark_icon",
-                                   tint = Color.White
-                               )
-                           }
-
+                         Row(modifier = Modifier.fillMaxWidth()) {
+                             Text(
+                                 text = "BookMark",
+                                 style = TextStyle(
+                                     fontFamily = FontFamilyClear.fontMedium,
+                                     fontSize = 20.sp,
+                                     color = TextWhite
+                                 )
+                             )
+                         //    Icon(imageVector = Icons.Filled.BookMa, contentDescription = )
+                         }
                        }
 
-
+                   //bookmarks
 
                    }
                 }
@@ -177,19 +172,8 @@ fun DictionaryScreen(navController: NavController,viewModel : DictionaryViewMode
             }
         }
 
-@Composable
-fun showdata(viewModel: DictionaryViewModel) {
-    val data = produceState<DataOrException<List<WordInfoDto>, Boolean, Exception>>(
-        initialValue = DataOrException(loading = true),
-    ){
-        value = viewModel.getWordDetails("Death")
-    }.value
 
-    if (data.loading==true) CircularProgressIndicator()
-    else if (data.data!==null){
-        Text(text = "${data.data.toString()}" , color = Color.White)
-    }
-}
+
 
 
 
