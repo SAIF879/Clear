@@ -50,10 +50,16 @@ import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
 @Composable
-fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel()) {
+fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
+
+
 
     val completedTask =SwipeAction(
-        onSwipe = {},
+        onSwipe = {
+            task.isCompleted
+                  viewModel.addCompletedTodo(Todo(content = task.content))
+            viewModel.removeTodo(task)
+        },
         icon = {
             Icon(
                 imageVector = Icons.Filled.Done,

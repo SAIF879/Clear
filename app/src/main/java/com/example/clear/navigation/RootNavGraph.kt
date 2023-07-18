@@ -26,6 +26,7 @@ object NavGraphs{
     const val Authentication = "authentication"
     const val Bottom = "bottom"
     const val Note = "note"
+    const val Todo = "todo"
     const val Dictionary = "dictionary_screen"
     const val Splash = "splash"
 }

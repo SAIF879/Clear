@@ -1,19 +1,18 @@
 package com.example.clear.screens.home.dictionary.ui
 
-import android.provider.Telephony.Mms.Part
-import android.widget.Toast
+
+
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.VolumeUp
@@ -22,15 +21,11 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,7 +47,9 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
         value = viewModel.getWordDetails("bank")
     }.value
 
-    if (weatherData.loading==true) Box(modifier = Modifier.fillMaxSize().background(DeepBlue)) {
+    if (weatherData.loading==true) Box(modifier = Modifier
+        .fillMaxSize()
+        .background(DeepBlue)) {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center) , color = Color.White)
     }
     else if (weatherData.data!==null){
@@ -73,9 +70,12 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
 
 @Composable
 fun SearchWordHeader(){
-Row(modifier = Modifier.fillMaxWidth() , verticalAlignment = Alignment.CenterVertically) {
-    Icon(imageVector = Icons.Filled.ArrowBackIos, contentDescription = "back_arrow", tint = Color.White , modifier = Modifier.size(30.dp))
-    Text(text = "Search" , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontMedium , color = TextWhite))
+Row(modifier = Modifier.fillMaxWidth() , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween) {
+ Row(verticalAlignment = Alignment.CenterVertically) {
+     Icon(imageVector = Icons.Filled.ArrowBackIos, contentDescription = "back_arrow", tint = Color.White , modifier = Modifier.size(30.dp))
+     Text(text = "Search" , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontMedium , color = TextWhite))
+ }
+    
 }
 }
 
@@ -101,12 +101,12 @@ fun PartOfSpeech(word : String?){
 
 @Composable
 fun Word(wordInfoDto: List<WordInfoDto>?){
-    Column() {
-        wordInfoDto?.forEach{
+    Column {
+        wordInfoDto?.forEach{ wordData ->
             Spacer(modifier = Modifier.size(10.dp))
-            WordWithPronunciation(word = it.word?:"No Such Word Present")
-            Text(text = it.phonetic?:"no phonetic",  color = Color.White)
-           it.meanings.forEach{
+            WordWithPronunciation(word = wordData.word?:"No Such Word Present")
+            Text(text = wordData.phonetic?:"no phonetic",  color = Color.White)
+           wordData.meanings.forEach{
               PartOfSpeech(word = it.partOfSpeech?:"")
                it.definitions.forEachIndexed{i,d->
                    Text(text = "${i+1}.${d.definition?:"No defination"}",  color = Color.White)
@@ -120,16 +120,5 @@ fun Word(wordInfoDto: List<WordInfoDto>?){
 
     }
 }
-@Composable
-fun showdata(viewModel: DictionaryViewModel) {
-    val data = produceState<DataOrException<List<WordInfoDto>, Boolean, Exception>>(
-        initialValue = DataOrException(loading = true),
-    ){
-        value = viewModel.getWordDetails("Death")
-    }.value
 
-    if (data.loading==true) CircularProgressIndicator()
-    else if (data.data!==null){
-        Text(text = "${data.data.toString()}" , color = Color.White)
-    }
-}
+

@@ -7,7 +7,7 @@ import com.example.clear.room.dao.TodoDataBaseDao
 import com.example.clear.room.model.Note
 import com.example.clear.room.model.Todo
 
-@Database(entities = [Note::class , Todo::class] , version = 2 , exportSchema = false)
+@Database(entities = [Note::class , Todo::class] , version = 3 , exportSchema = false)
 abstract class ClearDataBase : RoomDatabase() {
     abstract fun noteDao() : NoteDataBaseDao
     abstract fun todoDao() : TodoDataBaseDao

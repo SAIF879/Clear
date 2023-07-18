@@ -30,8 +30,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraph
+import androidx.navigation.NavHostController
+import com.example.clear.navigation.NavGraphs
 import com.example.clear.room.model.Todo
-import com.example.clear.room.model.TodoData
 import com.example.clear.screens.home.todo.components.CreateTodo
 import com.example.clear.screens.home.todo.components.TodoCard
 import com.example.clear.screens.home.todo.util.TodoViewModel
@@ -43,7 +45,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel()){
+fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel(), navController: NavHostController){
     var content = remember{
         mutableStateOf("")
     }
@@ -53,7 +55,9 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel()){
         .fillMaxSize()
         .background(DeepBlue)){
         Column(modifier = Modifier.padding(10.dp)) {
-            TodoHeader {}
+            TodoHeader {
+            navController.navigate(NavGraphs.Todo)
+            }
             Spacer(modifier = Modifier.size(20.dp))
             CreateTodo(content = content) {
                 if (content.value.isNotEmpty()) {

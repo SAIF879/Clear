@@ -19,6 +19,10 @@ class TodoViewModel @Inject constructor(private val todoRepository: TodoReposito
     private val _todoList = MutableStateFlow<List<Todo>>(emptyList())
      val todoList = _todoList.asStateFlow()
 
+    private val _completedTodoList = MutableStateFlow<List<Todo>>(emptyList())
+    val completedTodoList = _completedTodoList.asStateFlow()
+
+
     init {
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -28,16 +32,34 @@ class TodoViewModel @Inject constructor(private val todoRepository: TodoReposito
                     else _todoList.value = listOfTodo
                 }
         }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            todoRepository.getCompletedTodo().distinctUntilChanged()
+                .collect{listOfCompletedTodo->
+                    if (listOfCompletedTodo.isNullOrEmpty()) Log.d("todoEmpty", "Empty todo list ")
+                    else _completedTodoList.value = listOfCompletedTodo
+                }
+        }
     }
 
+
+
+
     fun addTodo(todo: Todo) = viewModelScope.launch {
-        todoRepository.addTodo(todo  = todo)
+        val incompleteTodo = todo.copy(isCompleted = false)
+        todoRepository.addTodo(todo  = incompleteTodo)
+    }
+
+    fun addCompletedTodo(todo: Todo) = viewModelScope.launch {
+        val completedTodo = todo.copy(isCompleted = true )
+        todoRepository.addTodo(todo = completedTodo)
     }
 
     fun removeTodo(todo: Todo) = viewModelScope.launch {
         todoRepository.deleteTodo(todo = todo)
         _todoList.value = _todoList.value - todo
     }
+
 
 
 }

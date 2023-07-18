@@ -12,14 +12,20 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TodoDataBaseDao {
 
-    @Query("SELECT * from todo_table")
+    @Query("SELECT * from todo_table WHERE is_completed = 0")
     fun getTodo(): Flow<List<Todo>>
+
+    @Query("SELECT * from todo_table WHERE is_completed = 1 ")
+    fun getCompletedTodo() : Flow<List<Todo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTodo(todo: Todo)
 
-    @Query("DELETE from todo_table")
+    @Query("DELETE from todo_table WHERE is_completed = 0")
     suspend fun clearTodo()
+
+    @Query("DELETE from todo_table WHERE is_completed = 1")
+    suspend fun clearCompletedTodo()
 
     @Delete
     suspend fun deleteTodo(todo: Todo)

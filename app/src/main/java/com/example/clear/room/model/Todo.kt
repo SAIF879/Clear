@@ -11,7 +11,10 @@ data class Todo (
    @PrimaryKey  val id : UUID = UUID.randomUUID(),
 
    @ColumnInfo(name = "todo_content")
-    val content : String
+    val content : String,
+
+   @ColumnInfo(name = "is_completed")
+   val isCompleted : Boolean = false
 
         )
 
