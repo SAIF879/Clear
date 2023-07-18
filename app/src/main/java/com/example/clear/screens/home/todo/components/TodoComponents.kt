@@ -8,11 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Beenhere
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Update
@@ -41,6 +45,9 @@ import com.example.clear.room.model.Todo
 import com.example.clear.room.model.TodoData
 import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.Beige1
+import com.example.clear.ui.theme.LightGreen2
+import com.example.clear.ui.theme.LightGreen3
+import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedOrange
 import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.commonComponents.CircularButton
@@ -51,9 +58,6 @@ import me.saket.swipe.SwipeableActionsBox
 
 @Composable
 fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
-
-
-
     val completedTask =SwipeAction(
         onSwipe = {
             task.isCompleted
@@ -68,7 +72,7 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
                 modifier = Modifier.padding(16.dp)
             )
         },
-        background = Color.Green
+        background = LightGreen2
 
     )
     val deleteTask = SwipeAction(
@@ -79,11 +83,11 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
             tint = Color.White,
             modifier = Modifier.padding(16.dp)
         )},
-        background = Color.Red
+        background = LightRed
 
     )
 
-    SwipeableActionsBox(startActions = listOf(completedTask) , endActions = listOf(deleteTask)) {
+    SwipeableActionsBox(startActions = listOf(completedTask) , endActions = listOf(deleteTask) , swipeThreshold = 150.dp) {
         Card(
             shape = RectangleShape, modifier = Modifier
                 .fillMaxWidth()
@@ -91,12 +95,13 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(12.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                         .fillMaxWidth()
-                        .padding(5.dp)
+//                        .padding(5.dp)
                 ) {
                     Text(
                         text = task.content,
@@ -112,7 +117,7 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(5.dp)
+      //                  .padding(5.dp)
                 ) {
                     Text(
                         text = "22 december",
@@ -137,7 +142,7 @@ fun CreateTodo(content: MutableState<String> , onClick : ()-> Unit) {
                 .fillMaxWidth()
                 .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = RedOrange)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(5.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(10.dp)) {
                 val keyboardController = LocalSoftwareKeyboardController.current
                 TextField(
                     value = content.value,
@@ -172,4 +177,55 @@ fun CreateTodo(content: MutableState<String> , onClick : ()-> Unit) {
             }
         }
 
+}
+
+@Composable
+fun CompletedTaskCard(task: Todo) {
+    Card(
+        shape = RectangleShape, modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = RedOrange)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = task.content,
+                    style = TextStyle(
+                        fontSize = 18.sp, fontFamily = FontFamilyClear.fontRegular,
+                    ),
+                )
+                Icon(
+                    imageVector = Icons.Filled.CheckCircle,
+                    contentDescription = "completed_tasks",
+                    tint = LightGreen3,
+                modifier = Modifier.size(30.dp)
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            ) {
+
+                Text(
+                    text = "22 december",
+                    style = TextStyle(
+                        fontSize = 15.sp,
+                        fontFamily = FontFamilyClear.fontBlack,
+                        color = Color.Black
+
+                    )
+                )
+            }
+
+        }
+    }
 }

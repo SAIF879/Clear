@@ -42,9 +42,6 @@ class TodoViewModel @Inject constructor(private val todoRepository: TodoReposito
         }
     }
 
-
-
-
     fun addTodo(todo: Todo) = viewModelScope.launch {
         val incompleteTodo = todo.copy(isCompleted = false)
         todoRepository.addTodo(todo  = incompleteTodo)
@@ -59,6 +56,14 @@ class TodoViewModel @Inject constructor(private val todoRepository: TodoReposito
         todoRepository.deleteTodo(todo = todo)
         _todoList.value = _todoList.value - todo
     }
+
+    fun clearCompletedTodoList() = viewModelScope.launch {
+        todoRepository.clearCompletedTodo()
+        todoRepository.getCompletedTodo().distinctUntilChanged().collect(){
+            _completedTodoList.value = it
+        }
+    }
+
 
 
 

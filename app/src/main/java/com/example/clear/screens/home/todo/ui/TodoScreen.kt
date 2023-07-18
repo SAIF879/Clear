@@ -17,11 +17,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,6 +53,7 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel(), navController: Na
     }
     val context = LocalContext.current
     val list = todoViewModel.todoList.collectAsState().value
+
     Box(modifier = Modifier
         .fillMaxSize()
         .background(DeepBlue)){
@@ -58,7 +61,7 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel(), navController: Na
             TodoHeader {
             navController.navigate(NavGraphs.Todo)
             }
-            Spacer(modifier = Modifier.size(20.dp))
+            Spacer(modifier = Modifier.size(10.dp))
             CreateTodo(content = content) {
                 if (content.value.isNotEmpty()) {
                     todoViewModel.addTodo(Todo(content = content.value))
@@ -117,7 +120,3 @@ fun TodoHeader(onClick: () -> Unit) {
     }
 }
 
-@Composable
-fun CurrentTime(){
-
-}
