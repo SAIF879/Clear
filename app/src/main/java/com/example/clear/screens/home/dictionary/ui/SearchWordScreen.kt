@@ -21,6 +21,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clear.data.DataOrException
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
@@ -40,32 +40,42 @@ import java.lang.Exception
 
 // for now take up a random word and print its details then go for a word that is not in api and handle it
 @Composable
-fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewModel = hiltViewModel()) {
-    val weatherData = produceState<DataOrException<List<WordInfoDto> , Boolean , Exception>>(
+fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewModel) {
+
+    val searchWord = viewModel.searchWord.observeAsState().value
+
+    val WordData = produceState<DataOrException<List<WordInfoDto> , Boolean , Exception>>(
         initialValue = DataOrException(loading = true  )
     ){
-        value = viewModel.getWordDetails("bank")
+        value = viewModel.getWordDetails(searchWord.toString())
     }.value
 
-    if (weatherData.loading==true) Box(modifier = Modifier
+    if (WordData.loading==true) Box(modifier = Modifier
         .fillMaxSize()
         .background(DeepBlue)) {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center) , color = Color.White)
     }
-    else if (weatherData.data!==null){
+    else if (WordData.data!==null){
         Box(modifier = Modifier
             .fillMaxSize()
             .background(DeepBlue)){
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp)){
+                item { Text(text = searchWord ?: "no word like it" , color= Color.White) }
                 item { SearchWordHeader() }
                 item { Spacer(modifier = Modifier.size(10.dp)) }
-                item { Word(wordInfoDto =weatherData?.data ) }
+                item { Word(wordInfoDto =WordData?.data ) }
     }
     }
-
 }
+    else if (WordData.data==null){
+        Box(modifier = Modifier.fillMaxSize().background(DeepBlue)){
+            Column() {
+                Text(text = "NO SUCH WORD EXISTS IN THE DATABASE " , style = TextStyle(color= Color.White , fontFamily = FontFamilyClear.fontMedium , fontSize = 30.sp))
+            }
+        }
+    }
 }
 
 @Composable

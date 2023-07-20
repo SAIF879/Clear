@@ -16,7 +16,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Favorite
@@ -41,6 +44,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.clear.room.model.Note
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.LightRed
+import com.example.clear.ui.theme.RedOrange
+import com.example.clear.ui.theme.RedPink
+import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.fonts.FontFamilyClear
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.saket.swipe.SwipeAction
@@ -128,15 +134,78 @@ fun NoteCard(note : Note   , viewModel: NoteViewModel= hiltViewModel() ,onclick 
 
 }
 
+@Composable
+fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
+    val delete = SwipeAction(
+        onSwipe = {
+            viewModel.removeNote(note)
+        },
+        icon = {Icon(
+            imageVector = Icons.Filled.DeleteForever,
+            contentDescription = "icon",
+            tint = Color.White,
+            modifier = Modifier.padding(0.dp)
+        )},
+        background = RedPink
 
+    )
+    SwipeableActionsBox(endActions = listOf(delete) , swipeThreshold = 150.dp) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(RedOrange)
+                .height(200.dp)
+                .padding(10.dp)
+        ) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .background(RedOrange)) {
+                Column(modifier = Modifier
+                    .weight(2f)
+                    .background(RedOrange)) {
+                    Text(
+                        text = note.title,
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            fontFamily = FontFamilyClear.fontMedium,
+                            color = TextWhite
+                        )
+                    )
+                    ShowEllipseContent(content = note.content)
+                }
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f) , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween) {
+                    WordsCount(content = note.content)
+                    SwipeToDeleteSign()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun WordsCount(content: String){
+    val text = content.trim().split("\\s".toRegex())
+Text(text ="${text.size}"+ if (text.size==1) " Word" else " Words" , style = TextStyle(fontSize =18.sp , fontFamily = FontFamilyClear.fontMedium  , color = TextWhite) , maxLines = 1)
+}
+
+@Composable
+fun SwipeToDeleteSign(){
+Row() {
+    Icon(imageVector =Icons.Filled.Delete , contentDescription ="delete_icon" )
+    Icon(imageVector = Icons.Filled.ArrowBack, contentDescription ="back_arrow" )
+}
+}
 
 @Composable
 fun ShowWordsCount(content: String) {
     Box(modifier = Modifier
         .width(100.dp)
         .wrapContentHeight(), contentAlignment = Alignment.Center) {
+        val text = content.trim().split("\\s+".toRegex())
         Text(
-            text = "${content.trim().split("\\s+".toRegex()).size} Words",
+            text = "${text.size+1} " + if (text.size<=1) "Word" else "Words"  ,
             style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontMedium),
             maxLines = 1
         )
@@ -144,9 +213,9 @@ fun ShowWordsCount(content: String) {
 }
 
 @Composable
-fun ShowEllipseContent(content: String, maxWords: Int = 24, fontFamily: FontFamily = FontFamilyClear.fontRegular, fontSize : Int = 12) {
+fun ShowEllipseContent(content: String, maxWords: Int = 24, fontFamily: FontFamily = FontFamilyClear.fontRegular, fontSize : Int = 18) {
     Text(
-        text = if (content.trim().split("\\s+".toRegex()).size > maxWords) "${content.trim().split("\\s+".toRegex()).take(maxWords)}..." else content,
+        text = if (content.trim().split("\\s+".toRegex()).size > maxWords) "${content.trim().split("\\s+".toRegex()).take(maxWords)}........" else content,
         style = TextStyle(fontSize = fontSize.sp, fontFamily = fontFamily)
     )
 }

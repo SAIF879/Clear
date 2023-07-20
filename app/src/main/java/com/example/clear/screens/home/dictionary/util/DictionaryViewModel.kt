@@ -1,27 +1,58 @@
 package com.example.clear.screens.home.dictionary.util
 
-import android.provider.ContactsContract.Data
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.clear.data.DataOrException
+import com.example.clear.room.model.Dictionary
+import com.example.clear.room.model.Todo
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DictionaryViewModel @Inject constructor(private val repository: DictionaryRepository) : ViewModel() {
 
+    private val _savedWordList = MutableStateFlow<List<Dictionary>>(emptyList())
+    val savedWordList = _savedWordList.asStateFlow()
+
+    private val _searchedWordList = MutableStateFlow<List<Dictionary>>(emptyList())
+    val searchedList = _searchedWordList.asStateFlow()
+
     private val _searchWord  = MutableLiveData<String>()
     val searchWord : LiveData<String>
         get() =_searchWord
-    fun setSearchWord(word : String) {
+
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+                repository.getSavedWords().distinctUntilChanged()
+                    .collect{listOfSavedWords->
+                        if (listOfSavedWords.isNullOrEmpty()) Log.d("noSave", "Empty List ")
+                        else _savedWordList.value = listOfSavedWords
+                    }
+        }
+    }
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.getSearchedWords().distinctUntilChanged()
+                .collect{listOfSearchedWords->
+                    if (listOfSearchedWords.isNullOrEmpty()) Log.d("noSearched", "Empty List")
+                    else _searchedWordList.value = listOfSearchedWords
+                }
+        }
+    }
+
+    fun setSearchWord(word : String)  {
         _searchWord.value = word
     }
 
@@ -29,20 +60,33 @@ class DictionaryViewModel @Inject constructor(private val repository: Dictionary
         return repository.getWordDetails(word)
     }
 
-    //suspend fun getWeatherData(city: String, units: String) : DataOrException<Weather , Boolean , Exception>{
-    //     return repository.getWeather(city  , units = units)
-    // }
+
+    fun addSavedWord(word:Dictionary) = viewModelScope.launch {
+        val savedWord = word.copy(isSaved = true)
+        repository.addWord(word = savedWord)
+    }
+
+    fun addSearchedWord(word: Dictionary) = viewModelScope.launch {
+        val searchWord = word.copy(isSearched = true)
+        repository.addWord(word = searchWord)
+    }
+
+    fun clearSavedWord() = viewModelScope.launch {
+        repository.clearSavedWord()
+    }
+
+    fun clearSearchedWord() = viewModelScope.launch {
+        repository.clearSearchedWord()
+    }
+
+    fun deleteSavedWord(word: Dictionary)=viewModelScope.launch {
+        repository.deleteWord(word = word)
+    }
+
+    fun deleteSearchedWord(word:Dictionary)  = viewModelScope.launch {
+        repository.deleteWord(word = word)
+    }
 
 
 
 }
-
-//    private val _phoneNumber = MutableLiveData<String>()
-//    val phoneNumber: LiveData<String>
-//        get() = _phoneNumber
-//
-//    fun setphoneNumber(number: String) {
-//        _phoneNumber.value = number
-//
-//    }
-

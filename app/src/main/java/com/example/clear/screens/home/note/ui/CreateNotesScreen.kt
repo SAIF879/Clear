@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -43,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clear.room.model.Note
 import com.example.clear.screens.home.note.util.NoteViewModel
+import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedOrange
 import com.example.clear.utils.commonComponents.CircularButton
 import com.example.clear.utils.fonts.FontFamilyClear
@@ -60,25 +62,17 @@ fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewMod
     }
 
     val context = LocalContext.current
-    val scrollState = rememberScrollState()
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(RedOrange)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-                .verticalScroll(scrollState)
-        ) {
-//            Spacer(modifier = Modifier.weight(0.1f))
+        Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .padding(0.dp)
+                    .padding(15.dp)
                     .fillMaxWidth()
             ) {
                 ShowContentCount(content = inputNote.value)
@@ -99,32 +93,42 @@ fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewMod
                     }
                 }
             }
-            //title
-            CreateNoteContent(
-                content = inputTitle,
-                placeholder = "Title",
-                fontFamily = FontFamilyClear.fontMedium,
-                fontSize = 25,
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-            )
-            //content
-            CreateNoteContent(
-                content = inputNote,
-                placeholder = "Note",
-                fontFamily = FontFamilyClear.fontRegular,
-                fontSize = 18,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            )
+                    .fillMaxSize()
+            ) {
+//            Spacer(modifier = Modifier.weight(0.1f))
+                //title
+                item {
+                    CreateNoteContent(
+                        content = inputTitle,
+                        placeholder = "Title",
+                        fontFamily = FontFamilyClear.fontMedium,
+                        fontSize = 25,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                    )
+                }
+                //content
+                item {
+                    CreateNoteContent(
+                        content = inputNote,
+                        placeholder = "Note",
+                        fontFamily = FontFamilyClear.fontRegular,
+                        fontSize = 18,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    )
 
-            //create bottom bar of colors that change background color and depending on it changes create note color
-            //  ChooseColor()
+                    //create bottom bar of colors that change background color and depending on it changes create note color
+                    //  ChooseColor()
+                }
+            }
+
+
         }
-
-
     }
 
 }
@@ -165,7 +169,8 @@ fun CreateNoteContent(
             containerColor = RedOrange,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent
+            disabledIndicatorColor = Color.Transparent,
+            cursorColor = LightRed,
         )
 
     )
@@ -173,7 +178,7 @@ fun CreateNoteContent(
 @Composable
 fun ShowContentCount(content: String) {
         Text(
-            text = "${content.trim().split("\\s+".toRegex()).size} Words",
+            text =  if (content.isEmpty() )"0 Word" else {"${content.trim().split("\\s+".toRegex()).size} Words" },
             style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontMedium),
             maxLines = 1
         )

@@ -67,7 +67,7 @@ fun IntroButton(text: String, onClick: () -> Unit) {
 
 
 @Composable
-fun SwipeToContinueButton(text: String , icon: ImageVector , navController: NavController){
+fun SwipeToContinueButton(text: String , icon: ImageVector ,onSwipe : () -> Unit){
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(100.dp)
@@ -78,7 +78,7 @@ fun SwipeToContinueButton(text: String , icon: ImageVector , navController: NavC
             .fillMaxWidth()
             .padding(5.dp)) {
             val update = SwipeAction(
-                onSwipe = {navController.navigate(IntroScreens.IntroNotesScreen.route)},
+                onSwipe = {onSwipe.invoke()},
                 icon = {Icon(
                     imageVector = Icons.Filled.Update,
                     contentDescription = "icon",
@@ -106,84 +106,3 @@ fun SwipeToContinueButton(text: String , icon: ImageVector , navController: NavC
 
     }
 }
-
-//fun NoteCard(note : Note   , viewModel: NoteViewModel= hiltViewModel() ,onclick : () -> Unit = {}){
-//    val isFavourite = remember {
-//        mutableStateOf(false)
-//    }
-//
-//    val update = SwipeAction(
-//        onSwipe = {},
-//        icon = {Icon(
-//            imageVector = Icons.Filled.Update,
-//            contentDescription = "icon",
-//            tint = Color.White,
-//            modifier = Modifier.padding(16.dp)
-//        )},
-//        background = Color.Green
-//
-//    )
-//    val delete = SwipeAction(
-//        onSwipe = {
-//                viewModel.removeNote(note)
-//        },
-//        icon = {Icon(
-//            imageVector = Icons.Filled.Delete,
-//            contentDescription = "icon",
-//            tint = Color.White,
-//            modifier = Modifier.padding(16.dp)
-//        )},
-//        background = Color.Red
-//
-//    )
-//
-//    SwipeableActionsBox(startActions = listOf(update) , endActions = listOf(delete)) {
-//        Card(modifier = Modifier
-//            .clickable { onclick.invoke() }
-//            .height(200.dp)
-//            .fillMaxWidth()
-//            .padding(1.dp) , shape = RectangleShape) {
-//            Column(modifier = Modifier
-//                .padding(5.dp)
-//                .fillMaxSize() , verticalArrangement = Arrangement.SpaceBetween) {
-//                Column() {
-//                    Row(horizontalArrangement = Arrangement.Center , verticalAlignment = Alignment.CenterVertically , modifier = Modifier
-//                        .padding(5.dp)
-//                        .fillMaxWidth()) {
-//                        DecorationBar()
-//                    }
-//
-//                    Row(
-//                        verticalAlignment = Alignment.CenterVertically,
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(1.dp)
-//                    ) {
-//
-//                        ShowEllipseTitle(title = note.title)
-//
-//                        Icon(
-//                            imageVector = if (isFavourite.value) {
-//                                Icons.Filled.Favorite
-//                            } else {
-//                                Icons.Outlined.Favorite
-//                            }, contentDescription = "fav_note",
-//                            tint = if (isFavourite.value) LightRed else Color.Gray
-//                        )
-//
-//                    }
-//                    ShowEllipseContent(content = note.content)
-//                }
-//                Row(
-//                    horizontalArrangement = Arrangement.End,
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    modifier = Modifier.fillMaxWidth()
-//                ) { ShowWordsCount(content = note.content)}
-//            }
-//
-//        }
-//
-//    }
-//
-//}

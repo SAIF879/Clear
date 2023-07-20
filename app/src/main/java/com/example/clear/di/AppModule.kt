@@ -3,6 +3,7 @@ package com.example.clear.di
 import android.content.Context
 import androidx.room.Room
 import com.example.clear.networkServices.CommonApiServices
+import com.example.clear.room.dao.DictionaryDataBaseDao
 import com.example.clear.room.dao.NoteDataBaseDao
 import com.example.clear.room.dao.TodoDataBaseDao
 import com.example.clear.room.database.ClearDataBase
@@ -30,6 +31,10 @@ object AppModule {
     @Singleton
     @Provides
     fun providesTodoDao(todoDataBase : ClearDataBase) : TodoDataBaseDao = todoDataBase.todoDao()
+
+    @Singleton
+    @Provides
+    fun providesDictionaryDao(dictionaryDataBase:ClearDataBase) : DictionaryDataBaseDao = dictionaryDataBase.dictionaryDao()
 
     @Singleton
     @Provides

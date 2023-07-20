@@ -1,13 +1,11 @@
 package com.example.clear.screens.home.note.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,17 +14,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,9 +29,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clear.navigation.NavGraphs
 import com.example.clear.screens.home.note.components.NoteCard
+import com.example.clear.screens.home.note.components.NotesCard
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.DeepBlue
-import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.commonComponents.CircularButton
 import com.example.clear.utils.fonts.FontFamilyClear
@@ -71,7 +66,6 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = hi
                     navController.navigate(NavGraphs.Note)
                }
             }
-            //local heading
             Text(
                 text = "My\nNotes",
                 style = TextStyle(
@@ -94,9 +88,12 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = hi
                     )
                 }
                 items(noteList){
-                  NoteCard(note = it ){
+//                  NoteCard(note = it ){
+//
+//                  }
+                    NotesCard(note = it, viewModel =noteViewModel ) {
 
-                  }
+                    }
                     Spacer(modifier = Modifier.size(5.dp))
                 }
                 item{

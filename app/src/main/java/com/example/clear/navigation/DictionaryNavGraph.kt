@@ -5,10 +5,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.clear.screens.home.dictionary.ui.SearchWordScreen
+import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 
-fun NavGraphBuilder.dictionaryNavGraph(navController: NavController) {
+fun NavGraphBuilder.dictionaryNavGraph(navController: NavController, viewModel: DictionaryViewModel) {
     navigation(route=NavGraphs.Dictionary , startDestination = DictionaryScreens.SearchWordScreen.route){
-        composable(route = DictionaryScreens.SearchWordScreen.route){ SearchWordScreen(navController = navController)}
+        composable(route = DictionaryScreens.SearchWordScreen.route){ SearchWordScreen(navController = navController,viewModel=viewModel)}
     }
 }
 

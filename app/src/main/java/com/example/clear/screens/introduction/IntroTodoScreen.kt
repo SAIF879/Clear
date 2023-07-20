@@ -47,7 +47,9 @@ fun IntroTodoScreen(navController: NavController) {
                 Column(modifier = Modifier.fillMaxSize() , verticalArrangement = Arrangement.Center) {
                     HeadingIntro(heading = "Elevate\nproductivity.")
                     SubContentIntro(content = "Effortless task management with our Todo Solution. Expand vocabulary using the Dictionary feature.")
-                    SwipeToContinueButton(text = "Swipe to continue", icon = Icons.Filled.ArrowForwardIos  , navController = navController)
+                    SwipeToContinueButton(text = "Swipe to continue", icon = Icons.Filled.ArrowForwardIos ){
+                        navController.navigate(NavGraphs.Authentication)
+                    }
                 }
             }
         }
