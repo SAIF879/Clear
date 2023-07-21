@@ -41,7 +41,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = hiltViewModel()) {
+fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel ) {
 
     val noteList = noteViewModel.noteList.collectAsState().value
 
@@ -90,6 +90,7 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = hi
                 }
                 items(noteList){
                     NotesCard(note = it, viewModel =noteViewModel ) {
+                        noteViewModel.getNoteId(it.id)
                         navController.navigate(NoteScreens.EditNotesScreen.route)
                     }
                     Spacer(modifier = Modifier.size(5.dp))

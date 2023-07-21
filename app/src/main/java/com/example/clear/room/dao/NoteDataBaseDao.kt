@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.clear.room.model.Note
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 
 //dao access sqlite data
 @Dao
@@ -16,8 +17,9 @@ interface NoteDataBaseDao {
     @Query("SELECT * from note_tbl")
     fun getNotes(): Flow<List<Note>>
 
+
     @Query("SELECT * from note_tbl where id =:id")
-    suspend fun getNoteById(id: String): Note
+    suspend fun getNoteById(id: UUID?): Note?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(note: Note)
@@ -30,5 +32,7 @@ interface NoteDataBaseDao {
 
     @Delete
     suspend fun deleteNote(note: Note)
+
+
 
 }

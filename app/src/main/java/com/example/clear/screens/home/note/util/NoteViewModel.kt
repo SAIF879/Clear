@@ -2,6 +2,8 @@ package com.example.clear.screens.home.note.util
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.clear.room.model.Note
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel @Inject constructor(private val notesRepository: NoteRepository) : ViewModel(){
@@ -20,6 +23,15 @@ class NoteViewModel @Inject constructor(private val notesRepository: NoteReposit
     //private var noteList = mutableStateListOf<Note>()
     private val _noteList = MutableStateFlow<List<Note>>(emptyList())
     val noteList = _noteList.asStateFlow()
+
+    private val _noteId  = MutableLiveData<UUID>()
+    val noteId : LiveData<UUID>
+        get() =_noteId
+
+
+    fun getNoteId(id:UUID){
+        _noteId.value = id
+    }
 
 
     init {
@@ -53,6 +65,10 @@ class NoteViewModel @Inject constructor(private val notesRepository: NoteReposit
 
      fun clearAllNotes(note : Note) = viewModelScope.launch {
         notesRepository.clearAllNoteS()
+    }
+
+    suspend fun getNoteById(noteId : UUID?) : Note?{
+        return notesRepository.getNoteById(noteId = noteId)
     }
 
 }

@@ -50,7 +50,7 @@ import com.example.clear.ui.theme.RedOrange
 import com.example.clear.utils.commonComponents.CircularButton
 import com.example.clear.utils.fonts.FontFamilyClear
 @Composable
-fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewModel = hiltViewModel()  ) {
+fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewModel   ) {
 
     val inputTitle = remember {
         mutableStateOf("")

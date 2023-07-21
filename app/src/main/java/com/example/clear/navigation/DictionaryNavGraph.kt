@@ -9,7 +9,8 @@ import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 
 fun NavGraphBuilder.dictionaryNavGraph(navController: NavController, viewModel: DictionaryViewModel) {
     navigation(route=NavGraphs.Dictionary , startDestination = DictionaryScreens.SearchWordScreen.route){
-        composable(route = DictionaryScreens.SearchWordScreen.route){ SearchWordScreen(navController = navController,viewModel=viewModel)}
+        composable(route = DictionaryScreens.SearchWordScreen.route){ SearchWordScreen(navController = navController,viewModel=viewModel)
+        }
     }
 }
 

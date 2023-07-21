@@ -1,5 +1,6 @@
 package com.example.clear.screens.home.note.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,14 +14,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Upgrade
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -30,25 +36,55 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.clear.room.model.Note
 import com.example.clear.screens.home.note.components.ShowContentCount
+import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedOrange
 import com.example.clear.utils.commonComponents.CircularButton
+import com.example.clear.utils.constants.Constants
 import com.example.clear.utils.fonts.FontFamilyClear
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.UUID
 
 @Composable
-fun EditNotesScreen(navController: NavController) {
+fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel ) {
+
+    val note = remember {
+        mutableStateOf(Constants.noteDetailPlaceHolder)
+    }
+
+    val noteId = noteViewModel.noteId.observeAsState().value
 
     val editTitle = remember {
-        mutableStateOf("")
+        mutableStateOf(note.value.title)
     }
 
     val editContent = remember {
-        mutableStateOf("")
+        mutableStateOf(note.value.content)
     }
 
+
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+
+
+
+    LaunchedEffect(true){
+        scope.launch(Dispatchers.IO) {
+           val data = noteViewModel.getNoteById(noteId)
+            note.value = data ?: Constants.noteDetailPlaceHolder
+            editContent.value = note.value.content
+            editTitle.value = note.value.title
+
+        }
+    }
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -63,8 +99,15 @@ fun EditNotesScreen(navController: NavController) {
                     .fillMaxWidth()
             ) {
                 ShowContentCount(content = editContent.value)
-                CircularButton(icon = Icons.Filled.Add) {
-                    //ONCLICK PR DATA UPDATE KRNA HAI
+                CircularButton(icon = Icons.Filled.Upgrade) {
+                 if (editTitle.value.isNotEmpty() && editContent.value.isNotEmpty()){
+                     noteViewModel.updateNote(
+                         Note(title = editTitle.value , content = editContent.value , id = note.value.id)
+                     )
+                     Toast.makeText(context , "update" , Toast.LENGTH_SHORT).show()
+                     navController.popBackStack()
+                 }
+                    else Toast.makeText(context , "Empty feilds ", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -93,7 +136,8 @@ fun EditNotesScreen(navController: NavController) {
                         fontFamily = FontFamilyClear.fontRegular,
                         fontSize = 18,
                         modifier = Modifier
-                            .fillMaxWidth().weight(1f)
+                            .fillMaxWidth()
+                            .weight(1f)
                     )
 
                     //create bottom bar of colors that change background color and depending on it changes create note color
