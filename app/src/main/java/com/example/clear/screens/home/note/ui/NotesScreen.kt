@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clear.navigation.NavGraphs
+import com.example.clear.navigation.NoteScreens
 import com.example.clear.screens.home.note.components.NoteCard
 import com.example.clear.screens.home.note.components.NotesCard
 import com.example.clear.screens.home.note.util.NoteViewModel
@@ -88,11 +89,8 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel = hi
                     )
                 }
                 items(noteList){
-//                  NoteCard(note = it ){
-//
-//                  }
                     NotesCard(note = it, viewModel =noteViewModel ) {
-
+                        navController.navigate(NoteScreens.EditNotesScreen.route)
                     }
                     Spacer(modifier = Modifier.size(5.dp))
                 }

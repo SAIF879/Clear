@@ -38,16 +38,13 @@ class DictionaryRepository @Inject constructor(
 
     suspend fun clearSavedWord() = dictionaryDataBaseDao.clearSavedWords()
 
-    suspend fun deleteWord(word:Dictionary) = dictionaryDataBaseDao.deleteSavedWord(word = word)
+    suspend fun deleteWord(word:List<Dictionary>) = dictionaryDataBaseDao.deleteSavedWord(word = word)
 
 
     fun getSearchedWords() : Flow<List<Dictionary>> = dictionaryDataBaseDao.getSearchedWords().flowOn(Dispatchers.IO)
         .conflate()
 
     suspend fun clearSearchedWord() = dictionaryDataBaseDao.clearSearchedWords()
-
-
-
 
 
 

@@ -27,6 +27,6 @@ interface DictionaryDataBaseDao {
     suspend fun clearSearchedWords()
 
     @Delete
-    suspend fun deleteSavedWord(word: Dictionary)
+    suspend fun deleteSavedWord(word: List<Dictionary>)
 }
 

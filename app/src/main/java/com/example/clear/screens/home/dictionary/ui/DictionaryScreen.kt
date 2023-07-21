@@ -39,6 +39,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import com.example.clear.data.DataOrException
 import com.example.clear.navigation.NavGraphs
+import com.example.clear.room.model.Dictionary
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DeepBlue
@@ -173,7 +174,10 @@ fun DictionaryScreen(navController: NavController,viewModel : DictionaryViewMode
         }
 
 
+@Composable
+fun showSavedWords(word : Dictionary){
 
+}
 
 
 

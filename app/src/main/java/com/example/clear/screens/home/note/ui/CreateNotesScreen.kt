@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clear.room.model.Note
+import com.example.clear.screens.home.note.components.ShowContentCount
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedOrange
@@ -175,14 +176,7 @@ fun CreateNoteContent(
 
     )
 }
-@Composable
-fun ShowContentCount(content: String) {
-        Text(
-            text =  if (content.isEmpty() )"0 Word" else {"${content.trim().split("\\s+".toRegex()).size} Words" },
-            style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontMedium),
-            maxLines = 1
-        )
-}
+
 val colors = listOf(
     Color.Red,
     Color.Green,

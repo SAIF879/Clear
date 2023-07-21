@@ -2,7 +2,10 @@ package com.example.clear.screens.home.dictionary.ui
 
 
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,22 +18,29 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.clear.data.DataOrException
+import com.example.clear.room.model.Dictionary
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DeepBlue
@@ -44,18 +54,23 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
 
     val searchWord = viewModel.searchWord.observeAsState().value
 
-    val WordData = produceState<DataOrException<List<WordInfoDto> , Boolean , Exception>>(
+    val isSaved = remember{
+        mutableStateOf(false)
+    }
+    val context  = LocalContext.current
+
+    val wordData = produceState<DataOrException<List<WordInfoDto> , Boolean , Exception>>(
         initialValue = DataOrException(loading = true  )
     ){
         value = viewModel.getWordDetails(searchWord.toString())
     }.value
 
-    if (WordData.loading==true) Box(modifier = Modifier
+    if (wordData.loading==true) Box(modifier = Modifier
         .fillMaxSize()
         .background(DeepBlue)) {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center) , color = Color.White)
     }
-    else if (WordData.data!==null){
+    else if (wordData.data!==null){
         Box(modifier = Modifier
             .fillMaxSize()
             .background(DeepBlue)){
@@ -63,27 +78,50 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
                 .fillMaxSize()
                 .padding(10.dp)){
                 item { Text(text = searchWord ?: "no word like it" , color= Color.White) }
-                item { SearchWordHeader() }
+//                item { SearchWordHeader(isSaved = isSaved ,context  ) }
                 item { Spacer(modifier = Modifier.size(10.dp)) }
-                item { Word(wordInfoDto =WordData?.data ) }
+                item { Word(wordInfoDto =wordData?.data  , isSaved = isSaved , viewModel = viewModel) }
     }
     }
-}
-    else if (WordData.data==null){
-        Box(modifier = Modifier.fillMaxSize().background(DeepBlue)){
+} else if (wordData.data == null) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DeepBlue)
+        ) {
             Column() {
-                Text(text = "NO SUCH WORD EXISTS IN THE DATABASE " , style = TextStyle(color= Color.White , fontFamily = FontFamilyClear.fontMedium , fontSize = 30.sp))
+                Text(
+                    text = "NO SUCH WORD EXISTS IN THE DATABASE ",
+                    style = TextStyle(
+                        color = Color.White,
+                        fontFamily = FontFamilyClear.fontMedium,
+                        fontSize = 30.sp
+                    )
+                )
             }
         }
     }
 }
 
 @Composable
-fun SearchWordHeader(){
+fun SearchWordHeader(isSaved : MutableState<Boolean> ,context : Context , viewModel : DictionaryViewModel){
 Row(modifier = Modifier.fillMaxWidth() , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween) {
- Row(verticalAlignment = Alignment.CenterVertically) {
-     Icon(imageVector = Icons.Filled.ArrowBackIos, contentDescription = "back_arrow", tint = Color.White , modifier = Modifier.size(30.dp))
-     Text(text = "Search" , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontMedium , color = TextWhite))
+ Row(verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween , modifier = Modifier.fillMaxSize()) {
+Row(verticalAlignment = Alignment.CenterVertically) {
+    Icon(imageVector = Icons.Filled.ArrowBackIos, contentDescription = "back_arrow", tint = Color.White , modifier = Modifier.size(30.dp))
+    Text(text = "Search" , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontMedium , color = TextWhite))
+}
+     Row(verticalAlignment = Alignment.CenterVertically) {
+         Icon(
+             imageVector = if (!isSaved.value) Icons.Outlined.Remove else Icons.Filled.Bookmark,
+             contentDescription = "icon_dis", tint = Color.White,
+          modifier = Modifier
+              .size(40.dp)
+              .clickable {
+                  isSaved.value = !isSaved.value
+              }
+         )
+     }
  }
     
 }
@@ -110,11 +148,13 @@ fun PartOfSpeech(word : String?){
 
 
 @Composable
-fun Word(wordInfoDto: List<WordInfoDto>?){
+fun Word(wordInfoDto: List<WordInfoDto>?, isSaved : MutableState<Boolean> , viewModel: DictionaryViewModel){
     Column {
         wordInfoDto?.forEach{ wordData ->
             Spacer(modifier = Modifier.size(10.dp))
             WordWithPronunciation(word = wordData.word?:"No Such Word Present")
+            if (isSaved.value) viewModel.addSavedWord(Dictionary(WordName =  wordData.word?:"" , isSaved = true))
+//            else viewModel.deleteSavedWord(word = )
             Text(text = wordData.phonetic?:"no phonetic",  color = Color.White)
            wordData.meanings.forEach{
               PartOfSpeech(word = it.partOfSpeech?:"")

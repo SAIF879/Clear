@@ -155,7 +155,7 @@ fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
                 .fillMaxWidth()
                 .background(RedOrange)
                 .height(200.dp)
-                .padding(10.dp)
+                .padding(10.dp).clickable { onclick.invoke() }
         ) {
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -239,6 +239,15 @@ fun DecorationBar(){
             Color.Gray
         ))
     Spacer(modifier = Modifier.size(5.dp))
+}
+
+@Composable
+fun ShowContentCount(content: String) {
+    Text(
+        text =  if (content.isEmpty() )"0 Word" else {"${content.trim().split("\\s+".toRegex()).size} Words" },
+        style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontMedium),
+        maxLines = 1
+    )
 }
 
 
