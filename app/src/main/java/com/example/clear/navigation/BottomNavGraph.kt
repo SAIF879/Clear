@@ -22,7 +22,7 @@ fun BottomNavGraph(
     NavHost(navController = navController, startDestination = BottomBarScreen.Notes.route ){
         composable(route = BottomBarScreen.Notes.route){ NoteScreen( navController = navController , noteViewModel = noteViewModel)}
         composable(route = BottomBarScreen.Todos.route){ TodoScreen(navController = navController)}
-        composable(route = BottomBarScreen.Dictionary.route){ DictionaryScreen(navController = navController,viewModel=viewModel) }
+        composable(route = BottomBarScreen.Dictionary.route){ DictionaryScreen(navController = navController,dictionaryViewModel=viewModel) }
         noteNavGraph(navController = navController , viewModel = noteViewModel)
         dictionaryNavGraph(navController = navController,viewModel=viewModel)
         todoNavGraph(navController = navController)

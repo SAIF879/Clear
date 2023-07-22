@@ -34,7 +34,10 @@ class DictionaryRepository @Inject constructor(
     fun getSavedWords() : Flow<List<Dictionary>> = dictionaryDataBaseDao.getSavedWords().flowOn(Dispatchers.IO)
         .conflate()
 
-    suspend fun addWord(word: Dictionary) = dictionaryDataBaseDao.insertSavedWord(word = word)
+    suspend fun addSavedWord(word: Dictionary) = dictionaryDataBaseDao.insertWord(word = word)
+
+    suspend fun addSearchedWord(word : Dictionary) = dictionaryDataBaseDao.insertWord(word = word)
+
 
     suspend fun clearSavedWord() = dictionaryDataBaseDao.clearSavedWords()
 

@@ -11,11 +11,10 @@ data class Dictionary (
     @PrimaryKey
     val id : UUID = UUID.randomUUID(),
     @ColumnInfo(name = "word_name")
-    val WordName : String,
+    val wordName : String,
     @ColumnInfo(name = "is_saved")
     val isSaved : Boolean = false,
     @ColumnInfo(name = "is_searched")
     val isSearched : Boolean = false
-
 
         )

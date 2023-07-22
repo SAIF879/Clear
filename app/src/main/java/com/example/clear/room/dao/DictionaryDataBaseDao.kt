@@ -18,7 +18,10 @@ interface DictionaryDataBaseDao {
     fun getSearchedWords() : Flow<List<Dictionary>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSavedWord(word : Dictionary)
+    suspend fun insertWord(word : Dictionary)
+
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insertSearchedWord(word : String)
 
     @Query("DELETE from dictionary_table WHERE is_saved = 1")
     suspend fun clearSavedWords()

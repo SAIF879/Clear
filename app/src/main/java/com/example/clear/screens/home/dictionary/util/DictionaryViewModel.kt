@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.clear.data.DataOrException
 import com.example.clear.room.model.Dictionary
-import com.example.clear.room.model.Todo
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -63,12 +62,11 @@ class DictionaryViewModel @Inject constructor(private val repository: Dictionary
 
     fun addSavedWord(word:Dictionary) = viewModelScope.launch {
         val savedWord = word.copy(isSaved = true)
-        repository.addWord(word = savedWord)
+        repository.addSavedWord(word = savedWord)
     }
 
     fun addSearchedWord(word: Dictionary) = viewModelScope.launch {
-        val searchWord = word.copy(isSearched = true)
-        repository.addWord(word = searchWord)
+        repository.addSearchedWord(word = word)
     }
 
     fun clearSavedWord() = viewModelScope.launch {
@@ -77,7 +75,12 @@ class DictionaryViewModel @Inject constructor(private val repository: Dictionary
 
     fun clearSearchedWord() = viewModelScope.launch {
         repository.clearSearchedWord()
+        repository.getSearchedWords().distinctUntilChanged().collect{
+            _searchedWordList.value = it
+        }
     }
+
+
 
     fun deleteSavedWord(word: List<Dictionary>)=viewModelScope.launch {
         repository.deleteWord(word = word)

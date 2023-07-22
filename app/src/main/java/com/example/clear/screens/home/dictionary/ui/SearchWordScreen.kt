@@ -3,7 +3,6 @@ package com.example.clear.screens.home.dictionary.ui
 
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -153,7 +152,7 @@ fun Word(wordInfoDto: List<WordInfoDto>?, isSaved : MutableState<Boolean> , view
         wordInfoDto?.forEach{ wordData ->
             Spacer(modifier = Modifier.size(10.dp))
             WordWithPronunciation(word = wordData.word?:"No Such Word Present")
-            if (isSaved.value) viewModel.addSavedWord(Dictionary(WordName =  wordData.word?:"" , isSaved = true))
+            if (isSaved.value) viewModel.addSavedWord(Dictionary(wordName =  wordData.word?:"" , isSaved = true))
 //            else viewModel.deleteSavedWord(word = )
             Text(text = wordData.phonetic?:"no phonetic",  color = Color.White)
            wordData.meanings.forEach{

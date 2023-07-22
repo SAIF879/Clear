@@ -45,6 +45,7 @@ import com.example.clear.ui.theme.OrangeYellow3
 import com.example.clear.ui.theme.RedOrange
 import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.commonComponents.CircularButton
+import com.example.clear.utils.commonComponents.ShowAlertDialogBox
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @Composable
@@ -63,7 +64,14 @@ Box(modifier = Modifier
             showDialogBox.value = true
             Log.d("DONE", "CompletedTodoScreen: $showDialogBox")
         }
-        ShowAlertDialogBox(showDialogBox =showDialogBox ) {
+
+        ShowAlertDialogBox(
+            showDialogBox = showDialogBox,
+            "Delete All Completed Tasks",
+            "Are you sure you want to delete all completed Tasks?",
+            "Delete",
+            "Cancel"
+        ) {
             todoViewModel.clearCompletedTodoList()
             showDialogBox.value = false
         }
@@ -84,34 +92,6 @@ Box(modifier = Modifier
         }
     }
 }
-}
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ShowAlertDialogBox(showDialogBox: MutableState<Boolean> , onClick: () -> Unit) {
-   if (showDialogBox.value) {
-       AlertDialog(
-           onDismissRequest = {showDialogBox.value = false },
-           title = { Text(text="Delete All Completed Tasks" , style = TextStyle(fontFamily = FontFamilyClear.fontSemiBold , fontSize = 18.sp))  },
-           text = { Text("Are you sure you want to delete all completed Tasks?", style = TextStyle(fontFamily = FontFamilyClear.fontRegular , fontSize = 15.sp)) },
-           confirmButton = {
-               Button(colors = ButtonDefaults.buttonColors(containerColor = LightRed),
-                   onClick = {
-                       onClick.invoke()
-                   }
-               ) {
-                   Text("Delete", style = TextStyle(fontFamily = FontFamilyClear.fontMedium , fontSize = 15.sp))
-               }
-           },
-           dismissButton = {
-               Button(
-                   colors = ButtonDefaults.buttonColors(containerColor = OrangeYellow3),
-                   onClick = { showDialogBox.value=false}
-               ) {
-                   Text("Cancel",  style = TextStyle(fontFamily = FontFamilyClear.fontRegular , fontSize = 15.sp))
-               }
-           }
-       )
-   }
 }
 
 
