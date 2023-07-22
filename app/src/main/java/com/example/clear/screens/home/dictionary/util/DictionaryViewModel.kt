@@ -71,6 +71,9 @@ class DictionaryViewModel @Inject constructor(private val repository: Dictionary
 
     fun clearSavedWord() = viewModelScope.launch {
         repository.clearSavedWord()
+        repository.getSavedWords().distinctUntilChanged().collect{
+            _savedWordList.value = it
+        }
     }
 
     fun clearSearchedWord() = viewModelScope.launch {

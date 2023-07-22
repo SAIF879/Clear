@@ -77,7 +77,7 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
                 .fillMaxSize()
                 .padding(10.dp)){
                 item { Text(text = searchWord ?: "no word like it" , color= Color.White) }
-//                item { SearchWordHeader(isSaved = isSaved ,context  ) }
+                item { SearchWordHeader(isSaved = isSaved  ) }
                 item { Spacer(modifier = Modifier.size(10.dp)) }
                 item { Word(wordInfoDto =wordData?.data  , isSaved = isSaved , viewModel = viewModel) }
     }
@@ -103,7 +103,7 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
 }
 
 @Composable
-fun SearchWordHeader(isSaved : MutableState<Boolean> ,context : Context , viewModel : DictionaryViewModel){
+fun SearchWordHeader(isSaved : MutableState<Boolean>){
 Row(modifier = Modifier.fillMaxWidth() , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween) {
  Row(verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween , modifier = Modifier.fillMaxSize()) {
 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -153,7 +153,6 @@ fun Word(wordInfoDto: List<WordInfoDto>?, isSaved : MutableState<Boolean> , view
             Spacer(modifier = Modifier.size(10.dp))
             WordWithPronunciation(word = wordData.word?:"No Such Word Present")
             if (isSaved.value) viewModel.addSavedWord(Dictionary(wordName =  wordData.word?:"" , isSaved = true))
-//            else viewModel.deleteSavedWord(word = )
             Text(text = wordData.phonetic?:"no phonetic",  color = Color.White)
            wordData.meanings.forEach{
               PartOfSpeech(word = it.partOfSpeech?:"")

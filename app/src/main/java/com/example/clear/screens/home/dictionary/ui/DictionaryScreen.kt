@@ -14,10 +14,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -40,6 +44,7 @@ import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DarkGray
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.TextWhite
+import com.example.clear.utils.commonComponents.CircularButton
 import com.example.clear.utils.commonComponents.ShowAlertDialogBox
 import com.example.clear.utils.fonts.FontFamilyClear
 
@@ -58,10 +63,18 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
         mutableStateOf(false)
     }
 
-    val showDialogBox = remember{ mutableStateOf(false)}
+    val showDeleteAlertBox = remember{
+        mutableStateOf(false)
+    }
+
+    val showDialogBox = remember{
+        mutableStateOf(false)
+    }
+
 
 
     val searchedWordList = dictionaryViewModel.searchedList.collectAsState().value
+    val savedWordList = dictionaryViewModel.savedWordList.collectAsState().value
 
 
 
@@ -164,22 +177,27 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                     .background(DeepBlue)
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-//                     item {   showdata(viewModel = viewModel) }
                     item {
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            Text(
-                                text = "BookMark",
-                                style = TextStyle(
-                                    fontFamily = FontFamilyClear.fontMedium,
-                                    fontSize = 20.sp,
-                                    color = TextWhite
-                                )
-                            )
-                            //    Icon(imageVector = Icons.Filled.BookMa, contentDescription = )
+                    DictionaryHeader(savedWordList){
+                        showDeleteAlertBox.value = true
+                    }
+                        ShowAlertDialogBox(
+                            showDialogBox = showDeleteAlertBox,
+                            title = "Delete All Saved Words?" ,
+                            content = "Are you sure you want to Delete all saved words ?",
+                            confirmText = "Delete",
+                            cancelString = "Cancel"
+                        ) {
+                            dictionaryViewModel.clearSavedWord()
+                            showDeleteAlertBox.value = false
+
                         }
                     }
-
-                    //bookmarks
+                    item { Divider() }
+                    item { Spacer(modifier = Modifier.size(10.dp)) }
+                    items(savedWordList){
+                        SavedWordCard(word = it)
+                    }
 
                 }
             }
@@ -188,10 +206,7 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
 }
 
 
-@Composable
-fun showSavedWords(word: Dictionary) {
 
-}
 
 @Composable
 fun SearchedWordCard(searchedWord: Dictionary) {
@@ -229,6 +244,32 @@ fun RemoveSearchHistory(text: String, onclick: () -> Unit) {
 
 fun isWordInList(wordList: List<Dictionary>, word: Dictionary): Boolean {
     return wordList.any { it.wordName == word.wordName }
+}
+
+@Composable
+fun SavedWordCard(word: Dictionary){
+    Row(verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween , modifier = Modifier
+        .fillMaxWidth()
+        .padding(5.dp)) {
+        Text(text = word.wordName  , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontRegular , color = TextWhite))
+        Icon(imageVector = Icons.Default.Bookmark, contentDescription ="bookmark_icon" , tint = Color.White )
+    }
+}
+
+@Composable
+fun DictionaryHeader(savedWordList: List<Dictionary>, onclick: () -> Unit){
+    Row(modifier = Modifier.fillMaxWidth() , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(
+            text = "Saved\nWords(${savedWordList.size})",
+            style = TextStyle(
+                fontFamily = FontFamilyClear.fontMedium,
+                fontSize = 30.sp,
+                color = TextWhite
+            )
+        )
+        Spacer(modifier = Modifier.size(10.dp))
+        CircularButton(icon = Icons.Default.Delete){onclick.invoke()}
+    }
 }
 
 
