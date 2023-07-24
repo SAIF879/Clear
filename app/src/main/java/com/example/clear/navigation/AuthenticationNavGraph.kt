@@ -9,7 +9,7 @@ import com.example.clear.screens.authentication.ui.LoginScreen
 
 
 fun NavGraphBuilder.authenticationNavGraph(navController: NavController){
-    navigation(route = NavGraphs.Authentication , startDestination =  AuthenticationScreens.LoginScreen.route){
+    navigation(route = NavGraphs.Authentication , startDestination =  AuthenticationScreens.EnterDetailsScreen.route){
         composable(route = AuthenticationScreens.LoginScreen.route){
             LoginScreen(navController = navController)
         }

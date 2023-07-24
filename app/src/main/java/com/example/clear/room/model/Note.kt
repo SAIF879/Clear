@@ -1,8 +1,14 @@
 package com.example.clear.room.model
 
+import androidx.compose.ui.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.clear.ui.theme.BabyBlue
+import com.example.clear.ui.theme.LightGreen
+import com.example.clear.ui.theme.RedOrange
+import com.example.clear.ui.theme.RedPink
+import com.example.clear.ui.theme.Violet
 import java.util.UUID
 
 
@@ -13,20 +19,17 @@ data class Note(
 
     @ColumnInfo(name="note_title")
     val title : String ,
+
     @ColumnInfo(name = "note_content")
     val content : String ,
 
-//    @ColumnInfo(name = "note_time_stamp")
-//    val timeStamp : Long, // tells when we created that note  --> may change  to  Date if needed
+    @ColumnInfo(name = "note_color")
+    val color : Int  ,
 
-//    @ColumnInfo(name = "note_color")
-//    val color : Int ,
 
-//    @ColumnInfo(name = "note_favourite")
-//    val isFavourite : Boolean
 
 ){
     companion object{
-  //     val noteColors = listOf(RedOrange , LightGreen , Violet , BabyBlue , RedPink)
+       val noteColors = listOf(RedOrange , LightGreen , Violet , BabyBlue , RedPink)
     }
 }

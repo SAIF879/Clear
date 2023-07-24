@@ -42,8 +42,10 @@ import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.fonts.FontFamilyClear
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
 import java.util.Locale
 
 @Composable
@@ -53,7 +55,7 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel(), navController: Na
     }
     val context = LocalContext.current
     val list = todoViewModel.todoList.collectAsState().value
-
+    val timestamp = System.currentTimeMillis()
     Box(modifier = Modifier
         .fillMaxSize()
         .background(DeepBlue)){
@@ -64,8 +66,10 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel(), navController: Na
             Spacer(modifier = Modifier.size(10.dp))
             CreateTodo(content = content) {
                 if (content.value.isNotEmpty()) {
-                    todoViewModel.addTodo(Todo(content = content.value))
+
+                    todoViewModel.addTodo(Todo(content = content.value , timeStamp = timestamp))
                     content.value = ""
+
                 }
                 else {
                       Toast.makeText(context, "empty " , Toast.LENGTH_SHORT).show()
@@ -119,4 +123,5 @@ fun TodoHeader(onClick: () -> Unit) {
         )
     }
 }
+
 

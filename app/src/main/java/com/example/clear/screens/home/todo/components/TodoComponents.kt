@@ -55,6 +55,9 @@ import com.example.clear.utils.fonts.FontFamilyClear
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
@@ -120,7 +123,7 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
       //                  .padding(5.dp)
                 ) {
                     Text(
-                        text = "22 december",
+                        text = formatDate(task.timeStamp),
                         style = TextStyle(
                             fontSize = 15.sp,
                             fontFamily = FontFamilyClear.fontBlack,
@@ -132,6 +135,12 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
         }
     }
 }
+
+fun formatDate(timestamp: Long): String {
+    val sdf = SimpleDateFormat("dd MMMM", Locale.getDefault())
+    return sdf.format(Date(timestamp))
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable

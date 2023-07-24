@@ -14,7 +14,10 @@ data class Todo (
     val content : String,
 
    @ColumnInfo(name = "is_completed")
-   val isCompleted : Boolean = false
+   val isCompleted : Boolean = false,
 
-        )
+   @ColumnInfo(name = "time_stamp")
+   val timeStamp : Long = System.currentTimeMillis()
+
+)
 

@@ -48,7 +48,7 @@ class TodoViewModel @Inject constructor(private val todoRepository: TodoReposito
     }
 
     fun addCompletedTodo(todo: Todo) = viewModelScope.launch {
-        val completedTodo = todo.copy(isCompleted = true )
+        val completedTodo = todo.copy(isCompleted = true)
         todoRepository.addTodo(todo = completedTodo)
     }
 

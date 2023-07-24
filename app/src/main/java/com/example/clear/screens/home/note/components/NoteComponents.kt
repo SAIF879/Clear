@@ -1,12 +1,14 @@
 package com.example.clear.screens.home.note.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -119,7 +124,8 @@ fun NoteCard(note : Note   , viewModel: NoteViewModel= hiltViewModel() ,onclick 
                         )
 
                     }
-                    ShowEllipseContent(content = note.content)
+//                    ShowEllipseContent(content = note.content)
+                    EllipsizeText(text = note.content)
                 }
                 Row(
                     horizontalArrangement = Arrangement.End,
@@ -153,16 +159,17 @@ fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(RedOrange)
+                .background(Color(note.color))
                 .height(200.dp)
-                .padding(10.dp).clickable { onclick.invoke() }
+                .padding(10.dp)
+                .clickable { onclick.invoke() }
         ) {
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .background(RedOrange)) {
+                .background(Color(note.color))) {
                 Column(modifier = Modifier
                     .weight(2f)
-                    .background(RedOrange)) {
+                    .background(Color(note.color))) {
                     Text(
                         text = note.title,
                         style = TextStyle(
@@ -171,7 +178,8 @@ fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
                             color = TextWhite
                         )
                     )
-                    ShowEllipseContent(content = note.content)
+//                    ShowEllipseContent(content = note.content)
+                    EllipsizeText(text = note.content)
                 }
                 Row(modifier = Modifier
                     .fillMaxWidth()
@@ -212,12 +220,25 @@ fun ShowWordsCount(content: String) {
     }
 }
 
+//@Composable
+//fun ShowEllipseContent(content: String, maxWords: Int = 24, fontFamily: FontFamily = FontFamilyClear.fontRegular, fontSize : Int = 18) {
+//    Text(
+//        text = if (content.trim().split("\\s+".toRegex()).size > maxWords) "${content.trim().split("\\s+".toRegex()).take(maxWords)}........" else content,
+//        style = TextStyle(fontSize = fontSize.sp, fontFamily = fontFamily)
+//    )
+//}
+
 @Composable
-fun ShowEllipseContent(content: String, maxWords: Int = 24, fontFamily: FontFamily = FontFamilyClear.fontRegular, fontSize : Int = 18) {
-    Text(
-        text = if (content.trim().split("\\s+".toRegex()).size > maxWords) "${content.trim().split("\\s+".toRegex()).take(maxWords)}........" else content,
-        style = TextStyle(fontSize = fontSize.sp, fontFamily = fontFamily)
-    )
+fun EllipsizeText(text: String, maxLength: Int = 120) {
+    val ellipsizedText = remember(text) {
+        if (text.length > maxLength) {
+            text.substring(0, maxLength - 3) + "..."
+        } else {
+            text
+        }
+    }
+
+    Text(text = ellipsizedText , style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontRegular))
 }
 
 @Composable
@@ -248,6 +269,35 @@ fun ShowContentCount(content: String) {
         style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontMedium),
         maxLines = 1
     )
+}
+@Composable
+fun ColorCircle(color : Color , onClick : () -> Unit){
+    Box(modifier = Modifier
+        .size(50.dp)
+        .border(2.dp, Color.Black, CircleShape)
+        .background(color = color, shape = CircleShape)
+        .aspectRatio(1f)
+        .clickable {
+            onClick.invoke()
+        }
+    )
+}
+
+@Composable
+fun ChosenColor(modifier: Modifier, onSelectColor: (Color) -> Unit) {
+    LazyRow(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        items(Note.noteColors){
+            ColorCircle(color = it) {
+                onSelectColor.invoke(it)
+            }
+        }
+    }
 }
 
 

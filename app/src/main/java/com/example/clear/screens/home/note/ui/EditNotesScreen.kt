@@ -1,6 +1,8 @@
 package com.example.clear.screens.home.note.ui
 
 import android.widget.Toast
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,9 +15,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Upgrade
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,14 +32,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clear.room.model.Note
+import com.example.clear.screens.home.note.components.ChosenColor
 import com.example.clear.screens.home.note.components.ShowContentCount
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.LightRed
@@ -48,7 +50,6 @@ import com.example.clear.utils.constants.Constants
 import com.example.clear.utils.fonts.FontFamilyClear
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 @Composable
 fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel ) {
@@ -67,9 +68,19 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
         mutableStateOf(note.value.content)
     }
 
+    val chosenColor = remember { mutableStateOf(Note.noteColors[0]) }
+
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    val noteColor = Note.noteColors[0]
+
+    val noteBackGroundAnimatable = remember{
+        Animatable(noteColor)
+    }
+    // Use a MutableState to hold the selected color
+    val selectedColor = remember { mutableStateOf(noteColor) }
 
 
 
@@ -88,7 +99,7 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(RedOrange)
+            .background(noteBackGroundAnimatable.value)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -96,13 +107,13 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .padding(15.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth().weight(1f)
             ) {
                 ShowContentCount(content = editContent.value)
                 CircularButton(icon = Icons.Filled.Upgrade) {
                  if (editTitle.value.isNotEmpty() && editContent.value.isNotEmpty()){
                      noteViewModel.updateNote(
-                         Note(title = editTitle.value , content = editContent.value , id = note.value.id)
+                         Note(title = editTitle.value , content = editContent.value , id = note.value.id , color = noteBackGroundAnimatable.value.toArgb())
                      )
                      Toast.makeText(context , "update" , Toast.LENGTH_SHORT).show()
                      navController.popBackStack()
@@ -113,7 +124,7 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
 
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .weight(8f)
             ) {
 //            Spacer(modifier = Modifier.weight(0.1f))
                 //title
@@ -125,7 +136,8 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                         fontSize = 25,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .wrapContentHeight()
+                            .wrapContentHeight(),
+                        noteBackGroundAnimatable = noteBackGroundAnimatable
                     )
                 }
                 //content
@@ -137,12 +149,25 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                         fontSize = 18,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)
+                            .weight(1f),
+                        noteBackGroundAnimatable = noteBackGroundAnimatable
                     )
 
                     //create bottom bar of colors that change background color and depending on it changes create note color
                     //  ChooseColor()
                 }
+            }
+
+            Divider(color= Color.Black)
+            ChosenColor( modifier = Modifier.weight(1f)){
+                scope.launch {
+                    noteBackGroundAnimatable.animateTo(
+                        targetValue = it,
+                        animationSpec = tween(durationMillis = 200)
+                    )
+                    selectedColor.value = it
+                }
+
             }
 
 
