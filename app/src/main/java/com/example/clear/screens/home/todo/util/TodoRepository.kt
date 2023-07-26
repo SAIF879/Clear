@@ -15,8 +15,6 @@ class TodoRepository @Inject constructor(private val todoDataBase: TodoDataBaseD
 
     suspend fun deleteTodo(todo  : Todo) = todoDataBase.deleteTodo(todo = todo)
 
-    suspend fun clearAllTodo() = todoDataBase.clearTodo()
-
     fun getAllTodo() : Flow<List<Todo>> = todoDataBase.getTodo().flowOn(Dispatchers.IO).conflate()
 
     suspend fun clearCompletedTodo() = todoDataBase.clearCompletedTodo()

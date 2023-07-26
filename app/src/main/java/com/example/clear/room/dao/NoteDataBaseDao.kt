@@ -10,7 +10,7 @@ import com.example.clear.room.model.Note
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
-//dao access sqlite data
+
 @Dao
 interface NoteDataBaseDao {
 
@@ -32,7 +32,6 @@ interface NoteDataBaseDao {
 
     @Delete
     suspend fun deleteNote(note: Note)
-
 
 
 }

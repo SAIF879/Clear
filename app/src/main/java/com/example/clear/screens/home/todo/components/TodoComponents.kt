@@ -1,5 +1,6 @@
 package com.example.clear.screens.home.todo.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,12 +11,12 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -35,23 +36,25 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.clear.room.model.Todo
 import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.LightGreen2
-import com.example.clear.ui.theme.LightGreen3
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedOrange
+import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.commonComponents.CircularButton
 import com.example.clear.utils.fonts.FontFamilyClear
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
 @Composable
-fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
-    val completedTask =SwipeAction(
+fun TodoCard(task: Todo, viewModel: TodoViewModel = hiltViewModel()) {
+    val completedTask = SwipeAction(
         onSwipe = {
             task.isCompleted
-                  viewModel.addCompletedTodo(Todo(content = task.content  , todoColor = task.todoColor))
+            viewModel.addCompletedTodo(Todo(content = task.content, todoColor = task.todoColor))
             viewModel.removeTodo(task)
         },
         icon = {
@@ -66,22 +69,30 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
 
     )
     val deleteTask = SwipeAction(
-        onSwipe = {viewModel.removeTodo(task)},
-        icon = {Icon(
-            imageVector = Icons.Filled.Delete,
-            contentDescription = "icon",
-            tint = Color.White,
-            modifier = Modifier.padding(16.dp)
-        )},
+        onSwipe = { viewModel.removeTodo(task) },
+        icon = {
+            Icon(
+                imageVector = Icons.Filled.Delete,
+                contentDescription = "icon",
+                tint = Color.White,
+                modifier = Modifier.padding(16.dp)
+            )
+        },
         background = LightRed
 
     )
 
-    SwipeableActionsBox(startActions = listOf(completedTask) , endActions = listOf(deleteTask) , swipeThreshold = 150.dp) {
+    SwipeableActionsBox(
+        startActions = listOf(completedTask),
+        endActions = listOf(deleteTask),
+        swipeThreshold = 150.dp
+    ) {
         Card(
-            shape = RectangleShape, modifier = Modifier
+            shape = RectangleShape,
+            modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = Color(task.todoColor))
+                .wrapContentHeight(),
+            colors = CardDefaults.cardColors(containerColor = Color(task.todoColor))
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
@@ -127,58 +138,61 @@ fun formatDate(timestamp: Long): String {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CreateTodo(content: MutableState<String> , onClick : ()-> Unit) {
+fun CreateTodo(content: MutableState<String>, onClick: () -> Unit) {
 
-        Card(
-            shape = RectangleShape, modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = RedOrange)
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(10.dp)) {
-                val keyboardController = LocalSoftwareKeyboardController.current
-                TextField(
-                    value = content.value,
-                    onValueChange = { content.value = it },
-                    textStyle = TextStyle(
-                        fontFamily = FontFamilyClear.fontRegular,
-                        fontSize = 18.sp,
-                        color = Color.Gray
-                    ), modifier = Modifier
-                        .weight(2f)
-                        .wrapContentHeight(),
-                    placeholder = {
-                        Text(
-                            text = "Add a Task", style = TextStyle(
-                                fontFamily = FontFamilyClear.fontRegular,
-                                fontSize = 18.sp,
-                                color = Color.Gray
-                            )
+    Card(
+        shape = RectangleShape, modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = RedOrange)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(10.dp)) {
+            val keyboardController = LocalSoftwareKeyboardController.current
+            TextField(
+                value = content.value,
+                onValueChange = { content.value = it },
+                textStyle = TextStyle(
+                    fontFamily = FontFamilyClear.fontRegular,
+                    fontSize = 18.sp,
+                    color = Color.Gray
+                ), modifier = Modifier
+                    .weight(2f)
+                    .wrapContentHeight(),
+                placeholder = {
+                    Text(
+                        text = "Add a Task", style = TextStyle(
+                            fontFamily = FontFamilyClear.fontRegular,
+                            fontSize = 18.sp,
+                            color = Color.Gray
                         )
-                    },
-                    keyboardActions = KeyboardActions(onDone = {
-                        keyboardController?.hide()
-                    }),
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = RedOrange,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
                     )
+                },
+                keyboardActions = KeyboardActions(onDone = {
+                    keyboardController?.hide()
+                }),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = RedOrange,
+                    unfocusedContainerColor = RedOrange,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
                 )
-                CircularButton(icon = Icons.Filled.Add, size = 50) { onClick.invoke() }
-            }
+            )
+            CircularButton(icon = Icons.Filled.Add, size = 50) { onClick.invoke() }
         }
+    }
 
 }
 
 @Composable
 fun CompletedTaskCard(task: Todo) {
     Card(
-        shape = RectangleShape, modifier = Modifier
+        shape = RectangleShape,
+        modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = Color(task.todoColor))
+            .wrapContentHeight(),
+        colors = CardDefaults.cardColors(containerColor = Color(task.todoColor))
     ) {
         Column {
             Row(
@@ -198,7 +212,7 @@ fun CompletedTaskCard(task: Todo) {
                     imageVector = Icons.Filled.Done,
                     contentDescription = "completed_tasks",
                     tint = Color.White,
-                modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(30.dp)
                 )
             }
             Row(
@@ -224,3 +238,82 @@ fun CompletedTaskCard(task: Todo) {
         }
     }
 }
+
+@Composable
+fun CompletedTodoHeader(onClick: () -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(imageVector = Icons.Default.ArrowBackIos,
+                contentDescription = "Back Arrow",
+                tint = Color.White,
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable { onClick.invoke() })
+            Text(
+                text = "Todo",
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontFamily = FontFamilyClear.fontMedium,
+                    color = TextWhite
+                )
+            )
+        }
+    }
+}
+
+
+@Composable
+fun CompletedTaskHeadline(heading: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = heading,
+            style = TextStyle(
+                fontFamily = FontFamilyClear.fontMedium,
+                fontSize = 30.sp,
+                color = Color.White
+            ), modifier = Modifier.padding(5.dp)
+        )
+
+        CircularButton(icon = Icons.Filled.Delete) { onClick.invoke() }
+
+    }
+}
+
+@Composable
+fun CurrentDay() {
+    val day = LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE", Locale.getDefault()))
+    Text(
+        text = day, style = TextStyle(
+            color = TextWhite,
+            fontSize = 30.sp,
+            fontFamily = FontFamilyClear.fontMedium
+        )
+    )
+}
+
+@Composable
+fun TodoHeader(onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        CurrentDay()
+        Icon(
+            imageVector = Icons.Filled.List,
+            contentDescription = "options_icon",
+            tint = Color.White,
+            modifier = Modifier
+                .size(40.dp)
+                .clickable { onClick.invoke() }
+        )
+    }
+}
+

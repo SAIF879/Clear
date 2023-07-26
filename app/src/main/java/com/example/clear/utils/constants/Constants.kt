@@ -8,5 +8,9 @@ import java.util.UUID
 
 object Constants {
     const val BASE_URL = "https://api.dictionaryapi.dev"
-    val noteDetailPlaceHolder = Note(content = "Cannot find note details", title = "Cannot find note details" , color = RedOrange.toArgb())
+    val noteDetailPlaceHolder = Note(
+        content = "Cannot find note content",
+        title = "Cannot find note title",
+        color = RedOrange.toArgb()
+    )
 }

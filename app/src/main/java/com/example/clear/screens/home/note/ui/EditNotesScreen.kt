@@ -40,19 +40,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.clear.room.model.Note
-import com.example.clear.screens.home.note.components.ChosenColor
-import com.example.clear.screens.home.note.components.ShowContentCount
+import com.example.clear.screens.home.note.components.CreateNoteContent
+import com.example.clear.screens.home.note.components.WordsCount
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedOrange
 import com.example.clear.utils.commonComponents.CircularButton
+import com.example.clear.utils.commonComponents.StatusBarColor
 import com.example.clear.utils.constants.Constants
 import com.example.clear.utils.fonts.FontFamilyClear
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel ) {
+fun EditNotesScreen(navController: NavController, noteViewModel: NoteViewModel) {
+
+    
 
     val note = remember {
         mutableStateOf(Constants.noteDetailPlaceHolder)
@@ -72,7 +75,7 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val color =  remember{
+    val color = remember {
         mutableStateOf(note.value.color)
     }
 
@@ -80,21 +83,23 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
 
 
 
-    LaunchedEffect(true){
+    LaunchedEffect(true) {
         scope.launch(Dispatchers.IO) {
-           val data = noteViewModel.getNoteById(noteId)
+            val data = noteViewModel.getNoteById(noteId)
             note.value = data ?: Constants.noteDetailPlaceHolder
             editContent.value = note.value.content
             editTitle.value = note.value.title
             color.value = note.value.color
         }
     }
+    
+    StatusBarColor(color = Color(color.value))
 
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color =  Color(color.value))
+            .background(color = Color(color.value))
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -102,18 +107,23 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .padding(15.dp)
-                    .fillMaxWidth().weight(1f)
+                    .fillMaxWidth()
+                    .weight(1f)
             ) {
-                ShowContentCount(content = editContent.value)
+                WordsCount(content = editContent.value)
                 CircularButton(icon = Icons.Filled.Upgrade) {
-                 if (editTitle.value.isNotEmpty() && editContent.value.isNotEmpty()){
-                     noteViewModel.updateNote(
-                         Note(title = editTitle.value , content = editContent.value , id = note.value.id , color = note.value.color)
-                     )
-                     Toast.makeText(context , "update" , Toast.LENGTH_SHORT).show()
-                     navController.popBackStack()
-                 }
-                    else Toast.makeText(context , "Empty fields ", Toast.LENGTH_SHORT).show()
+                    if (editTitle.value.isNotEmpty() && editContent.value.isNotEmpty()) {
+                        noteViewModel.updateNote(
+                            Note(
+                                title = editTitle.value,
+                                content = editContent.value,
+                                id = note.value.id,
+                                color = note.value.color
+                            )
+                        )
+                        Toast.makeText(context, "update", Toast.LENGTH_SHORT).show()
+                        navController.popBackStack()
+                    } else Toast.makeText(context, "Empty fields ", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -151,37 +161,5 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
 }
 
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
-@Composable
-fun EditNoteContent(content : MutableState<String> , placeHolder : String , fontFamily: androidx.compose.ui.text.font.FontFamily , fontSize : Int , modifier: Modifier){
-    val keyboardController = LocalSoftwareKeyboardController.current
-    TextField(
-        value = content.value,
-        onValueChange = { content.value = it },
-        textStyle = TextStyle(fontFamily = fontFamily, fontSize = fontSize.sp),
-        modifier = modifier,
-        placeholder = {
-            Text(
-                text = placeHolder,
-                style = TextStyle(
-                    fontFamily = FontFamilyClear.fontRegular,
-                    fontSize = fontSize.sp,
-                    color = Color.Gray
-                )
-            )
-        },
 
-        keyboardActions = KeyboardActions(onDone = {
-            keyboardController?.hide()
-        }),
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = RedOrange,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            cursorColor = LightRed,
-        )
-
-    )
-}
 

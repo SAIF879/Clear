@@ -4,9 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.material.ripple.RippleAlpha
-import androidx.compose.material.ripple.RippleTheme
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -18,7 +15,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -31,23 +27,27 @@ import com.example.clear.ui.theme.LightRed
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(){
+fun HomeScreen() {
     val navController = rememberNavController()
     val showBottomBar = rememberSaveable {
         mutableStateOf(true)
     }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    when(navBackStackEntry?.destination?.route){
+    when (navBackStackEntry?.destination?.route) {
         "notes" -> showBottomBar.value = true
-        "todos" ->showBottomBar.value = true
+        "todos" -> showBottomBar.value = true
         "dictionary" -> showBottomBar.value = true
         else -> showBottomBar.value = false
     }
 
-    Scaffold(bottomBar = { BottomBar(navController = navController , bottomBarState = showBottomBar)}) {
+    Scaffold(bottomBar = {
+        BottomBar(
+            navController = navController,
+            bottomBarState = showBottomBar
+        )
+    }) {
         BottomNavGraph(navController = navController)
     }
 
@@ -55,31 +55,28 @@ fun HomeScreen(){
 }
 
 @Composable
-fun BottomBar(navController: NavHostController, bottomBarState: MutableState<Boolean>){
-val screens = listOf(
-    BottomBarScreen.Notes,
-    BottomBarScreen.Todos,
-    BottomBarScreen.Dictionary
-)
+fun BottomBar(navController: NavHostController, bottomBarState: MutableState<Boolean>) {
+    val screens = listOf(
+        BottomBarScreen.Notes,
+        BottomBarScreen.Todos,
+        BottomBarScreen.Dictionary
+    )
 
 
     AnimatedVisibility(
         visible = bottomBarState.value,
         enter = slideInVertically(initialOffsetY = { it }),
-        exit = slideOutVertically(targetOffsetY = {it}),
+        exit = slideOutVertically(targetOffsetY = { it }),
         content = {
-            BottomBarScreenContent(navController = navController , bottomBarState  = bottomBarState, screens = screens)
+            BottomBarScreenContent(
+                navController = navController,
+                bottomBarState = bottomBarState,
+                screens = screens
+            )
         }
     )
 }
 
-private object NoRippleTheme : RippleTheme {
-    @Composable
-    override fun defaultColor() = Color.Unspecified
-
-    @Composable
-    override fun rippleAlpha(): RippleAlpha = RippleAlpha(0.0f,0.0f,0.0f,0.0f)
-}
 
 @Composable
 fun BottomBarScreenContent(
@@ -87,7 +84,7 @@ fun BottomBarScreenContent(
     bottomBarState: MutableState<Boolean>,
     screens: List<BottomBarScreen>
 ) {
-    CompositionLocalProvider() {
+    CompositionLocalProvider {
         NavigationBar(containerColor = LightRed) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination

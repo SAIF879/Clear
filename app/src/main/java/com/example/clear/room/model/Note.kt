@@ -1,6 +1,6 @@
 package com.example.clear.room.model
 
-import androidx.compose.ui.graphics.Color
+
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

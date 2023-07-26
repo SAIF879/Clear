@@ -17,8 +17,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-//modules are used to add bindings to hilt
-@InstallIn(SingletonComponent::class) // this will not be recreated , just one instance
+
+@InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
     @Singleton
@@ -41,7 +41,6 @@ object AppModule {
 
     @Singleton
     @Provides
-    //we use convertor factory as retrofit requires to convert the raw json to objects
     fun providesDictionaryApi(): CommonApiServices {
         return Retrofit.Builder().baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create()).build()

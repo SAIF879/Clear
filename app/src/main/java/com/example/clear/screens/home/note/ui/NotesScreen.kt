@@ -25,26 +25,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clear.navigation.NavGraphs
 import com.example.clear.navigation.NoteScreens
-import com.example.clear.screens.home.note.components.NoteCard
+import com.example.clear.screens.home.note.components.LocalGreeting
 import com.example.clear.screens.home.note.components.NotesCard
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.DeepBlue
-import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.commonComponents.CircularButton
+import com.example.clear.utils.commonComponents.StatusBarColor
 import com.example.clear.utils.fonts.FontFamilyClear
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Composable
 fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel ) {
 
     val noteList = noteViewModel.noteList.collectAsState().value
-
+    StatusBarColor(color = DeepBlue)
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +58,7 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel ) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                LocalGreetingWithName(name = "Sam")
+                LocalGreeting()
                 CircularButton(icon =Icons.Filled.Add) {
                     navController.navigate(NavGraphs.Note)
                }
@@ -106,29 +102,6 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel ) {
     }
 }
 
-@Composable
-fun LocalGreetingWithName(name: String) {
-    Text(
-        text = localGreeting() + ", $name",
-        style = TextStyle(
-            color = TextWhite,
-            fontSize = 20.sp,
-            fontFamily = FontFamilyClear.fontMedium
-        )
-    )
-}
-
- fun localGreeting() : String{
-    val currentTime = Date()
-    val timeFormat = SimpleDateFormat("HH", Locale.getDefault())
-
-     return when(timeFormat.format(currentTime).toInt()){
-        in 0..11 -> "Good Morning"
-        in 12..16 -> "Good AfterNoon"
-        in 17..20 -> "Good Evening"
-        else -> "Good Night"
-    }
-}
 
 
 

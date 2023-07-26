@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,8 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Update
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,42 +34,65 @@ import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
 @Composable
-fun HeadingIntro(heading : String){
-    Text(text = heading , style = TextStyle(fontSize = 40.sp , fontFamily = FontFamilyClear.fontMedium , color = TextWhite ,), modifier = Modifier.padding(10.dp))
+fun HeadingIntro(heading: String) {
+    Text(
+        text = heading,
+        style = TextStyle(
+            fontSize = 40.sp,
+            fontFamily = FontFamilyClear.fontMedium,
+            color = TextWhite
+        ),
+        modifier = Modifier.padding(10.dp)
+    )
 }
 
 @Composable
-fun SubContentIntro(content : String){
-    Text(text = content , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontMedium  , color = Color.Gray ) , modifier = Modifier.padding(10.dp))
+fun SubContentIntro(content: String) {
+    Text(
+        text = content,
+        style = TextStyle(
+            fontSize = 20.sp,
+            fontFamily = FontFamilyClear.fontMedium,
+            color = Color.Gray
+        ),
+        modifier = Modifier.padding(10.dp)
+    )
 }
 
 
-
-
-
 @Composable
-fun SwipeToContinueButton(text: String , icon: ImageVector ,onSwipe : () -> Unit){
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(100.dp)
-        .padding(13.dp)
-        .background(RedOrange, shape = RoundedCornerShape(30.dp)) ,){
-
-        Row(verticalAlignment = Alignment.CenterVertically , modifier = Modifier
+fun SwipeToContinueButton(text: String, icon: ImageVector, onSwipe: () -> Unit) {
+    Box(
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)) {
+            .height(100.dp)
+            .padding(13.dp)
+            .background(RedOrange, shape = RoundedCornerShape(30.dp)),
+    ) {
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+        ) {
             val update = SwipeAction(
-                onSwipe = {onSwipe.invoke()},
-                icon = {Icon(
-                    imageVector = Icons.Filled.Update,
-                    contentDescription = "icon",
-                    tint = Color.Transparent,
-                    modifier = Modifier.padding(0.dp)
-                )},
+                onSwipe = { onSwipe.invoke() },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.Update,
+                        contentDescription = "icon",
+                        tint = Color.Transparent,
+                        modifier = Modifier.padding(0.dp)
+                    )
+                },
                 background = Color.Transparent
 
             )
-            SwipeableActionsBox(startActions = listOf(update) , swipeThreshold = 150.dp , backgroundUntilSwipeThreshold = Color.Transparent ) {
+            SwipeableActionsBox(
+                startActions = listOf(update),
+                swipeThreshold = 150.dp,
+                backgroundUntilSwipeThreshold = Color.Transparent
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxHeight()
@@ -82,9 +104,52 @@ fun SwipeToContinueButton(text: String , icon: ImageVector ,onSwipe : () -> Unit
                 }
 
             }
-            Spacer(modifier =Modifier.size(40.dp))
-            Text(text =text , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontMedium  , color = Color.White))
+            Spacer(modifier = Modifier.size(40.dp))
+            Text(
+                text = text,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontFamily = FontFamilyClear.fontMedium,
+                    color = Color.White
+                )
+            )
         }
 
+    }
+}
+
+@Composable
+fun DecorationBox(icon: ImageVector, backgroundColor: Color, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .background(color = backgroundColor)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = "icon_dis",
+            tint = Color.White,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(30.dp)
+        )
+    }
+}
+
+@Composable
+fun AppNameWithBackGround(appName: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(end = 50.dp)
+    ) {
+        Text(
+            text = appName,
+            style = TextStyle(
+                fontFamily = FontFamilyClear.fontBold,
+                fontSize = 100.sp,
+                color = Color.Black
+            )
+        )
     }
 }

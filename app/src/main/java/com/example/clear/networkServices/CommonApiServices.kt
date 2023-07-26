@@ -12,8 +12,7 @@ interface CommonApiServices {
     @GET("/api/v2/entries/en/{word}")
     suspend fun getWordDetails(
         @Path("word") word: String
-    ) : List<WordInfoDto>
-
+    ): List<WordInfoDto>
 
 
 }

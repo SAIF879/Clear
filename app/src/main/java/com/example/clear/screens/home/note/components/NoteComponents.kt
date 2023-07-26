@@ -8,156 +8,68 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Update
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.clear.room.model.Note
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.LightRed
-import com.example.clear.ui.theme.RedOrange
 import com.example.clear.ui.theme.RedPink
 import com.example.clear.ui.theme.TextWhite
-import com.example.clear.utils.commonComponents.bounceClick
 import com.example.clear.utils.fonts.FontFamilyClear
-import dagger.hilt.android.lifecycle.HiltViewModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 
 @Composable
-fun NoteCard(note : Note   , viewModel: NoteViewModel= hiltViewModel() ,onclick : () -> Unit = {}){
-    val isFavourite = remember {
-        mutableStateOf(false)
-    }
-
-    val update = SwipeAction(
-        onSwipe = {},
-        icon = {Icon(
-            imageVector = Icons.Filled.Update,
-            contentDescription = "icon",
-            tint = Color.White,
-            modifier = Modifier.padding(16.dp)
-        )},
-        background = Color.Green
-
-    )
-    val delete = SwipeAction(
-        onSwipe = {
-                viewModel.removeNote(note)
-        },
-        icon = {Icon(
-            imageVector = Icons.Filled.Delete,
-            contentDescription = "icon",
-            tint = Color.White,
-            modifier = Modifier.padding(16.dp)
-        )},
-        background = Color.Red
-
-    )
-    
-    SwipeableActionsBox(startActions = listOf(update) , endActions = listOf(delete)) {
-        Card(modifier = Modifier
-            .clickable { onclick.invoke() }
-            .height(200.dp)
-            .fillMaxWidth()
-            .padding(1.dp) , shape = RectangleShape) {
-            Column(modifier = Modifier
-                .padding(5.dp)
-                .fillMaxSize() , verticalArrangement = Arrangement.SpaceBetween) {
-                Column() {
-                    Row(horizontalArrangement = Arrangement.Center , verticalAlignment = Alignment.CenterVertically , modifier = Modifier
-                        .padding(5.dp)
-                        .fillMaxWidth()) {
-                        DecorationBar()
-                    }
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(1.dp)
-                    ) {
-
-                        ShowEllipseTitle(title = note.title)
-
-                        Icon(
-                            imageVector = if (isFavourite.value) {
-                                Icons.Filled.Favorite
-                            } else {
-                                Icons.Outlined.Favorite
-                            }, contentDescription = "fav_note",
-                            tint = if (isFavourite.value) LightRed else Color.Gray
-                        )
-
-                    }
-//                    ShowEllipseContent(content = note.content)
-                    EllipsizeText(text = note.content)
-                }
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) { ShowWordsCount(content = note.content)}
-            }
-
-        }
-        
-    }
-
-}
-
-@Composable
-fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
+fun NotesCard(note: Note, viewModel: NoteViewModel, onclick: () -> Unit) {
     val delete = SwipeAction(
         onSwipe = {
             viewModel.removeNote(note)
         },
-        icon = {Icon(
-            imageVector = Icons.Filled.DeleteForever,
-            contentDescription = "icon",
-            tint = Color.White,
-            modifier = Modifier.padding(0.dp)
-        )},
+        icon = {
+            Icon(
+                imageVector = Icons.Filled.DeleteForever,
+                contentDescription = "icon",
+                tint = Color.White,
+                modifier = Modifier.padding(0.dp)
+            )
+        },
         background = RedPink
 
     )
-    SwipeableActionsBox(endActions = listOf(delete) , swipeThreshold = 150.dp) {
+    SwipeableActionsBox(endActions = listOf(delete), swipeThreshold = 150.dp) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -166,17 +78,20 @@ fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
                 .padding(10.dp)
                 .clickable(
                     indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) {
+                    interactionSource = remember { MutableInteractionSource() }) {
                     onclick.invoke()
                 }
         ) {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(note.color))) {
-                Column(modifier = Modifier
-                    .weight(2f)
-                    .background(Color(note.color))) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(note.color))
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(2f)
+                        .background(Color(note.color))
+                ) {
                     Text(
                         text = note.title,
                         style = TextStyle(
@@ -187,9 +102,13 @@ fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
                     )
                     EllipsizeText(text = note.content)
                 }
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f) , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     WordsCount(content = note.content)
                     SwipeToDeleteSign()
                 }
@@ -199,40 +118,28 @@ fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
 }
 
 @Composable
-fun WordsCount(content: String){
+fun WordsCount(content: String) {
     val text = content.trim().split("\\s".toRegex())
-Text(text ="${text.size}"+ if (text.size==1) " Word" else " Words" , style = TextStyle(fontSize =18.sp , fontFamily = FontFamilyClear.fontMedium  , color = TextWhite) , maxLines = 1)
+    Text(
+        text = if (content.isEmpty()) "0 Word" else "${text.size}" + if (text.size == 1) " Word" else " Words",
+        style = TextStyle(
+            fontSize = 18.sp,
+            fontFamily = FontFamilyClear.fontMedium,
+            color = TextWhite
+        ),
+        maxLines = 1
+    )
 }
+
 
 @Composable
 fun SwipeToDeleteSign(){
-Row() {
+Row {
     Icon(imageVector =Icons.Filled.Delete , contentDescription ="delete_icon" )
     Icon(imageVector = Icons.Filled.ArrowBack, contentDescription ="back_arrow" )
 }
 }
 
-@Composable
-fun ShowWordsCount(content: String) {
-    Box(modifier = Modifier
-        .width(100.dp)
-        .wrapContentHeight(), contentAlignment = Alignment.Center) {
-        val text = content.trim().split("\\s+".toRegex())
-        Text(
-            text = "${text.size+1} " + if (text.size<=1) "Word" else "Words"  ,
-            style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontMedium),
-            maxLines = 1
-        )
-    }
-}
-
-//@Composable
-//fun ShowEllipseContent(content: String, maxWords: Int = 24, fontFamily: FontFamily = FontFamilyClear.fontRegular, fontSize : Int = 18) {
-//    Text(
-//        text = if (content.trim().split("\\s+".toRegex()).size > maxWords) "${content.trim().split("\\s+".toRegex()).take(maxWords)}........" else content,
-//        style = TextStyle(fontSize = fontSize.sp, fontFamily = fontFamily)
-//    )
-//}
 
 @Composable
 fun EllipsizeText(text: String, maxLength: Int = 120) {
@@ -244,38 +151,15 @@ fun EllipsizeText(text: String, maxLength: Int = 120) {
         }
     }
 
-    Text(text = ellipsizedText , style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontRegular))
-}
-
-@Composable
-fun ShowEllipseTitle(title: String, maxLength: Int = 9) {
     Text(
-        text = if (title.length > maxLength) "${title.take(maxLength)}..." else title,
-        style = TextStyle(fontSize = 15.sp, fontFamily = FontFamilyClear.fontBlack),
+        text = ellipsizedText,
+        style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontRegular)
     )
 }
 
 
-@Composable
-fun DecorationBar(){
-    Spacer(modifier = Modifier
-        .width(150.dp)
-        .height(3.dp)
-        .clip(RoundedCornerShape(10.dp))
-        .background(
-            Color.Gray
-        ))
-    Spacer(modifier = Modifier.size(5.dp))
-}
 
-@Composable
-fun ShowContentCount(content: String) {
-    Text(
-        text =  if (content.isEmpty() )"0 Word" else {"${content.trim().split("\\s+".toRegex()).size} Words" },
-        style = TextStyle(fontSize = 18.sp, fontFamily = FontFamilyClear.fontMedium),
-        maxLines = 1
-    )
-}
+
 @Composable
 fun ColorCircle(color : Color , onClick : () -> Unit){
     Box(modifier = Modifier
@@ -283,10 +167,7 @@ fun ColorCircle(color : Color , onClick : () -> Unit){
         .border(2.dp, Color.Black, CircleShape)
         .background(color = color, shape = CircleShape)
         .aspectRatio(1f)
-        .clickable(
-            indication = null,
-            interactionSource = remember { MutableInteractionSource() }
-        ) {
+        .clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
             onClick.invoke()
         }
     )
@@ -308,6 +189,75 @@ fun ChosenColor(modifier: Modifier, onSelectColor: (Color) -> Unit) {
         }
     }
 }
+
+
+@Composable
+fun CreateNoteContent(
+    content: MutableState<String>,
+    placeholder: String,
+    fontFamily: FontFamily,
+    fontSize: Int,
+    modifier: Modifier = Modifier,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Default,
+    onAction : KeyboardActions = KeyboardActions.Default
+
+) {
+
+    TextField(
+        value = content.value,
+        onValueChange = { content.value = it },
+        textStyle = TextStyle(fontFamily = fontFamily, fontSize = fontSize.sp),
+        modifier = modifier,
+        placeholder = {
+            Text(
+                text = placeholder,
+                style = TextStyle(
+                    fontFamily = FontFamilyClear.fontRegular,
+                    fontSize = fontSize.sp,
+                    color = Color.Gray
+                )
+            )
+        },
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            cursorColor = LightRed,
+        ),
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType , imeAction = imeAction),
+        keyboardActions = onAction
+
+    )
+}
+
+@Composable
+fun LocalGreeting() {
+    Text(
+        text = localGreeting() ,
+        style = TextStyle(
+            color = TextWhite,
+            fontSize = 20.sp,
+            fontFamily = FontFamilyClear.fontMedium
+        )
+    )
+}
+
+fun localGreeting() : String{
+    val currentTime = Date()
+    val timeFormat = SimpleDateFormat("HH", Locale.getDefault())
+
+    return when(timeFormat.format(currentTime).toInt()){
+        in 0..11 -> "Good Morning"
+        in 12..16 -> "Good AfterNoon"
+        in 17..20 -> "Good Evening"
+        else -> "Good Night"
+    }
+}
+
+
 
 
 

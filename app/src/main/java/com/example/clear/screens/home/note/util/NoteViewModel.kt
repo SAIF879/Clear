@@ -17,7 +17,6 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel @Inject constructor(private val notesRepository: NoteRepository) : ViewModel(){
 
-    //private var noteList = mutableStateListOf<Note>()
     private val _noteList = MutableStateFlow<List<Note>>(emptyList())
     val noteList = _noteList.asStateFlow()
 
@@ -32,13 +31,10 @@ class NoteViewModel @Inject constructor(private val notesRepository: NoteReposit
 
 
     init {
-        //cause i want some data to be init when first called to check for data
-        //noteList.addAll(NoteData().loadNotes())
-
         viewModelScope.launch(Dispatchers.IO) {
             notesRepository.getAllNotes().distinctUntilChanged()
                 .collect{ listOfNotes ->
-                    if (listOfNotes.isNullOrEmpty()) Log.d("Empty", "Emtpy list")
+                    if (listOfNotes.isNullOrEmpty()) Log.d("Empty", "Empty list")
                     else _noteList.value = listOfNotes
                 }
         }
@@ -58,10 +54,6 @@ class NoteViewModel @Inject constructor(private val notesRepository: NoteReposit
 
      fun updateNote(note: Note) = viewModelScope.launch {
         notesRepository.updateNote(note)
-    }
-
-     fun clearAllNotes(note : Note) = viewModelScope.launch {
-        notesRepository.clearAllNoteS()
     }
 
     suspend fun getNoteById(noteId : UUID?) : Note?{

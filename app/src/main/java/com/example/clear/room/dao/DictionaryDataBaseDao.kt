@@ -17,9 +17,6 @@ interface DictionaryDataBaseDao {
     @Query("SELECT * from dictionary_table WHERE is_searched = 1")
     fun getSearchedWords() : Flow<List<Dictionary>>
 
-//    @Query("SELECT * FROM dictionary_table WHERE word_name = :word")
-//    fun getWord(word: String): Flow<Dictionary?>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWord(word : Dictionary)
 
@@ -29,8 +26,6 @@ interface DictionaryDataBaseDao {
 
     @Query("DELETE from dictionary_table WHERE is_searched = 1")
     suspend fun clearSearchedWords()
-
-
 
     @Delete
     suspend fun deleteWord(word: Dictionary)

@@ -7,14 +7,14 @@ import androidx.navigation.navigation
 import com.example.clear.screens.home.todo.ui.CompletedTodoScreen
 
 
-
-fun NavGraphBuilder.todoNavGraph(navController: NavController){
-    navigation(route = NavGraphs.Todo , startDestination = TodoScreens.CompletedTodoScreen.route){
-        composable(route = TodoScreens.CompletedTodoScreen.route){
+fun NavGraphBuilder.todoNavGraph(navController: NavController) {
+    navigation(route = NavGraphs.Todo, startDestination = TodoScreens.CompletedTodoScreen.route) {
+        composable(route = TodoScreens.CompletedTodoScreen.route) {
             CompletedTodoScreen(navController = navController)
         }
     }
 }
-sealed class TodoScreens(val route : String){
+
+sealed class TodoScreens(val route: String) {
     object CompletedTodoScreen : TodoScreens(route = "completed_todo")
 }
