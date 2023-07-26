@@ -7,8 +7,6 @@ import com.example.clear.room.dao.DictionaryDataBaseDao
 import com.example.clear.room.dao.NoteDataBaseDao
 import com.example.clear.room.dao.TodoDataBaseDao
 import com.example.clear.room.database.ClearDataBase
-import com.example.clear.room.model.TodoData
-import com.example.clear.utils.constants.Constants
 import com.example.clear.utils.constants.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -17,7 +15,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 //modules are used to add bindings to hilt

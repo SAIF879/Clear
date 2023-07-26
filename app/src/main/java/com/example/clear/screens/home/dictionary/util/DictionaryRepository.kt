@@ -9,6 +9,7 @@ import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import java.lang.Exception
 import javax.inject.Inject
@@ -34,9 +35,27 @@ class DictionaryRepository @Inject constructor(
     fun getSavedWords() : Flow<List<Dictionary>> = dictionaryDataBaseDao.getSavedWords().flowOn(Dispatchers.IO)
         .conflate()
 
-    suspend fun addSavedWord(word: Dictionary) = dictionaryDataBaseDao.insertWord(word = word)
+    //suspend fun addSavedWord(word: Dictionary) = dictionaryDataBaseDao.insertWord(word = word)
 
-    suspend fun addSearchedWord(word : Dictionary) = dictionaryDataBaseDao.insertWord(word = word)
+    suspend fun addSearchedWord(word : Dictionary) {
+        val searchedWords = dictionaryDataBaseDao.getSearchedWords().firstOrNull() ?: emptyList()
+        val wordExists = searchedWords.any { it.wordName == word.wordName }
+
+        if (!wordExists) {
+            val searchedWord = word.copy(isSearched = true)
+            dictionaryDataBaseDao.insertWord(word = searchedWord)
+        }
+    }
+
+       suspend fun addSavedWord(word: Dictionary) {
+            val savedWords = dictionaryDataBaseDao.getSavedWords().firstOrNull() ?: emptyList()
+            val wordExists = savedWords.any { it.wordName == word.wordName }
+
+            if (!wordExists) {
+                val savedWord = word.copy(isSaved = true)
+                dictionaryDataBaseDao.insertWord(word = savedWord)
+            }
+        }
 
 
     suspend fun clearSavedWord() = dictionaryDataBaseDao.clearSavedWords()

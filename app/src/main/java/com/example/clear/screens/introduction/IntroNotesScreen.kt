@@ -10,13 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Description
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,13 +27,11 @@ import androidx.navigation.NavController
 import com.example.clear.R
 import com.example.clear.navigation.IntroScreens
 import com.example.clear.screens.introduction.components.HeadingIntro
-import com.example.clear.screens.introduction.components.IntroButton
 import com.example.clear.screens.introduction.components.SubContentIntro
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.LightRed
-import com.example.clear.ui.theme.RedOrange
 import com.example.clear.ui.theme.RedPink
-import com.example.clear.ui.theme.TextWhite
+import com.example.clear.utils.commonComponents.ClearButton
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @Composable
@@ -72,7 +65,7 @@ fun IntroNotesScreen(navController: NavController) {
                 Column(verticalArrangement = Arrangement.Center , modifier = Modifier.fillMaxSize()) {
                     HeadingIntro(heading ="Effortless Note-taking" )
                     SubContentIntro(content = "Capture and Organize Your Thoughts and Ideas with Ease.")
-                    IntroButton(text = "Continue") {
+                    ClearButton(text = "Continue") {
                         navController.navigate(IntroScreens.IntroTodoScreen.route)
                     }
                 }

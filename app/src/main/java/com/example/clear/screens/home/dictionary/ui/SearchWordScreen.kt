@@ -44,6 +44,7 @@ import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.TextWhite
+import com.example.clear.utils.commonComponents.ShimmerAnimation
 import com.example.clear.utils.fonts.FontFamilyClear
 import java.lang.Exception
 
@@ -67,19 +68,19 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
     if (wordData.loading==true) Box(modifier = Modifier
         .fillMaxSize()
         .background(DeepBlue)) {
-        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center) , color = Color.White)
+        ShimmerAnimation()
     }
     else if (wordData.data!==null){
         Box(modifier = Modifier
             .fillMaxSize()
             .background(DeepBlue)){
+
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp)){
-                item { Text(text = searchWord ?: "no word like it" , color= Color.White) }
                 item { SearchWordHeader(isSaved = isSaved  ) }
                 item { Spacer(modifier = Modifier.size(10.dp)) }
-                item { Word(wordInfoDto =wordData?.data  , isSaved = isSaved , viewModel = viewModel) }
+                item {  Word(wordInfoDto =wordData?.data  , isSaved = isSaved , viewModel = viewModel) }
     }
     }
 } else if (wordData.data == null) {
@@ -131,7 +132,7 @@ fun WordWithPronunciation(word : String?){
 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
     Text(text =word.toString(), style = TextStyle(fontSize = 30.sp , fontFamily = FontFamilyClear.fontSemiBold , color = TextWhite))
     Spacer(modifier = Modifier.size(10.dp))
-    Icon(imageVector = Icons.Filled.VolumeUp, contentDescription = "pronunciation_icon" , tint = Color.White)
+  //  Icon(imageVector = Icons.Filled.VolumeUp, contentDescription = "pronunciation_icon" , tint = Color.White)
 }
 }
 
@@ -147,12 +148,14 @@ fun PartOfSpeech(word : String?){
 
 
 @Composable
-fun Word(wordInfoDto: List<WordInfoDto>?, isSaved : MutableState<Boolean> , viewModel: DictionaryViewModel){
+fun Word(wordInfoDto: List<WordInfoDto>?, isSaved : MutableState<Boolean> , viewModel: DictionaryViewModel ){
     Column {
         wordInfoDto?.forEach{ wordData ->
             Spacer(modifier = Modifier.size(10.dp))
             WordWithPronunciation(word = wordData.word?:"No Such Word Present")
+
             if (isSaved.value) viewModel.addSavedWord(Dictionary(wordName =  wordData.word?:"" , isSaved = true))
+
             Text(text = wordData.phonetic?:"no phonetic",  color = Color.White)
            wordData.meanings.forEach{
               PartOfSpeech(word = it.partOfSpeech?:"")

@@ -1,8 +1,6 @@
 package com.example.clear.screens.introduction.components
 
-import android.widget.Space
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -30,8 +27,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.example.clear.navigation.IntroScreens
 import com.example.clear.ui.theme.RedOrange
 import com.example.clear.ui.theme.RedPink
 import com.example.clear.ui.theme.TextWhite
@@ -50,20 +45,7 @@ fun SubContentIntro(content : String){
 }
 
 
-@Composable
-fun IntroButton(text: String, onClick: () -> Unit) {
-    Button(onClick = { onClick.invoke() },
-        colors = ButtonDefaults.buttonColors(containerColor = RedOrange),
-        shape = RoundedCornerShape(0.dp) , modifier = Modifier
-            .fillMaxWidth()
-            .height(70.dp)
-            .padding(10.dp)) {
-        Text(
-            text = text,
-            style = TextStyle(fontFamily = FontFamilyClear.fontBold, fontSize = 25.sp)
-        )
-    }
-}
+
 
 
 @Composable

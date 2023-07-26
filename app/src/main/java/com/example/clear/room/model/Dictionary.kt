@@ -9,7 +9,6 @@ import java.util.UUID
 @Entity(tableName = "dictionary_table")
 data class Dictionary (
     @PrimaryKey
-    val id : UUID = UUID.randomUUID(),
     @ColumnInfo(name = "word_name")
     val wordName : String,
     @ColumnInfo(name = "is_saved")

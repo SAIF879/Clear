@@ -154,7 +154,6 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                     }
                 }
                 RemoveSearchHistory(text = "clear History") {
-//
                     showDialogBox.value = true
                 }
 
@@ -196,7 +195,20 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                     item { Divider() }
                     item { Spacer(modifier = Modifier.size(10.dp)) }
                     items(savedWordList){
-                        SavedWordCard(word = it)
+                        SavedWordCard(word = it){
+                            if (it.wordName.trim().isNotEmpty()) {
+                                dictionaryViewModel.setSearchWord(
+                                    it.wordName.trim()
+                                )
+                                val addWord = Dictionary(wordName = it.wordName , isSearched = true , isSaved = true)
+                                if (!isWordInList(searchedWordList , addWord)){
+                                    dictionaryViewModel.addSearchedWord(
+                                        addWord,
+                                    )
+                                }
+                                navController.navigate(NavGraphs.Dictionary)
+                            } else return@SavedWordCard
+                        }
                     }
 
                 }
@@ -247,18 +259,37 @@ fun isWordInList(wordList: List<Dictionary>, word: Dictionary): Boolean {
 }
 
 @Composable
-fun SavedWordCard(word: Dictionary){
-    Row(verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween , modifier = Modifier
-        .fillMaxWidth()
-        .padding(5.dp)) {
-        Text(text = word.wordName  , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontRegular , color = TextWhite))
-        Icon(imageVector = Icons.Default.Bookmark, contentDescription ="bookmark_icon" , tint = Color.White )
+fun SavedWordCard(word: Dictionary , onclick: () -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp).clickable { onclick.invoke() }
+    ) {
+        Text(
+            text = word.wordName,
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontFamily = FontFamilyClear.fontRegular,
+                color = TextWhite
+            )
+        )
+        Icon(
+            imageVector = Icons.Default.Bookmark,
+            contentDescription = "bookmark_icon",
+            tint = Color.White
+        )
     }
 }
 
 @Composable
-fun DictionaryHeader(savedWordList: List<Dictionary>, onclick: () -> Unit){
-    Row(modifier = Modifier.fillMaxWidth() , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween) {
+fun DictionaryHeader(savedWordList: List<Dictionary>, onclick: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
         Text(
             text = "Saved\nWords(${savedWordList.size})",
             style = TextStyle(
@@ -268,7 +299,7 @@ fun DictionaryHeader(savedWordList: List<Dictionary>, onclick: () -> Unit){
             )
         )
         Spacer(modifier = Modifier.size(10.dp))
-        CircularButton(icon = Icons.Default.Delete){onclick.invoke()}
+        CircularButton(icon = Icons.Default.Delete) { onclick.invoke() }
     }
 }
 

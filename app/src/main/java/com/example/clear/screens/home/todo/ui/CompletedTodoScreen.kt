@@ -86,9 +86,11 @@ Box(modifier = Modifier
                CompletedTaskCard(task = todo)
                 Spacer(modifier = Modifier.size(20.dp))
             }
+
             item{
                 Spacer(modifier = Modifier.size(80.dp))
             }
+
         }
     }
 }

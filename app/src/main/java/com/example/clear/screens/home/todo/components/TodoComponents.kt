@@ -1,27 +1,19 @@
 package com.example.clear.screens.home.todo.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Beenhere
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,22 +29,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.clear.room.model.Todo
-import com.example.clear.room.model.TodoData
 import com.example.clear.screens.home.todo.util.TodoViewModel
-import com.example.clear.ui.theme.Beige1
 import com.example.clear.ui.theme.LightGreen2
 import com.example.clear.ui.theme.LightGreen3
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedOrange
-import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.commonComponents.CircularButton
 import com.example.clear.utils.fonts.FontFamilyClear
-import dagger.hilt.android.lifecycle.HiltViewModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import java.text.SimpleDateFormat
@@ -64,7 +51,7 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
     val completedTask =SwipeAction(
         onSwipe = {
             task.isCompleted
-                  viewModel.addCompletedTodo(Todo(content = task.content))
+                  viewModel.addCompletedTodo(Todo(content = task.content  , todoColor = task.todoColor))
             viewModel.removeTodo(task)
         },
         icon = {
@@ -94,7 +81,7 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
         Card(
             shape = RectangleShape, modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = RedOrange)
+                .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = Color(task.todoColor))
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
@@ -193,7 +180,7 @@ fun CompletedTaskCard(task: Todo) {
     Card(
         shape = RectangleShape, modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = RedOrange)
+            .wrapContentHeight(), colors = CardDefaults.cardColors(containerColor = Color(task.todoColor))
     ) {
         Column {
             Row(

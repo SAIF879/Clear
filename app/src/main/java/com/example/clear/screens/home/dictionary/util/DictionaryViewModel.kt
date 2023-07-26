@@ -61,12 +61,12 @@ class DictionaryViewModel @Inject constructor(private val repository: Dictionary
 
 
     fun addSavedWord(word:Dictionary) = viewModelScope.launch {
-        val savedWord = word.copy(isSaved = true)
-        repository.addSavedWord(word = savedWord)
+        repository.addSavedWord(word = word)
     }
 
     fun addSearchedWord(word: Dictionary) = viewModelScope.launch {
         repository.addSearchedWord(word = word)
+
     }
 
     fun clearSavedWord() = viewModelScope.launch {
