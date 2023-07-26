@@ -91,7 +91,6 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                         .fillMaxWidth()
-//                        .padding(5.dp)
                 ) {
                     Text(
                         text = task.content,
@@ -107,7 +106,6 @@ fun TodoCard(task : Todo , viewModel : TodoViewModel = hiltViewModel() ) {
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier
                         .fillMaxWidth()
-      //                  .padding(5.dp)
                 ) {
                     Text(
                         text = formatDate(task.timeStamp),
@@ -197,9 +195,9 @@ fun CompletedTaskCard(task: Todo) {
                     ),
                 )
                 Icon(
-                    imageVector = Icons.Filled.CheckCircle,
+                    imageVector = Icons.Filled.Done,
                     contentDescription = "completed_tasks",
-                    tint = LightGreen3,
+                    tint = Color.White,
                 modifier = Modifier.size(30.dp)
                 )
             }
@@ -212,7 +210,7 @@ fun CompletedTaskCard(task: Todo) {
             ) {
 
                 Text(
-                    text = "22 december",
+                    text = formatDate(task.timeStamp),
                     style = TextStyle(
                         fontSize = 15.sp,
                         fontFamily = FontFamilyClear.fontBlack,
@@ -221,6 +219,7 @@ fun CompletedTaskCard(task: Todo) {
                     )
                 )
             }
+
 
         }
     }

@@ -68,19 +68,14 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
         mutableStateOf(note.value.content)
     }
 
-    val chosenColor = remember { mutableStateOf(Note.noteColors[0]) }
-
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val noteColor = Note.noteColors[0]
-
-    val noteBackGroundAnimatable = remember{
-        Animatable(noteColor)
+    val color =  remember{
+        mutableStateOf(note.value.color)
     }
-    // Use a MutableState to hold the selected color
-    val selectedColor = remember { mutableStateOf(noteColor) }
+
 
 
 
@@ -91,7 +86,7 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
             note.value = data ?: Constants.noteDetailPlaceHolder
             editContent.value = note.value.content
             editTitle.value = note.value.title
-
+            color.value = note.value.color
         }
     }
 
@@ -99,7 +94,7 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(noteBackGroundAnimatable.value)
+            .background(color =  Color(color.value))
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -113,7 +108,7 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                 CircularButton(icon = Icons.Filled.Upgrade) {
                  if (editTitle.value.isNotEmpty() && editContent.value.isNotEmpty()){
                      noteViewModel.updateNote(
-                         Note(title = editTitle.value , content = editContent.value , id = note.value.id , color = noteBackGroundAnimatable.value.toArgb())
+                         Note(title = editTitle.value , content = editContent.value , id = note.value.id , color = note.value.color)
                      )
                      Toast.makeText(context , "update" , Toast.LENGTH_SHORT).show()
                      navController.popBackStack()
@@ -126,8 +121,6 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                 modifier = Modifier
                     .weight(8f)
             ) {
-//            Spacer(modifier = Modifier.weight(0.1f))
-                //title
                 item {
                     CreateNoteContent(
                         content = editTitle,
@@ -137,7 +130,6 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),
-                        noteBackGroundAnimatable = noteBackGroundAnimatable
                     )
                 }
                 //content
@@ -150,26 +142,12 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f),
-                        noteBackGroundAnimatable = noteBackGroundAnimatable
                     )
 
                     //create bottom bar of colors that change background color and depending on it changes create note color
                     //  ChooseColor()
                 }
             }
-
-            Divider(color= Color.Black)
-            ChosenColor( modifier = Modifier.weight(1f)){
-                scope.launch {
-                    noteBackGroundAnimatable.animateTo(
-                        targetValue = it,
-                        animationSpec = tween(durationMillis = 200)
-                    )
-                    selectedColor.value = it
-                }
-
-            }
-
 
         }
     }

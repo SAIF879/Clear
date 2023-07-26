@@ -1,5 +1,8 @@
 package com.example.clear.screens.home.note.ui
 
+import android.transition.Visibility
+import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.Animatable
@@ -12,6 +15,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Divider
@@ -43,8 +48,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.example.clear.room.model.Note
 import com.example.clear.screens.home.note.components.ChosenColor
@@ -80,6 +88,9 @@ fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewMod
     val scope = rememberCoroutineScope()
 
     val context = LocalContext.current
+
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -125,10 +136,8 @@ fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewMod
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),
-                        noteBackGroundAnimatable = noteBackGroundAnimatable
                     )
                 }
-                //content
                 item {
                     CreateNoteContent(
                         content = inputNote,
@@ -138,11 +147,7 @@ fun CreateNotesScreen( navController: NavController , noteViewModel: NoteViewMod
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f),
-                        noteBackGroundAnimatable
                     )
-
-                    //create bottom bar of colors that change background color and depending on it changes create note color
-                    //  ChooseColor()
                 }
             }
             Divider(color= Color.Black)
@@ -169,9 +174,12 @@ fun CreateNoteContent(
     fontFamily: FontFamily,
     fontSize: Int,
     modifier: Modifier = Modifier,
-    noteBackGroundAnimatable: Animatable<Color, AnimationVector4D>
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Default,
+    onAction : KeyboardActions = KeyboardActions.Default
+
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
+
     TextField(
         value = content.value,
         onValueChange = { content.value = it },
@@ -187,17 +195,15 @@ fun CreateNoteContent(
                 )
             )
         },
-
-        keyboardActions = KeyboardActions(onDone = {
-            keyboardController?.hide()
-        }),
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
             cursorColor = LightRed,
-        )
+        ),
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType , imeAction = imeAction),
+        keyboardActions = onAction
 
     )
 }

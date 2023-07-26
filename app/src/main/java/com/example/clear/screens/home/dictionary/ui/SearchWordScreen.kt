@@ -5,6 +5,7 @@ package com.example.clear.screens.home.dictionary.ui
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -93,23 +94,7 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
     }
     }
 } else if (wordData.data == null) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(DeepBlue)
-        ) {
-            Column(modifier = Modifier.fillMaxSize() , verticalArrangement = Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally) {
-               AnimatedLottie(animationRes = R.raw.not_found)
-                Text(
-                    text = "NO SUCH WORD EXISTS IN THE DATABASE ",
-                    style = TextStyle(
-                        color = Color.White,
-                        fontFamily = FontFamilyClear.fontMedium,
-                        fontSize = 30.sp
-                    ) , modifier = Modifier.padding(10.dp)
-                )
-            }
-        }
+                NoDataFound(navController = navController)
     }
 }
 
@@ -122,7 +107,11 @@ Row(modifier = Modifier.fillMaxWidth() , verticalAlignment = Alignment.CenterVer
 Row(verticalAlignment = Alignment.CenterVertically) {
     Icon(imageVector = Icons.Filled.ArrowBackIos, contentDescription = "back_arrow", tint = Color.White , modifier = Modifier
         .size(30.dp)
-        .clickable {
+        .clickable (
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() }
+
+                ){
             navController.popBackStack()
         })
     Text(text = "Search" , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontMedium , color = TextWhite))
@@ -163,22 +152,27 @@ fun PartOfSpeech(word : String?){
 
 
 @Composable
-fun Word(wordInfoDto: List<WordInfoDto>?, isSaved : MutableState<Boolean> , viewModel: DictionaryViewModel ){
+fun Word(wordInfoDto: List<WordInfoDto>?, isSaved : MutableState<Boolean> , viewModel: DictionaryViewModel ) {
     Column {
-        wordInfoDto?.forEach{ wordData ->
+        wordInfoDto?.forEach { wordData ->
             Spacer(modifier = Modifier.size(10.dp))
-            WordWithPronunciation(word = wordData.word?:"No Such Word Present")
+            WordWithPronunciation(word = wordData.word ?: "No Such Word Present")
 
-            if (isSaved.value) viewModel.addSavedWord(Dictionary(wordName =  wordData.word?:"" , isSaved = true))
+            if (isSaved.value) viewModel.addSavedWord(
+                Dictionary(
+                    wordName = wordData.word ?: "",
+                    isSaved = true
+                )
+            )
 
-            Text(text = wordData.phonetic?:"no phonetic",  color = Color.White)
-           wordData.meanings.forEach{
-              PartOfSpeech(word = it.partOfSpeech?:"")
-               it.definitions.forEachIndexed{i,d->
-                   Text(text = "${i+1}.${d.definition?:"No defination"}",  color = Color.White)
-                   Text(text = d.example?:"",  color = Color.White)
-               }
-           }
+            Text(text = wordData.phonetic ?: "no phonetic", color = Color.White)
+            wordData.meanings.forEach {
+                PartOfSpeech(word = it.partOfSpeech ?: "")
+                it.definitions.forEachIndexed { i, d ->
+                    Text(text = "${i + 1}.${d.definition ?: "No defination"}", color = Color.White)
+                    Text(text = d.example ?: "", color = Color.White)
+                }
+            }
             Spacer(modifier = Modifier.size(20.dp))
             Divider(color = Color.White)
         }
@@ -186,5 +180,57 @@ fun Word(wordInfoDto: List<WordInfoDto>?, isSaved : MutableState<Boolean> , view
 
     }
 }
+
+@Composable
+fun NoDataFound(navController: NavController) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DeepBlue)
+            .padding(10.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBackIos,
+                    contentDescription = "back_arrow",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clickable(
+
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+
+                        ) {
+                            navController.popBackStack() })
+                Spacer(modifier = Modifier.size(5.dp))
+                Text(
+                    text = "Search",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontFamily = FontFamilyClear.fontMedium,
+                        color = TextWhite
+                    )
+                )
+            }
+
+
+            AnimatedLottie(animationRes = R.raw.not_found)
+            Text(
+                text = "NO SUCH WORD EXISTS IN THE DATABASE ",
+                style = TextStyle(
+                    color = Color.White,
+                    fontFamily = FontFamilyClear.fontMedium,
+                    fontSize = 22.sp
+                ), modifier = Modifier.padding(10.dp)
+            )
+        }
+    }
+}
+
 
 

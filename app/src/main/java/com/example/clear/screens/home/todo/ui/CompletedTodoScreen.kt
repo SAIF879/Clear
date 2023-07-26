@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.clear.screens.home.todo.components.CompletedTaskCard
+import com.example.clear.screens.home.todo.components.formatDate
 import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.LightRed
