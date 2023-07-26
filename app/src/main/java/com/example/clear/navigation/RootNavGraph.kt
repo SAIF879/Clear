@@ -10,7 +10,7 @@ import com.example.clear.screens.bottomBar.HomeScreen
 
 @Composable
 fun RootNavGraph(navController: NavHostController){
-    NavHost(navController = navController, route = NavGraphs.Root , startDestination = NavGraphs.Bottom  ){
+    NavHost(navController = navController, route = NavGraphs.Root , startDestination = NavGraphs.Splash  ){
         splashNavGraph(navController)
         introductionNavGraph(navController)
         authenticationNavGraph(navController)

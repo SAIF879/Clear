@@ -21,6 +21,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.clear.R
 import com.example.clear.navigation.NavGraphs
 import com.example.clear.ui.theme.DeepBlue
+import com.example.clear.utils.commonComponents.AnimatedLottie
 import com.example.clear.utils.commonComponents.ShowHeading
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -29,7 +30,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun SplashScreen(navController: NavController) {
 
-    val splashAnimation by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash_animation))
     val coroutineScope = rememberCoroutineScope()
 
     Box(
@@ -43,7 +43,7 @@ fun SplashScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize()
         ) {
             ShowHeading(heading = stringResource(id = R.string.splash_heading), fontSize = 50)
-            ShowAnimation(composition = splashAnimation)
+            AnimatedLottie(R.raw.splash_animation)
         }
 
     }
@@ -51,13 +51,6 @@ fun SplashScreen(navController: NavController) {
     splashNavigation(coroutineScope = coroutineScope, navController = navController)
 
 }
-
-
-@Composable
-fun ShowAnimation(composition: LottieComposition?) {
-    LottieAnimation(composition = composition, modifier = Modifier.size(300.dp))
-}
-
 
 
 private fun splashNavigation(coroutineScope: CoroutineScope, navController: NavController) {

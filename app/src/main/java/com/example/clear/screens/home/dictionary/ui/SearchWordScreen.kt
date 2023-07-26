@@ -26,10 +26,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,26 +40,33 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.airbnb.lottie.LottieComposition
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.clear.R
 import com.example.clear.data.DataOrException
 import com.example.clear.room.model.Dictionary
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.TextWhite
+import com.example.clear.utils.commonComponents.AnimatedLottie
 import com.example.clear.utils.commonComponents.ShimmerAnimation
 import com.example.clear.utils.fonts.FontFamilyClear
 import java.lang.Exception
 
-// for now take up a random word and print its details then go for a word that is not in api and handle it
+
 @Composable
 fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewModel) {
+
+
 
     val searchWord = viewModel.searchWord.observeAsState().value
 
     val isSaved = remember{
         mutableStateOf(false)
     }
-    val context  = LocalContext.current
 
     val wordData = produceState<DataOrException<List<WordInfoDto> , Boolean , Exception>>(
         initialValue = DataOrException(loading = true  )
@@ -78,7 +87,7 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp)){
-                item { SearchWordHeader(isSaved = isSaved  ) }
+                item { SearchWordHeader(isSaved = isSaved  , navController = navController ) }
                 item { Spacer(modifier = Modifier.size(10.dp)) }
                 item {  Word(wordInfoDto =wordData?.data  , isSaved = isSaved , viewModel = viewModel) }
     }
@@ -89,26 +98,33 @@ fun SearchWordScreen(navController: NavController , viewModel: DictionaryViewMod
                 .fillMaxSize()
                 .background(DeepBlue)
         ) {
-            Column() {
+            Column(modifier = Modifier.fillMaxSize() , verticalArrangement = Arrangement.Center , horizontalAlignment = Alignment.CenterHorizontally) {
+               AnimatedLottie(animationRes = R.raw.not_found)
                 Text(
                     text = "NO SUCH WORD EXISTS IN THE DATABASE ",
                     style = TextStyle(
                         color = Color.White,
                         fontFamily = FontFamilyClear.fontMedium,
                         fontSize = 30.sp
-                    )
+                    ) , modifier = Modifier.padding(10.dp)
                 )
             }
         }
     }
 }
 
+
+
 @Composable
-fun SearchWordHeader(isSaved : MutableState<Boolean>){
+fun SearchWordHeader(isSaved : MutableState<Boolean> , navController: NavController){
 Row(modifier = Modifier.fillMaxWidth() , verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween) {
  Row(verticalAlignment = Alignment.CenterVertically , horizontalArrangement = Arrangement.SpaceBetween , modifier = Modifier.fillMaxSize()) {
 Row(verticalAlignment = Alignment.CenterVertically) {
-    Icon(imageVector = Icons.Filled.ArrowBackIos, contentDescription = "back_arrow", tint = Color.White , modifier = Modifier.size(30.dp))
+    Icon(imageVector = Icons.Filled.ArrowBackIos, contentDescription = "back_arrow", tint = Color.White , modifier = Modifier
+        .size(30.dp)
+        .clickable {
+            navController.popBackStack()
+        })
     Text(text = "Search" , style = TextStyle(fontSize = 20.sp , fontFamily = FontFamilyClear.fontMedium , color = TextWhite))
 }
      Row(verticalAlignment = Alignment.CenterVertically) {
@@ -123,7 +139,6 @@ Row(verticalAlignment = Alignment.CenterVertically) {
          )
      }
  }
-    
 }
 }
 
