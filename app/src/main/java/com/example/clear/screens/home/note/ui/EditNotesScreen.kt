@@ -113,7 +113,7 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                      Toast.makeText(context , "update" , Toast.LENGTH_SHORT).show()
                      navController.popBackStack()
                  }
-                    else Toast.makeText(context , "Empty feilds ", Toast.LENGTH_SHORT).show()
+                    else Toast.makeText(context , "Empty fields ", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -132,7 +132,6 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                             .wrapContentHeight(),
                     )
                 }
-                //content
                 item {
                     CreateNoteContent(
                         content = editContent,
@@ -144,8 +143,6 @@ fun EditNotesScreen(navController: NavController , noteViewModel: NoteViewModel 
                             .weight(1f),
                     )
 
-                    //create bottom bar of colors that change background color and depending on it changes create note color
-                    //  ChooseColor()
                 }
             }
 
@@ -173,11 +170,8 @@ fun EditNoteContent(content : MutableState<String> , placeHolder : String , font
                 )
             )
         },
-//        keyboardOptions = KeyboardOptions.Default.copy(
-//            imeAction = ImeAction.Go
-//        ),
+
         keyboardActions = KeyboardActions(onDone = {
-//            onImeAction()
             keyboardController?.hide()
         }),
         colors = TextFieldDefaults.textFieldColors(

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Divider
@@ -43,10 +44,15 @@ import com.example.clear.room.model.Dictionary
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DarkGray
 import com.example.clear.ui.theme.DeepBlue
+import com.example.clear.ui.theme.Purple80
+import com.example.clear.ui.theme.RedPink
 import com.example.clear.ui.theme.TextWhite
 import com.example.clear.utils.commonComponents.CircularButton
 import com.example.clear.utils.commonComponents.ShowAlertDialogBox
+import com.example.clear.utils.commonComponents.bounceClick
 import com.example.clear.utils.fonts.FontFamilyClear
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -195,7 +201,7 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                     item { Divider() }
                     item { Spacer(modifier = Modifier.size(10.dp)) }
                     items(savedWordList){
-                        SavedWordCard(word = it){
+                        SavedWordCard(word = it , viewModel =  dictionaryViewModel){
                             if (it.wordName.trim().isNotEmpty()) {
                                 dictionaryViewModel.setSearchWord(
                                     it.wordName.trim()
@@ -210,6 +216,10 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                             } else return@SavedWordCard
                         }
                     }
+                    item{
+                        Spacer(modifier = Modifier.size(80.dp ))
+                    }
+
 
                 }
             }
@@ -259,27 +269,48 @@ fun isWordInList(wordList: List<Dictionary>, word: Dictionary): Boolean {
 }
 
 @Composable
-fun SavedWordCard(word: Dictionary , onclick: () -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp).clickable { onclick.invoke() }
-    ) {
-        Text(
-            text = word.wordName,
-            style = TextStyle(
-                fontSize = 20.sp,
-                fontFamily = FontFamilyClear.fontRegular,
-                color = TextWhite
+fun SavedWordCard(word: Dictionary ,viewModel: DictionaryViewModel, onclick: () -> Unit) {
+
+    val delete = SwipeAction(
+        onSwipe = {
+            viewModel.deleteSavedWord(word)
+        },
+        icon = {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                contentDescription = "icon",
+                tint = Color.White,
+                modifier = Modifier.padding(0.dp)
             )
-        )
-        Icon(
-            imageVector = Icons.Default.Bookmark,
-            contentDescription = "bookmark_icon",
-            tint = Color.White
-        )
+        },
+        background = RedPink
+
+    )
+    SwipeableActionsBox(endActions = listOf(delete), swipeThreshold = 100.dp) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth().bounceClick()
+                .padding(5.dp).clickable {
+                    onclick.invoke()
+                }
+        ) {
+            Text(
+                text = word.wordName,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontFamily = FontFamilyClear.fontRegular,
+                    color = TextWhite
+                ), modifier = Modifier
+            )
+            Icon(
+                imageVector = Icons.Default.Bookmark,
+                contentDescription = "bookmark_icon",
+                tint = Color.White,
+                modifier = Modifier
+            )
+        }
     }
 }
 

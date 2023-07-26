@@ -3,6 +3,7 @@ package com.example.clear.screens.home.note.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,7 @@ import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedOrange
 import com.example.clear.ui.theme.RedPink
 import com.example.clear.ui.theme.TextWhite
+import com.example.clear.utils.commonComponents.bounceClick
 import com.example.clear.utils.fonts.FontFamilyClear
 import dagger.hilt.android.lifecycle.HiltViewModel
 import me.saket.swipe.SwipeAction
@@ -162,7 +164,12 @@ fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
                 .background(Color(note.color))
                 .height(200.dp)
                 .padding(10.dp)
-                .clickable { onclick.invoke() }
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    onclick.invoke()
+                }
         ) {
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -178,7 +185,6 @@ fun NotesCard(note : Note , viewModel: NoteViewModel , onclick: () -> Unit){
                             color = TextWhite
                         )
                     )
-//                    ShowEllipseContent(content = note.content)
                     EllipsizeText(text = note.content)
                 }
                 Row(modifier = Modifier
@@ -277,7 +283,10 @@ fun ColorCircle(color : Color , onClick : () -> Unit){
         .border(2.dp, Color.Black, CircleShape)
         .background(color = color, shape = CircleShape)
         .aspectRatio(1f)
-        .clickable {
+        .clickable(
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() }
+        ) {
             onClick.invoke()
         }
     )

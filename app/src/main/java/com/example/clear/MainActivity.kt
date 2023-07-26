@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ClearTheme {
-//            HomeScreen()
                 RootNavGraph(navController = rememberNavController())
             }
         }

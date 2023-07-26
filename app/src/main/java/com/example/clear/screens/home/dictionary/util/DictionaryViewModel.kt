@@ -85,11 +85,12 @@ class DictionaryViewModel @Inject constructor(private val repository: Dictionary
 
 
 
-    fun deleteSavedWord(word: List<Dictionary>)=viewModelScope.launch {
+    fun deleteSavedWord(word: Dictionary)=viewModelScope.launch {
         repository.deleteWord(word = word)
+        _savedWordList.value = _savedWordList.value - word
     }
 
-    fun deleteSearchedWord(word:List<Dictionary>)  = viewModelScope.launch {
+    fun deleteSearchedWord(word:Dictionary)  = viewModelScope.launch {
         repository.deleteWord(word = word)
     }
 
