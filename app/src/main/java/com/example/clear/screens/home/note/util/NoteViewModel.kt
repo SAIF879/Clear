@@ -66,5 +66,14 @@ class NoteViewModel @Inject constructor(private val notesRepository: NoteReposit
         return notesRepository.getNoteById(noteId = noteId)
     }
 
+    //  fun clearCompletedTodoList() = viewModelScope.launch {
+    //        todoRepository.clearCompletedTodo()
+    //        todoRepository.getCompletedTodo().distinctUntilChanged().collect{
+    //            _completedTodoList.value = it
+    //        }
+    //    }
+
+
+
 
 }

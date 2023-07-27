@@ -198,8 +198,6 @@ fun ChosenColor(modifier: Modifier, onSelectColor: (Color) -> Unit) {
         }
     }
 }
-
-
 @Composable
 fun CreateNoteContent(
     content: MutableState<String>,

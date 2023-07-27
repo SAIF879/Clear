@@ -1,6 +1,7 @@
 package com.example.clear.room.model
 
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -26,6 +27,8 @@ data class Note(
     @ColumnInfo(name = "note_color")
     val color : Int  ,
 
+    @ColumnInfo(name = "note_img")
+    val image : List<Uri?> = emptyList()
 ){
     companion object{
        val noteColors = listOf(RedOrange , LightGreen , Violet , BabyBlue , RedPink)

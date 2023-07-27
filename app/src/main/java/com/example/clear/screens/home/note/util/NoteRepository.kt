@@ -17,7 +17,7 @@ class NoteRepository @Inject constructor(private val noteDataBaseDao: NoteDataBa
 
     suspend fun deleteNote(note:Note) = noteDataBaseDao.deleteNote(note)
 
-    suspend fun clearAllNoteS() = noteDataBaseDao.clearNotes()
+    suspend fun clearAllNotes() = noteDataBaseDao.clearNotes()
 
     suspend fun getNoteById(noteId : UUID?) : Note?{
         return noteDataBaseDao.getNoteById(id = noteId)

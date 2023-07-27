@@ -29,6 +29,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -77,14 +78,14 @@ fun CreateNotesScreen(
     
     StatusBarColor(color = noteBackgroundAnimatable.value)
 
-    var selectImageUris by remember {
+    var selectImageUris by rememberSaveable {
         mutableStateOf<List<Uri?>>(emptyList())
     }
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uri ->
-            selectImageUris = uri
+            selectImageUris = selectImageUris + uri
         }
     )
 
@@ -111,11 +112,13 @@ fun CreateNotesScreen(
                             Note(
                                 title = inputTitle.value,
                                 content = inputNote.value,
-                                color = selectedColor.value.toArgb()
+                                color = selectedColor.value.toArgb(),
+                                image = selectImageUris
                             )
                         )
                         inputTitle.value = ""
                         inputNote.value = ""
+                        selectImageUris = emptyList()
                         navController.popBackStack()
 
                     }
@@ -160,9 +163,11 @@ fun CreateNotesScreen(
                     .height(250.dp)
                     .padding(20.dp)
             ) {
-                items(selectImageUris){
-                    ImageCard(selectedImageUri = it)
-                    Spacer(modifier = Modifier.size(30.dp))
+                items(selectImageUris){imageUri ->
+                    imageUri.let { uri->
+                        ImageCard(selectedImageUri = uri)
+                        Spacer(modifier = Modifier.size(30.dp))
+                    }
                 }
                 item {
                    AddImageButton(icon = Icons.Filled.Image){
