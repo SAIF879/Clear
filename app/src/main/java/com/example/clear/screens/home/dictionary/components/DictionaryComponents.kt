@@ -33,10 +33,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.clear.R
 import com.example.clear.room.model.Dictionary
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
@@ -108,7 +110,7 @@ fun DictionaryHeader(savedWordList: List<Dictionary>, onclick: () -> Unit) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Saved\nWords(${savedWordList.size})",
+            text = stringResource(id = R.string.dictionary_heading)+"(${savedWordList.size})",
             style = TextStyle(
                 fontFamily = FontFamilyClear.fontMedium,
                 fontSize = 30.sp,
@@ -170,9 +172,11 @@ fun WordName(word: String? , onclick: () -> Unit) {
             imageVector = Icons.Filled.VolumeUp,
             contentDescription = "speech_icon",
             tint = Color.White,
-            modifier = Modifier.size(30.dp).clickable{
-                onclick.invoke()
-            }
+            modifier = Modifier
+                .size(30.dp)
+                .clickable {
+                    onclick.invoke()
+                }
         )
     }
 }

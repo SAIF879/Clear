@@ -9,7 +9,7 @@ import com.example.clear.room.dao.TodoDataBaseDao
 import com.example.clear.room.model.Dictionary
 import com.example.clear.room.model.Note
 import com.example.clear.room.model.Todo
-import com.example.clear.room.model.UriListConverter
+import com.example.clear.room.model.convertor.UriListConverter
 
 @Database(entities = [Note::class , Todo::class , Dictionary::class] , version = 10 , exportSchema = false)
 @TypeConverters(UriListConverter::class) // Add the UriListConverter here

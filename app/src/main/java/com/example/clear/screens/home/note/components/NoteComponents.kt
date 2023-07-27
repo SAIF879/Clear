@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.clear.R
 import com.example.clear.room.model.Note
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.LightRed
@@ -317,8 +319,8 @@ fun localGreeting() : String{
 
     return when(timeFormat.format(currentTime).toInt()){
         in 0..11 -> "Good Morning"
-        in 12..16 -> "Good AfterNoon"
-        in 17..20 -> "Good Evening"
+        in 12..16 -> "Good Afternoon"
+        in 17..20 -> "Good Night"
         else -> "Good Night"
     }
 }

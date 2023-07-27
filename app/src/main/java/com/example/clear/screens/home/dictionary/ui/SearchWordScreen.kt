@@ -16,6 +16,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.clear.R
@@ -55,7 +56,7 @@ fun SearchWordScreen(navController: NavController, viewModel: DictionaryViewMode
         NoDataFound(
             navController = navController,
             animatedRes =R.raw.no_internet,
-            text = "Kindly ensure your internet connection is active, and then try again."
+            text = stringResource(id = R.string.no_internet_connection)
         )
     } else {
 
@@ -95,7 +96,7 @@ fun SearchWordScreen(navController: NavController, viewModel: DictionaryViewMode
             NoDataFound(
                 navController = navController ,
                 animatedRes = R.raw.not_found ,
-                text = "No Such Word Exists in the DataBase"
+                text = stringResource(id = R.string.no_word_database)
             )
         }
     }

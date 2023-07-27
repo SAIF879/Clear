@@ -29,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -106,7 +107,7 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
-                        text = "Search..",
+                        text = stringResource(id = R.string.search_placeholder),
                         style = TextStyle(
                             fontSize = 18.sp,
                             fontFamily = FontFamilyClear.fontRegular,
@@ -197,7 +198,7 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                         if (savedWordList.isEmpty()) {
                          item{   ShowEmptyAnimation(
                                 animatedRes = R.raw.saved_words,
-                                text = "Access your archived vocabulary."
+                                text = stringResource(id = R.string.no_saved_word)
                             )
                          }
                         } else {
@@ -225,7 +226,6 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                         item {
                             Spacer(modifier = Modifier.size(80.dp))
                         }
-
                     }}
                 }
             }

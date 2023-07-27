@@ -2,5 +2,15 @@
     <string name="app_name">Clear</string>
     <string name="splash_heading">Clear..</string>
     <string name="welcome">Welcome To \n Clear</string>
-    <string name="caution">Please Be Mindful Of \nOther People\'s Privacy \nWhen Recording. </string>
+    <string name="notes_heading">My\nNotes</string>
+    <string name="no_notes">Currently, no notes are available for display.</string>
+    <string name="no_todo">"No Due Tasks to Look At"</string>
+    <string name="no_completed_todo">Add and Complete More Tasks</string>
+    <string name="completed_heading">Completed\nTasks</string>
+    <string name="back_completed_text">Todo</string>
+    <string name="dictionary_heading">Saved\nWords</string>
+    <string name="search_placeholder">Search..</string>
+    <string name="no_saved_word">"Access your archived vocabulary."</string>
+    <string name="no_word_database">No Such Word Exists in the DataBase</string>
+    <string name="no_internet_connection">Kindly ensure your internet connection is active, and then try again.</string>
 </resources>

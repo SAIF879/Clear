@@ -1,4 +1,4 @@
-package com.example.clear.room.model
+package com.example.clear.room.model.convertor
 
 import android.net.Uri
 import androidx.room.TypeConverter

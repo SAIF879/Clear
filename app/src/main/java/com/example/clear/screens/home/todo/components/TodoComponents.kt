@@ -29,10 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.clear.R
 import com.example.clear.room.model.Todo
 import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.LightGreen2
@@ -254,7 +256,7 @@ fun CompletedTodoHeader(onClick: () -> Unit) {
                     .size(30.dp)
                     .clickable { onClick.invoke() })
             Text(
-                text = "Todo",
+                text = stringResource(id = R.string.back_completed_text) ,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontFamily = FontFamilyClear.fontMedium,

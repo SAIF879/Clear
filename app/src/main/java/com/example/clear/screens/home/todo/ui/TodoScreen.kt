@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -74,7 +75,7 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel(), navController: Na
 
 
             if (todoList.isEmpty()) {
-                ShowEmptyAnimation(animatedRes = R.raw.no_todo, text = "No Due Tasks to Look At")
+                ShowEmptyAnimation(animatedRes = R.raw.no_todo, text = stringResource(id = R.string.no_todo))
             } else {
                 LazyColumn(
                     verticalArrangement = Arrangement.Center,

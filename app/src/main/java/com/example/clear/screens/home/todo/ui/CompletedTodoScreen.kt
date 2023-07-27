@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -54,9 +55,8 @@ fun CompletedTodoScreen(
         ) {
             CompletedTodoHeader { navController.popBackStack() }
             Spacer(modifier = Modifier.size(30.dp))
-            CompletedTaskHeadline(heading = "Completed\nTasks (${completedTodoList.size})") {
+            CompletedTaskHeadline(heading = stringResource(id = R.string.completed_heading) + "(${completedTodoList.size})") {
                 showDialogBox.value = true
-                Log.d("DONE", "CompletedTodoScreen: $showDialogBox")
             }
 
             ShowAlertDialogBox(
@@ -74,7 +74,7 @@ fun CompletedTodoScreen(
             if (completedTodoList.isEmpty()) {
                 ShowEmptyAnimation(
                     animatedRes = R.raw.no_todo,
-                    text = "Add and Complete More Tasks"
+                    text = stringResource(id = R.string.no_completed_todo)
                 )
             }
                 else {

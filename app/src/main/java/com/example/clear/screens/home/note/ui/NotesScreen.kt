@@ -22,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,7 +67,7 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel ) {
                 }
             }
             Text(
-                text = "My\nNotes",
+                text = stringResource(id = R.string.notes_heading),
                 style = TextStyle(
                     fontFamily = FontFamilyClear.fontMedium,
                     fontSize = 50.sp,
@@ -77,7 +78,7 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel ) {
             if (noteList.isEmpty()) {
                 ShowEmptyAnimation(
                     animatedRes = R.raw.empty_list,
-                    text = "Currently, no notes are available for display."
+                    text = stringResource(id = R.string.no_notes)
                 )
             } else {
                 LazyColumn(
