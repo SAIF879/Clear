@@ -11,7 +11,7 @@ fun RootNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         route = NavGraphs.Root,
-        startDestination = NavGraphs.Splash
+        startDestination = NavGraphs.Bottom
     ) {
         splashNavGraph(navController)
         introductionNavGraph(navController)

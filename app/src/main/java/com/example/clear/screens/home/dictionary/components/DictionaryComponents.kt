@@ -213,58 +213,6 @@ fun WordCard(
 }
 
 @Composable
-fun NoDataFound(navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(DeepBlue)
-            .padding(10.dp)
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBackIos,
-                    contentDescription = "back_arrow",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clickable(
-
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-
-                        ) {
-                            navController.popBackStack()
-                        })
-                Spacer(modifier = Modifier.size(5.dp))
-                Text(
-                    text = "Search",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        fontFamily = FontFamilyClear.fontMedium,
-                        color = TextWhite
-                    )
-                )
-            }
-
-
-            AnimatedLottie(animationRes = R.raw.not_found)
-            Text(
-                text = "NO SUCH WORD EXISTS IN THE DATABASE ",
-                style = TextStyle(
-                    color = Color.White,
-                    fontFamily = FontFamilyClear.fontMedium,
-                    fontSize = 22.sp
-                ), modifier = Modifier.padding(10.dp)
-            )
-        }
-    }
-}
-
-@Composable
 fun SearchWordHeader(isSaved: MutableState<Boolean>, navController: NavController) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -312,6 +260,59 @@ fun SearchWordHeader(isSaved: MutableState<Boolean>, navController: NavControlle
         }
     }
 }
+
+@Composable
+fun NoDataFound(navController: NavController ,animatedRes : Int , text : String ) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DeepBlue)
+            .padding(10.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBackIos,
+                    contentDescription = "back_arrow",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clickable(
+
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+
+                        ) {
+                            navController.popBackStack()
+                        })
+                Spacer(modifier = Modifier.size(5.dp))
+                Text(
+                    text = "Search",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontFamily = FontFamilyClear.fontMedium,
+                        color = TextWhite
+                    )
+                )
+            }
+
+
+            AnimatedLottie(animationRes = animatedRes )
+            Text(
+                text = text,
+                style = TextStyle(
+                    color = Color.White,
+                    fontFamily = FontFamilyClear.fontMedium,
+                    fontSize = 22.sp
+                ), modifier = Modifier.padding(10.dp)
+            )
+        }
+    }
+}
+
 
 fun isWordInList(wordList: List<Dictionary>, word: Dictionary): Boolean {
     return wordList.any { it.wordName == word.wordName }

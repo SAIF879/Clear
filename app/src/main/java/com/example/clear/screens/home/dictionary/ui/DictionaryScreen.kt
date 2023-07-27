@@ -33,6 +33,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.clear.R
 import com.example.clear.navigation.NavGraphs
 import com.example.clear.room.model.Dictionary
 import com.example.clear.screens.home.dictionary.components.DictionaryHeader
@@ -43,13 +44,13 @@ import com.example.clear.screens.home.dictionary.components.isWordInList
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.utils.commonComponents.ShowAlertDialogBox
+import com.example.clear.utils.commonComponents.ShowEmptyAnimation
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DictionaryScreen(navController: NavController, dictionaryViewModel : DictionaryViewModel ) {
-
 
 
     val text = remember {
@@ -60,14 +61,13 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
         mutableStateOf(false)
     }
 
-    val showDeleteAlertBox = remember{
+    val showDeleteAlertBox = remember {
         mutableStateOf(false)
     }
 
-    val showDialogBox = remember{
+    val showDialogBox = remember {
         mutableStateOf(false)
     }
-
 
 
     val searchedWordList = dictionaryViewModel.searchedList.collectAsState().value
@@ -175,54 +175,62 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                     .fillMaxSize()
                     .background(DeepBlue)
             ) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    item {
-                        DictionaryHeader(savedWordList) {
-                            showDeleteAlertBox.value = true
-                        }
-                        ShowAlertDialogBox(
-                            showDialogBox = showDeleteAlertBox,
-                            title = "Delete All Saved Words?",
-                            content = "Are you sure you want to Delete all saved words ?",
-                            confirmText = "Delete",
-                            cancelString = "Cancel"
-                        ) {
-                            dictionaryViewModel.clearSavedWord()
-                            showDeleteAlertBox.value = false
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        item {
+                            DictionaryHeader(savedWordList) {
+                                showDeleteAlertBox.value = true
+                            }
+                            ShowAlertDialogBox(
+                                showDialogBox = showDeleteAlertBox,
+                                title = "Delete All Saved Words?",
+                                content = "Are you sure you want to Delete all saved words ?",
+                                confirmText = "Delete",
+                                cancelString = "Cancel"
+                            ) {
+                                dictionaryViewModel.clearSavedWord()
+                                showDeleteAlertBox.value = false
 
+                            }
                         }
-                    }
-                    item { Divider() }
-                    item { Spacer(modifier = Modifier.size(10.dp)) }
-                    items(savedWordList) {
-                        SavedWordCard(word = it, viewModel = dictionaryViewModel) {
-                            if (it.wordName.trim().isNotEmpty()) {
-                                dictionaryViewModel.setSearchWord(
-                                    it.wordName.trim()
-                                )
-                                val addWord = Dictionary(
-                                    wordName = it.wordName,
-                                    isSearched = true,
-                                    isSaved = true
-                                )
-                                if (!isWordInList(searchedWordList, addWord)) {
-                                    dictionaryViewModel.addSearchedWord(
-                                        addWord,
+                        item { Divider() }
+                        item { Spacer(modifier = Modifier.size(10.dp)) }
+                        if (savedWordList.isEmpty()) {
+                         item{   ShowEmptyAnimation(
+                                animatedRes = R.raw.saved_words,
+                                text = "Access your archived vocabulary."
+                            )}
+                        } else {
+
+                        items(savedWordList) {
+                            SavedWordCard(word = it, viewModel = dictionaryViewModel) {
+                                if (it.wordName.trim().isNotEmpty()) {
+                                    dictionaryViewModel.setSearchWord(
+                                        it.wordName.trim()
                                     )
-                                }
-                                navController.navigate(NavGraphs.Dictionary)
-                            } else return@SavedWordCard
+                                    val addWord = Dictionary(
+                                        wordName = it.wordName,
+                                        isSearched = true,
+                                        isSaved = true
+                                    )
+                                    if (!isWordInList(searchedWordList, addWord)) {
+                                        dictionaryViewModel.addSearchedWord(
+                                            addWord,
+                                        )
+                                    }
+                                    navController.navigate(NavGraphs.Dictionary)
+                                } else return@SavedWordCard
+                            }
                         }
-                    }
-                    item {
-                        Spacer(modifier = Modifier.size(80.dp))
-                    }
+                        item {
+                            Spacer(modifier = Modifier.size(80.dp))
+                        }
 
+                    }}
                 }
             }
         }
     }
-}
+
 
 
 

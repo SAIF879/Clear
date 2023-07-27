@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.clear.R
 import com.example.clear.navigation.NavGraphs
 import com.example.clear.room.model.Todo
 import com.example.clear.screens.home.todo.components.CreateTodo
@@ -30,6 +31,7 @@ import com.example.clear.screens.home.todo.components.TodoCard
 import com.example.clear.screens.home.todo.components.TodoHeader
 import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.DeepBlue
+import com.example.clear.utils.commonComponents.ShowEmptyAnimation
 import com.example.clear.utils.commonComponents.StatusBarColor
 
 
@@ -40,7 +42,7 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel(), navController: Na
     }
     StatusBarColor(color = DeepBlue)
     val context = LocalContext.current
-    val list = todoViewModel.todoList.collectAsState().value
+    val todoList = todoViewModel.todoList.collectAsState().value
     val timestamp = System.currentTimeMillis()
     Box(
         modifier = Modifier
@@ -69,20 +71,26 @@ fun TodoScreen(todoViewModel: TodoViewModel = hiltViewModel(), navController: Na
                 }
             }
             Spacer(modifier = Modifier.size(20.dp))
-            LazyColumn(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(list) { todo ->
-                    TodoCard(task = todo)
-                    Spacer(modifier = Modifier.size(20.dp))
-                }
-                item {
-                    Spacer(modifier = Modifier.size(80.dp))
-                }
-            }
 
+
+            if (todoList.isEmpty()) {
+                ShowEmptyAnimation(animatedRes = R.raw.no_todo, text = "No Due Tasks to Look At")
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(todoList) { todo ->
+                        TodoCard(task = todo)
+                        Spacer(modifier = Modifier.size(20.dp))
+                    }
+                    item {
+                        Spacer(modifier = Modifier.size(80.dp))
+                    }
+                }
+
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.clear.R
 import com.example.clear.navigation.NavGraphs
 import com.example.clear.navigation.NoteScreens
 import com.example.clear.screens.home.note.components.LocalGreeting
@@ -33,6 +34,7 @@ import com.example.clear.screens.home.note.components.NotesCard
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.utils.commonComponents.CircularButton
+import com.example.clear.utils.commonComponents.ShowEmptyAnimation
 import com.example.clear.utils.commonComponents.StatusBarColor
 import com.example.clear.utils.fonts.FontFamilyClear
 
@@ -59,9 +61,9 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel ) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 LocalGreeting()
-                CircularButton(icon =Icons.Filled.Add) {
+                CircularButton(icon = Icons.Filled.Add) {
                     navController.navigate(NavGraphs.Note)
-               }
+                }
             }
             Text(
                 text = "My\nNotes",
@@ -72,35 +74,41 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel ) {
                 ), modifier = Modifier.padding(5.dp)
             )
 
-            LazyColumn(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(0.dp)
-                    )
-                }
-                items(noteList){
-                    NotesCard(note = it, viewModel =noteViewModel ) {
-                        noteViewModel.getNoteId(it.id)
-                        navController.navigate(NoteScreens.EditNotesScreen.route)
+            if (noteList.isEmpty()) {
+            ShowEmptyAnimation(animatedRes = R.raw.empty_list, text = "Currently, no notes are available for display." )
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    item {
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(0.dp)
+                        )
                     }
-                    Spacer(modifier = Modifier.size(5.dp))
+                    items(noteList) {
+                        NotesCard(note = it, viewModel = noteViewModel) {
+                            noteViewModel.getNoteId(it.id)
+                            navController.navigate(NoteScreens.EditNotesScreen.route)
+                        }
+                        Spacer(modifier = Modifier.size(5.dp))
+                    }
+                    item {
+                        Spacer(modifier = Modifier.size(80.dp))
+                    }
+
                 }
-                item{
-                    Spacer(modifier = Modifier.size(80.dp))
-                }
+
 
             }
-
-
         }
     }
 }
+
+
 
 
 

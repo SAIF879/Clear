@@ -22,12 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.clear.R
 import com.example.clear.screens.home.todo.components.CompletedTaskCard
 import com.example.clear.screens.home.todo.components.CompletedTaskHeadline
 import com.example.clear.screens.home.todo.components.CompletedTodoHeader
 import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.utils.commonComponents.ShowAlertDialogBox
+import com.example.clear.utils.commonComponents.ShowEmptyAnimation
 import com.example.clear.utils.commonComponents.StatusBarColor
 
 @Composable
@@ -35,7 +37,7 @@ fun CompletedTodoScreen(
     navController: NavController,
     todoViewModel: TodoViewModel = hiltViewModel()
 ) {
-    val list = todoViewModel.completedTodoList.collectAsState().value
+    val completedTodoList = todoViewModel.completedTodoList.collectAsState().value
     val showDialogBox = remember { mutableStateOf(false) }
 
     StatusBarColor(color = DeepBlue)
@@ -52,7 +54,7 @@ fun CompletedTodoScreen(
         ) {
             CompletedTodoHeader { navController.popBackStack() }
             Spacer(modifier = Modifier.size(30.dp))
-            CompletedTaskHeadline(heading = "Completed\nTasks (${list.size})") {
+            CompletedTaskHeadline(heading = "Completed\nTasks (${completedTodoList.size})") {
                 showDialogBox.value = true
                 Log.d("DONE", "CompletedTodoScreen: $showDialogBox")
             }
@@ -69,20 +71,26 @@ fun CompletedTodoScreen(
             }
             Divider()
             Spacer(modifier = Modifier.size(15.dp))
-            LazyColumn(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(list) { todo ->
-                    CompletedTaskCard(task = todo)
-                    Spacer(modifier = Modifier.size(20.dp))
-                }
+            if (completedTodoList.isEmpty()) {
+                ShowEmptyAnimation(
+                    animatedRes = R.raw.no_todo,
+                    text = "Add and Complete More Tasks"
+                )
+                LazyColumn(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(completedTodoList) { todo ->
+                        CompletedTaskCard(task = todo)
+                        Spacer(modifier = Modifier.size(20.dp))
+                    }
 
-                item {
-                    Spacer(modifier = Modifier.size(80.dp))
-                }
+                    item {
+                        Spacer(modifier = Modifier.size(80.dp))
+                    }
 
+                }
             }
         }
     }
