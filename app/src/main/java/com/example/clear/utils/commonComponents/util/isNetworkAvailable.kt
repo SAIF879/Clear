@@ -1,4 +1,4 @@
-package com.example.clear.utils.commonComponents
+package com.example.clear.utils.commonComponents.util
 
 import android.content.Context
 import android.net.ConnectivityManager

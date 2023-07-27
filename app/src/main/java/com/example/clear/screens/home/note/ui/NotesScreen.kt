@@ -33,9 +33,9 @@ import com.example.clear.screens.home.note.components.LocalGreeting
 import com.example.clear.screens.home.note.components.NotesCard
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.DeepBlue
-import com.example.clear.utils.commonComponents.CircularButton
-import com.example.clear.utils.commonComponents.ShowEmptyAnimation
-import com.example.clear.utils.commonComponents.StatusBarColor
+import com.example.clear.utils.commonComponents.ui.CircularButton
+import com.example.clear.utils.commonComponents.ui.ShowEmptyAnimation
+import com.example.clear.utils.commonComponents.ui.StatusBarColor
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @Composable

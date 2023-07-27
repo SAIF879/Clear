@@ -31,8 +31,8 @@ import com.example.clear.screens.home.todo.components.TodoCard
 import com.example.clear.screens.home.todo.components.TodoHeader
 import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.DeepBlue
-import com.example.clear.utils.commonComponents.ShowEmptyAnimation
-import com.example.clear.utils.commonComponents.StatusBarColor
+import com.example.clear.utils.commonComponents.ui.ShowEmptyAnimation
+import com.example.clear.utils.commonComponents.ui.StatusBarColor
 
 
 @Composable

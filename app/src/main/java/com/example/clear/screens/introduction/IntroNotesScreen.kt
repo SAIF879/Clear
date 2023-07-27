@@ -27,8 +27,8 @@ import com.example.clear.screens.introduction.components.SubContentIntro
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedPink
-import com.example.clear.utils.commonComponents.ClearButton
-import com.example.clear.utils.commonComponents.StatusBarColor
+import com.example.clear.utils.commonComponents.ui.ClearButton
+import com.example.clear.utils.commonComponents.ui.StatusBarColor
 
 @Composable
 fun IntroNotesScreen(navController: NavController) {

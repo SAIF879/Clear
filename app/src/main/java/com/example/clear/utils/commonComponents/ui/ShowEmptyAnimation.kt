@@ -1,4 +1,4 @@
-package com.example.clear.utils.commonComponents
+package com.example.clear.utils.commonComponents.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.example.clear.utils.commonComponents.ui.AnimatedLottie
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @Composable

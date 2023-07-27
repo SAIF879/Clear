@@ -39,7 +39,7 @@ import com.example.clear.ui.theme.LightGreen2
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedOrange
 import com.example.clear.ui.theme.TextWhite
-import com.example.clear.utils.commonComponents.CircularButton
+import com.example.clear.utils.commonComponents.ui.CircularButton
 import com.example.clear.utils.fonts.FontFamilyClear
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox

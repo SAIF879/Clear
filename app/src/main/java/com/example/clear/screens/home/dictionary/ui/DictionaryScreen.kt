@@ -43,8 +43,8 @@ import com.example.clear.screens.home.dictionary.components.SearchedWordCard
 import com.example.clear.screens.home.dictionary.components.isWordInList
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
 import com.example.clear.ui.theme.DeepBlue
-import com.example.clear.utils.commonComponents.ShowAlertDialogBox
-import com.example.clear.utils.commonComponents.ShowEmptyAnimation
+import com.example.clear.utils.commonComponents.ui.ShowAlertDialogBox
+import com.example.clear.utils.commonComponents.ui.ShowEmptyAnimation
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -198,7 +198,8 @@ fun DictionaryScreen(navController: NavController, dictionaryViewModel : Diction
                          item{   ShowEmptyAnimation(
                                 animatedRes = R.raw.saved_words,
                                 text = "Access your archived vocabulary."
-                            )}
+                            )
+                         }
                         } else {
 
                         items(savedWordList) {

@@ -1,4 +1,4 @@
-package com.example.clear.utils.commonComponents
+package com.example.clear.utils.commonComponents.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

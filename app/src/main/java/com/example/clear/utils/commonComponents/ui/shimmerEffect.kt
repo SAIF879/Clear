@@ -1,4 +1,4 @@
-package com.example.clear.utils.commonComponents
+package com.example.clear.utils.commonComponents.ui
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat

@@ -1,5 +1,6 @@
 package com.example.clear.screens.home.dictionary.components
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -19,21 +20,23 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.outlined.Remove
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.clear.R
 import com.example.clear.room.model.Dictionary
 import com.example.clear.screens.home.dictionary.data.WordInfoDto
 import com.example.clear.screens.home.dictionary.util.DictionaryViewModel
@@ -41,9 +44,10 @@ import com.example.clear.ui.theme.DarkGray
 import com.example.clear.ui.theme.DeepBlue
 import com.example.clear.ui.theme.RedPink
 import com.example.clear.ui.theme.TextWhite
-import com.example.clear.utils.commonComponents.AnimatedLottie
-import com.example.clear.utils.commonComponents.CircularButton
-import com.example.clear.utils.commonComponents.bounceClick
+import com.example.clear.utils.commonComponents.ui.AnimatedLottie
+import com.example.clear.utils.commonComponents.ui.CircularButton
+import com.example.clear.utils.commonComponents.util.TextToSpeechHelper
+import com.example.clear.utils.commonComponents.util.bounceClick
 import com.example.clear.utils.fonts.FontFamilyClear
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -71,8 +75,10 @@ fun SavedWordCard(word: Dictionary, viewModel: DictionaryViewModel, onclick: () 
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .fillMaxWidth().bounceClick()
-                .padding(5.dp).clickable {
+                .fillMaxWidth()
+                .bounceClick()
+                .padding(5.dp)
+                .clickable {
                     onclick.invoke()
                 }
         ) {
@@ -149,7 +155,7 @@ fun RemoveSearchHistory(text: String, onclick: () -> Unit) {
 }
 
 @Composable
-fun WordName(word: String?) {
+fun WordName(word: String? , onclick: () -> Unit) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = word.toString(),
@@ -160,6 +166,14 @@ fun WordName(word: String?) {
             )
         )
         Spacer(modifier = Modifier.size(10.dp))
+        Icon(
+            imageVector = Icons.Filled.VolumeUp,
+            contentDescription = "speech_icon",
+            tint = Color.White,
+            modifier = Modifier.size(30.dp).clickable{
+                onclick.invoke()
+            }
+        )
     }
 }
 
@@ -182,12 +196,19 @@ fun PartOfSpeech(word: String?) {
 fun WordCard(
     wordInfoDto: List<WordInfoDto>?,
     isSaved: MutableState<Boolean>,
-    viewModel: DictionaryViewModel
+    viewModel: DictionaryViewModel,
+    context : Context
 ) {
+    val textToSpeechHelper = remember {
+        TextToSpeechHelper(context) { }
+    }
     Column {
         wordInfoDto?.forEach { wordData ->
             Spacer(modifier = Modifier.size(10.dp))
-            WordName(word = wordData.word ?: "No Such Word Present")
+            WordName(word = wordData.word ?: "No Such Word Present"){
+                // here implememnt the text to speech , ie name should have a speech on click of this icon
+                textToSpeechHelper.speak(wordData.word ?: "")
+            }
 
             if (isSaved.value) viewModel.addSavedWord(
                 Dictionary(
@@ -207,8 +228,11 @@ fun WordCard(
             Spacer(modifier = Modifier.size(20.dp))
             Divider(color = Color.White)
         }
-
-
+    }
+    DisposableEffect(Unit) {
+        onDispose {
+            textToSpeechHelper.release()
+        }
     }
 }
 
@@ -230,8 +254,7 @@ fun SearchWordHeader(isSaved: MutableState<Boolean>, navController: NavControlle
                     tint = Color.White,
                     modifier = Modifier
                         .size(30.dp)
-                        .clickable(
-                            indication = null,
+                        .clickable(indication = null,
                             interactionSource = remember { MutableInteractionSource() }
 
                         ) {

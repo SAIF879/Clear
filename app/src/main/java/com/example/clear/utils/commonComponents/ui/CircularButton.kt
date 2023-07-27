@@ -1,4 +1,4 @@
-package com.example.clear.utils.commonComponents
+package com.example.clear.utils.commonComponents.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.example.clear.ui.theme.LightRed
+import com.example.clear.utils.commonComponents.util.bounceClick
 
 @Composable
 fun CircularButton(modifier: Modifier = Modifier,icon : ImageVector, size : Int = 50,   onClick: () -> Unit = {}) {

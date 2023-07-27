@@ -14,8 +14,8 @@ import androidx.navigation.NavController
 import com.example.clear.R
 import com.example.clear.screens.splash.components.splashNavigation
 import com.example.clear.ui.theme.DeepBlue
-import com.example.clear.utils.commonComponents.AnimatedLottie
-import com.example.clear.utils.commonComponents.ShowHeading
+import com.example.clear.utils.commonComponents.ui.AnimatedLottie
+import com.example.clear.utils.commonComponents.ui.ShowHeading
 
 
 @Composable

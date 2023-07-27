@@ -30,8 +30,8 @@ import com.example.clear.screens.home.note.components.ChosenColor
 import com.example.clear.screens.home.note.components.CreateNoteContent
 import com.example.clear.screens.home.note.components.WordsCount
 import com.example.clear.screens.home.note.util.NoteViewModel
-import com.example.clear.utils.commonComponents.CircularButton
-import com.example.clear.utils.commonComponents.StatusBarColor
+import com.example.clear.utils.commonComponents.ui.CircularButton
+import com.example.clear.utils.commonComponents.ui.StatusBarColor
 import com.example.clear.utils.fonts.FontFamilyClear
 import kotlinx.coroutines.launch
 

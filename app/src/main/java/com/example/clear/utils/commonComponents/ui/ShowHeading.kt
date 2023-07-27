@@ -1,4 +1,4 @@
-package com.example.clear.utils.commonComponents
+package com.example.clear.utils.commonComponents.ui
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

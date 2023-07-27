@@ -26,7 +26,7 @@ import com.example.clear.screens.introduction.components.HeadingIntro
 import com.example.clear.screens.introduction.components.SubContentIntro
 import com.example.clear.screens.introduction.components.SwipeToContinueButton
 import com.example.clear.ui.theme.DeepBlue
-import com.example.clear.utils.commonComponents.StatusBarColor
+import com.example.clear.utils.commonComponents.ui.StatusBarColor
 import com.example.clear.utils.fonts.FontFamilyClear
 
 @Composable

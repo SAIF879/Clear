@@ -28,9 +28,9 @@ import com.example.clear.screens.home.todo.components.CompletedTaskHeadline
 import com.example.clear.screens.home.todo.components.CompletedTodoHeader
 import com.example.clear.screens.home.todo.util.TodoViewModel
 import com.example.clear.ui.theme.DeepBlue
-import com.example.clear.utils.commonComponents.ShowAlertDialogBox
-import com.example.clear.utils.commonComponents.ShowEmptyAnimation
-import com.example.clear.utils.commonComponents.StatusBarColor
+import com.example.clear.utils.commonComponents.ui.ShowAlertDialogBox
+import com.example.clear.utils.commonComponents.ui.ShowEmptyAnimation
+import com.example.clear.utils.commonComponents.ui.StatusBarColor
 
 @Composable
 fun CompletedTodoScreen(
@@ -76,25 +76,27 @@ fun CompletedTodoScreen(
                     animatedRes = R.raw.no_todo,
                     text = "Add and Complete More Tasks"
                 )
-                LazyColumn(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(completedTodoList) { todo ->
-                        CompletedTaskCard(task = todo)
-                        Spacer(modifier = Modifier.size(20.dp))
-                    }
+            }
+                else {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(completedTodoList) { todo ->
+                            CompletedTaskCard(task = todo)
+                            Spacer(modifier = Modifier.size(20.dp))
+                        }
+                        item {
+                            Spacer(modifier = Modifier.size(80.dp))
+                        }
 
-                    item {
-                        Spacer(modifier = Modifier.size(80.dp))
                     }
-
                 }
             }
         }
     }
-}
+
 
 
 
