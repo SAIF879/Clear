@@ -80,7 +80,7 @@ fun NotesCard(note: Note, viewModel: NoteViewModel, onclick: () -> Unit) {
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }) {
                     onclick.invoke()
-                }
+                },
         ) {
             Column(
                 modifier = Modifier

@@ -75,7 +75,10 @@ fun NoteScreen(navController: NavController  , noteViewModel: NoteViewModel ) {
             )
 
             if (noteList.isEmpty()) {
-            ShowEmptyAnimation(animatedRes = R.raw.empty_list, text = "Currently, no notes are available for display." )
+                ShowEmptyAnimation(
+                    animatedRes = R.raw.empty_list,
+                    text = "Currently, no notes are available for display."
+                )
             } else {
                 LazyColumn(
                     verticalArrangement = Arrangement.Center,

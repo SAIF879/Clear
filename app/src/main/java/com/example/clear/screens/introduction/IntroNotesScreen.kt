@@ -53,7 +53,6 @@ fun IntroNotesScreen(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                             .fillMaxWidth()
                             .height(300.dp)
-                            .padding(0.dp)
                     ) {
                         Box(modifier = Modifier
                             .weight(2f)
