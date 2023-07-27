@@ -1,5 +1,6 @@
 package com.example.clear.screens.home.note.components
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,10 +10,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -33,17 +37,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.clear.room.model.Note
 import com.example.clear.screens.home.note.util.NoteViewModel
 import com.example.clear.ui.theme.LightRed
 import com.example.clear.ui.theme.RedPink
 import com.example.clear.ui.theme.TextWhite
+import com.example.clear.utils.commonComponents.util.bounceClick
 import com.example.clear.utils.fonts.FontFamilyClear
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -232,6 +241,52 @@ fun CreateNoteContent(
 
     )
 }
+
+@Composable
+fun ImageCard(modifier: Modifier = Modifier, selectedImageUri: Uri?) {
+    Card(
+        modifier = modifier
+            .fillMaxHeight()
+            .width(300.dp) , shape = RectangleShape
+    ) {
+        AsyncImage(
+            model = selectedImageUri,
+            contentDescription = "image",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+
+
+@Composable
+fun AddImageButton(modifier: Modifier = Modifier, icon : ImageVector, size : Int = 50, onClick: () -> Unit = {}) {
+    Box(
+        modifier = modifier
+            .bounceClick()
+            .fillMaxHeight()
+            .width(200.dp)
+            .background(LightRed, shape = CircleShape)
+            .aspectRatio(1f)
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { onClick.invoke() },
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = " icon",
+            tint = Color.White,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+        )
+    }
+}
+
+
 
 @Composable
 fun LocalGreeting() {
