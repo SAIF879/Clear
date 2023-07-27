@@ -72,6 +72,7 @@ dependencies {
 
     // coil for image loading
     implementation 'io.coil-kt:coil-compose:2.2.2'
+
     //navigation
     implementation "com.google.accompanist:accompanist-navigation-animation:0.29.2-rc"
 
@@ -108,10 +109,6 @@ dependencies {
 
     //gson for serialize and deserialize
     implementation 'com.google.code.gson:gson:2.9.1'
-
-    // Chucker
-//    debugImplementation "com.github.ChuckerTeam.Chucker:library:3.5.2"
-//    releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.5.2"
 
     //viewmodel compose
     implementation "androidx.compose.runtime:runtime-livedata:$compose_ui_version"
