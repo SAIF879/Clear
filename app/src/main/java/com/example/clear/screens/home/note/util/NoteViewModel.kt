@@ -1,6 +1,8 @@
 package com.example.clear.screens.home.note.util
 
+import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +30,10 @@ class NoteViewModel @Inject constructor(private val notesRepository: NoteReposit
     fun getNoteId(id:UUID){
         _noteId.value = id
     }
+
+    private val _selectedImages = mutableStateListOf<Uri>()
+    val selectedImages: List<Uri>
+        get() = _selectedImages
 
 
     init {
@@ -59,5 +65,6 @@ class NoteViewModel @Inject constructor(private val notesRepository: NoteReposit
     suspend fun getNoteById(noteId : UUID?) : Note?{
         return notesRepository.getNoteById(noteId = noteId)
     }
+
 
 }
