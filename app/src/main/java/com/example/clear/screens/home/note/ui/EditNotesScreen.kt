@@ -57,8 +57,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun EditNotesScreen(navController: NavController, noteViewModel: NoteViewModel) {
 
-    
-
     val note = remember {
         mutableStateOf(Constants.noteDetailPlaceHolder)
     }

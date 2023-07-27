@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -151,7 +152,7 @@ Row {
 
 
 @Composable
-fun EllipsizeText(text: String, maxLength: Int = 120) {
+fun EllipsizeText(text: String, maxLength: Int = 100) {
     val ellipsizedText = remember(text) {
         if (text.length > maxLength) {
             text.substring(0, maxLength - 3) + "..."
@@ -247,14 +248,26 @@ fun ImageCard(modifier: Modifier = Modifier, selectedImageUri: Uri?) {
             .fillMaxHeight()
             .width(300.dp) , shape = RectangleShape
     ) {
+        if (selectedImageUri != null)
         AsyncImage(
             model = selectedImageUri,
             contentDescription = "image",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
+        else
+            Icon(
+                imageVector = Icons.Filled.Image,
+                contentDescription = "Image_icon",
+                tint = Color.White,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(15.dp)
+            )
     }
 }
+
+
 
 
 
