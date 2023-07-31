@@ -69,7 +69,7 @@ fun IntroNotesScreen(navController: NavController) {
                     AppNameWithBackGround(appName = stringResource(id = R.string.app_name))
                 }
             }
-            Box(modifier = Modifier.weight(1f))
+            Box(modifier = Modifier.weight(1.5f))
             {
                 Column(
                     verticalArrangement = Arrangement.Center,

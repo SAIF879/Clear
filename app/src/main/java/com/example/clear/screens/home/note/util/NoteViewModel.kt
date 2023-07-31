@@ -31,9 +31,9 @@ class NoteViewModel @Inject constructor(private val notesRepository: NoteReposit
         _noteId.value = id
     }
 
-    private val _selectedImages = mutableStateListOf<Uri>()
-    val selectedImages: List<Uri>
-        get() = _selectedImages
+//    private val _selectedImages = mutableStateListOf<Uri>()
+//    val selectedImages: List<Uri>
+//        get() = _selectedImages
 
 
     init {
@@ -65,13 +65,6 @@ class NoteViewModel @Inject constructor(private val notesRepository: NoteReposit
     suspend fun getNoteById(noteId : UUID?) : Note?{
         return notesRepository.getNoteById(noteId = noteId)
     }
-
-    //  fun clearCompletedTodoList() = viewModelScope.launch {
-    //        todoRepository.clearCompletedTodo()
-    //        todoRepository.getCompletedTodo().distinctUntilChanged().collect{
-    //            _completedTodoList.value = it
-    //        }
-    //    }
 
 
 

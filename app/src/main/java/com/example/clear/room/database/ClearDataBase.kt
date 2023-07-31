@@ -12,7 +12,7 @@ import com.example.clear.room.model.Todo
 import com.example.clear.room.model.convertor.UriListConverter
 
 @Database(entities = [Note::class , Todo::class , Dictionary::class] , version = 10 , exportSchema = false)
-@TypeConverters(UriListConverter::class) // Add the UriListConverter here
+@TypeConverters(UriListConverter::class)
 abstract class ClearDataBase : RoomDatabase() {
     abstract fun noteDao() : NoteDataBaseDao
     abstract fun todoDao() : TodoDataBaseDao
